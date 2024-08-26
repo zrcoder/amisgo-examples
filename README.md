@@ -1,2 +1,3 @@
 # amisgo-examples
-Examples for amisgo
+
+Examples for [amisgo](https://github.com/zrcoder/amisgo)
