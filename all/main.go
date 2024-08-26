@@ -1,10 +1,11 @@
 package main
 
 import (
+	"amisgo-examples/all/pages/form"
+	"amisgo-examples/all/pages/page"
+
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
-	"github.com/zrcoder/amisgo/examples/all/pages/form"
-	"github.com/zrcoder/amisgo/examples/all/pages/page"
 )
 
 func main() {
