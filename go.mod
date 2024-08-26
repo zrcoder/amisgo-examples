@@ -5,7 +5,8 @@ go 1.22
 toolchain go1.22.0
 
 require (
-	github.com/zrcoder/amisgo v0.0.0-20240826015253-bf740c3542e8
+	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
+	github.com/zrcoder/amisgo v0.0.0-20240826122138-9eadd0a73fa9
 	github.com/zrcoder/ttoy v0.0.0-20240807162315-413337bd12eb
 )
 
@@ -45,7 +46,6 @@ require (
 	github.com/muesli/termenv v0.15.2 // indirect
 	github.com/qiniu/x v1.13.10 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
-	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e // indirect
 	github.com/tidwall/gjson v1.17.1 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
@@ -54,6 +54,7 @@ require (
 	github.com/visualfc/gid v0.1.0 // indirect
 	github.com/visualfc/goembed v0.3.2 // indirect
 	github.com/visualfc/xtype v0.2.0 // indirect
+	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4 // indirect
 	github.com/yuin/goldmark v1.6.0 // indirect
 	github.com/zrcoder/cdor v0.1.2 // indirect
 	github.com/zrcoder/ndor v0.0.0-20240624070940-a02450e25351 // indirect

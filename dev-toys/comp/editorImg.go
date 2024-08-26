@@ -2,13 +2,16 @@ package comp
 
 import "github.com/zrcoder/amisgo/comp"
 
-func EditorImg(lang string, transfor func(any) any) any {
-	return comp.Form().Title("").ColumnCount(2).Body(
-		Editor(&EditorCfg{Lang: lang}),
+func EditorImg(lang string, transfor func(any) (any, error)) any {
+	return comp.Form().Title("Json viewer").ColumnCount(3).Body(
 		comp.Wrapper().Style(comp.Schema{"width": "50%"}).Body(
-			comp.Image().Static(true).ImageMode("original"),
+			Editor(EditorCfg{Lang: lang, Name: "editor"}),
 		),
-	).Actions(
-		comp.Action().Level("primary").Icon("fa fa-arrow-right").Transform("editor", "img.src", "Done", transfor),
-	)
+		comp.ButtonGroup().Vertical(true).Buttons(
+			comp.Action().Icon("fa fa-arrow-right").Transform("editor", "img", "Done", transfor),
+		),
+		comp.Wrapper().Style(comp.Schema{"width": "36%"}).Body(
+			comp.Image().Name("img").ImageMode("original"),
+		),
+	).Actions()
 }

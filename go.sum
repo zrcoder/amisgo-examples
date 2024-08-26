@@ -197,11 +197,13 @@ github.com/visualfc/goembed v0.3.2 h1:a9m6o9VTzNk3mEF98C8cHp8f8P8BblyjsjajXGfTp8
 github.com/visualfc/goembed v0.3.2/go.mod h1:jCVCz/yTJGyslo6Hta+pYxWWBuq9ADCcIVZBTQ0/iVI=
 github.com/visualfc/xtype v0.2.0 h1:0ESNXyWHtK01kaOzOyqHsR1ZjEPdNu/IWPZkf0VOHl8=
 github.com/visualfc/xtype v0.2.0/go.mod h1:183MDtzLqyDkCm5zCH42vJGq/aQE5W25k3Z6UOZxLF0=
+github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4 h1:0sw0nJM544SpsihWx1bkXdYLQDlzRflMgFJQ4Yih9ts=
+github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4/go.mod h1:+ccdNT0xMY1dtc5XBxumbYfOUhmduiGudqaDgD2rVRE=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/yuin/goldmark v1.6.0 h1:boZcn2GTjpsynOsC0iJHnBWa4Bi0qzfJjthwauItG68=
 github.com/yuin/goldmark v1.6.0/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
-github.com/zrcoder/amisgo v0.0.0-20240826015253-bf740c3542e8 h1:fgeLr7TNVxaZJNgvbWXXdDCbVQCKEzJkfjmocKtGL78=
-github.com/zrcoder/amisgo v0.0.0-20240826015253-bf740c3542e8/go.mod h1:S9ywPkM6KkiQfeTIi7Y+6MYSBCXiO1PWi29Nu7KoUdY=
+github.com/zrcoder/amisgo v0.0.0-20240826122138-9eadd0a73fa9 h1:C3YNGqKqHG/tZGaWQdG7a5mJJ4C3mHCJFzkA24HjhJM=
+github.com/zrcoder/amisgo v0.0.0-20240826122138-9eadd0a73fa9/go.mod h1:S9ywPkM6KkiQfeTIi7Y+6MYSBCXiO1PWi29Nu7KoUdY=
 github.com/zrcoder/cdor v0.1.2 h1:UPKxK0x0lcBfpT+s8wt0Ae2PjcZd9F02UdY6oU6N4GA=
 github.com/zrcoder/cdor v0.1.2/go.mod h1:GxIszFI5hMo/OoKqWZ+j5zE6GeY5TxnsBWYCumdRzLI=
 github.com/zrcoder/ndor v0.0.0-20240624070940-a02450e25351 h1:DJUL1SwNGth1YMAlzJNErbOMPxggGjWJ0j+/qDiAkXY=

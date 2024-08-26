@@ -13,10 +13,10 @@ func main() {
 			comp.Editor().Language("json").Label("json").Name("input").Size("xxl"),
 			comp.Editor().Label("yaml").Label("yaml").Name("output").Size("xxl").ReadOnly(true),
 		).Actions(
-			comp.Action().Label("Converrt").Level("primary").Transform("input", "output", "转换成功", func(input any) any {
+			comp.Action().Label("Converrt").Level("primary").Transform("input", "output", "转换成功", func(input any) (any, error) {
 				// transform input json to yaml
 				output := "age: 27"
-				return output
+				return output, nil
 			}),
 
 			// comp.Action().Label("Convert").Level("primary").ActionType("ajax").Api(
