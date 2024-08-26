@@ -11,3 +11,13 @@ Examples for [amisgo](https://github.com/zrcoder/amisgo)
 - [all](all)
 - [Dev Toys](dev-toys)
   ![devtoys](toy.png)
+
+## Usage
+
+```sh
+go mod tidy
+
+go run ./dev-toys
+```
+
+Then visit http://localhost
