@@ -1,27 +1,41 @@
 package main
 
 import (
+	"embed"
+
 	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo/comp"
+	ac "github.com/zrcoder/amisgo/comp"
 )
 
+//go:embed asserts/*
+var assertsFS embed.FS
+
 func main() {
-	app := comp.App().BrandName("DEV TOYS ⌘◉⎈").
+	app := ac.App().
+		BrandName("DEV TOYS ⌘◉⎈").
 		Header(
-			comp.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
+			ac.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
 		).
 		Pages(
-			comp.PageItem().Children(
-				comp.PageItem().Label("DATA").Icon("fa fa-code").Url("/data").Children(
-					comp.PageItem().Label("Format").Url("fmt").Schema(comp.Page().Title("Page A")),
-					comp.PageItem().Label("Convert").Url("cvt").Schema(comp.Page().Title("Page B")),
+			ac.PageItem().Url("/").Redirect("/data/fmt").Children(
+				ac.PageItem().Label("DATA").Icon("fa fa-code").Url("/data").Children(
+					ac.PageItem().Label("Format").Url("fmt").Schema(fmtEditor).IsDefaultPage(true),
+					ac.PageItem().Label("Convert").Url("cvt").Schema(ac.Page().Title("Page B")),
+					ac.PageItem().Label("View").Url("view").Schema(jsonViewer),
+				),
+				ac.PageItem().Label("TEXT").Url("/text").Children(
+					ac.PageItem().Label("Difference").Url("diff").Schema(diff),
 				),
 			),
-			comp.PageItem().Label("Others").Children(),
-		)
+		).
+		Footer("© 2024 zrcoder.")
 
 	cfg := amisgo.GetDefaultConfig()
 	cfg.Theme = amisgo.ThemeDark
+	cfg.Lang = amisgo.LangEn
+	cfg.Icon = "/favicon.png"
+	cfg.AssertsPath = "/asserts"
+	cfg.AssertsFS = assertsFS
 
 	panic(amisgo.ListenAndServe(app, cfg))
 }
