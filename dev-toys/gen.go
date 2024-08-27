@@ -9,7 +9,7 @@ import (
 	qr "github.com/skip2/go-qrcode"
 )
 
-var jsonViewer = comp.EditorImg("json", func(s any) (any, error) {
+var jsonGraph = comp.EditorImg("json", func(s any) (any, error) {
 	src := s.(string)
 	buf, err := util.Json2Svg([]byte(src))
 	return regularSvgData(buf.Bytes(), err)
