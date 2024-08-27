@@ -13,5 +13,5 @@ func Editor(e EditorCfg) any {
 	if e.Lang == "" {
 		e.Lang = "text"
 	}
-	return comp.Editor().Name(e.Name).Language(e.Lang).Disabled(e.readOnly).Size("xxl").Label(e.Label)
+	return comp.Editor().AllowFullscreen(false).Name(e.Name).Language(e.Lang).Disabled(e.readOnly).Size("xxl").Label(e.Label)
 }
