@@ -6,7 +6,7 @@ import (
 	"amisgo-examples/dev-toys/comp"
 	"amisgo-examples/dev-toys/util"
 
-	qr "github.com/skip2/go-qrcode"
+	ac "github.com/zrcoder/amisgo/comp"
 )
 
 var jsonGraph = comp.EditorImg("json", func(s any) (any, error) {
@@ -15,13 +15,14 @@ var jsonGraph = comp.EditorImg("json", func(s any) (any, error) {
 	return regularSvgData(buf.Bytes(), err)
 })
 
-var qrcode = comp.EditorImg("text", func(input any) (any, error) {
-	q, err := qr.New(input.(string), qr.Medium)
-	if err != nil {
-		return nil, err
-	}
-	return regularPngData(q.PNG(-1))
-})
+var qrcode = ac.Form().Title("").ColumnCount(2).WrapWithPanel(false).Body(
+	ac.Wrapper().Style(ac.Schema{"width": "50%"}).Body(
+		comp.Editor(comp.EditorCfg{Lang: "text", Name: "editor"}),
+	),
+	ac.Flex().Style(ac.Schema{"width": "50%"}).AlignItems("center").Items(
+		ac.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M"),
+	),
+).Actions()
 
 var json2struct = comp.DualEditor(jsonCfg, comp.EditorCfg{Lang: "go"}, "", func(input any) (output any, err error) {
 	return util.Json2Struct([]byte(input.(string)))
