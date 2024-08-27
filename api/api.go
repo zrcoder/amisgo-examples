@@ -13,20 +13,22 @@ type Resp struct {
 
 const itemsRouter = "/items"
 
+type Item struct {
+	ID       string `json:"id"`
+	Engine   string `json:"engine"`
+	Browser  string `json:"browser"`
+	Platform string `json:"platform"`
+	Version  string `json:"version"`
+	Grade    string `json:"grade"`
+}
+
+var items = []Item{
+	{Engine: "e1", Browser: "chrome", Platform: "windows", Version: "1.0"},
+	{Browser: "safri", Platform: "macOS", Version: "2.0"},
+}
+
 func ServeApi() {
-	type Item struct {
-		ID       string `json:"id"`
-		Engine   string `json:"engine"`
-		Browser  string `json:"browser"`
-		Platform string `json:"platform"`
-		Version  string `json:"version"`
-		Grade    string `json:"grade"`
-	}
 	http.HandleFunc(itemsRouter, func(w http.ResponseWriter, r *http.Request) {
-		items := []Item{
-			{Engine: "e1", Browser: "chrome", Platform: "windows", Version: "1.0"},
-			{Browser: "safri", Platform: "macOS", Version: "2.0"},
-		}
 		data, _ := json.Marshal(Resp{Data: items})
 		w.Write(data)
 	})
