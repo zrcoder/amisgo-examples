@@ -8,7 +8,7 @@ require (
 	github.com/BurntSushi/toml v1.4.0
 	github.com/ChimeraCoder/gojson v1.1.0
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.0.0-20240827054746-82c5e0e9787b
+	github.com/zrcoder/amisgo v0.0.0-20240827073022-35e1e03cc178
 	github.com/zrcoder/cdor v0.1.2
 	gopkg.in/yaml.v3 v3.0.1
 )
