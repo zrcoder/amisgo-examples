@@ -4,14 +4,14 @@ import (
 	"encoding/base64"
 
 	"amisgo-examples/dev-toys/comp"
+	"amisgo-examples/dev-toys/util"
 
 	qr "github.com/skip2/go-qrcode"
-	"github.com/zrcoder/ttoy/pkg/generator"
 )
 
 var jsonViewer = comp.EditorImg("json", func(s any) (any, error) {
 	src := s.(string)
-	buf, err := generator.Json2Svg([]byte(src))
+	buf, err := util.Json2Svg([]byte(src))
 	return regularSvgData(buf.Bytes(), err)
 })
 

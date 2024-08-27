@@ -4,16 +4,15 @@ import (
 	"bytes"
 
 	"amisgo-examples/dev-toys/comp"
-
-	"github.com/zrcoder/ttoy/pkg/formatter"
+	"amisgo-examples/dev-toys/util"
 )
 
 var (
 	fmts = map[string]func([]byte) (*bytes.Buffer, error){
-		"json": formatter.Json,
-		"yaml": formatter.Yaml,
-		"toml": formatter.Toml,
-		"html": formatter.Html,
+		"json": util.Json,
+		"yaml": util.Yaml,
+		"toml": util.Toml,
+		"html": util.Html,
 	}
 
 	jsonFormatter = comp.DualEditor(jsonCfg, jsonCfg, "Json", func(input any) (any, error) {

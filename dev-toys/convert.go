@@ -4,29 +4,28 @@ import (
 	"bytes"
 
 	"amisgo-examples/dev-toys/comp"
-
-	"github.com/zrcoder/ttoy/pkg/converter"
+	"amisgo-examples/dev-toys/util"
 )
 
 var jsonYamlCvt = comp.DualEditor(jsonCfg, yamlCfg, "Json-Yaml",
 	func(input any) (output any, err error) {
-		return convert(input, converter.Json2Yaml)
+		return convert(input, util.Json2Yaml)
 	}, func(input any) (output any, err error) {
-		return convert(input, converter.Yaml2Json)
+		return convert(input, util.Yaml2Json)
 	})
 
 var jsonTomlCvt = comp.DualEditor(jsonCfg, tomlCfg, "Json-Toml",
 	func(input any) (output any, err error) {
-		return convert(input, converter.Json2Toml)
+		return convert(input, util.Json2Toml)
 	}, func(input any) (output any, err error) {
-		return convert(input, converter.Toml2Json)
+		return convert(input, util.Toml2Json)
 	})
 
 var yamlTomlCvt = comp.DualEditor(yamlCfg, tomlCfg, "Yaml-Toml",
 	func(input any) (output any, err error) {
-		return convert(input, converter.Yaml2Toml)
+		return convert(input, util.Yaml2Toml)
 	}, func(input any) (output any, err error) {
-		return convert(input, converter.Toml2Yaml)
+		return convert(input, util.Toml2Yaml)
 	})
 
 func convert(input any, cvt func([]byte) (*bytes.Buffer, error)) (string, error) {
