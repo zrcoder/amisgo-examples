@@ -1,23 +1,20 @@
 package main
 
 import (
-	"embed"
-
 	"github.com/zrcoder/amisgo"
 	ac "github.com/zrcoder/amisgo/comp"
 )
-
-//go:embed asserts/*
-var assertsFS embed.FS
 
 func main() {
 	app := ac.App().
 		BrandName("⎈ DEV TOYS ⎈").
 		Header(
-			ac.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
+			ac.Flex().Justify("end").Style(ac.Schema{"width": "100%"}).Items(
+				ac.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
+			),
 		).
 		Pages(
-			ac.PageItem().Url("/").Redirect("/data/fmt").Children(
+			ac.PageItem().Url("/").Redirect("/fmt/json").Children(
 				ac.PageItem().Label("Fommaters").Icon("fa fa-laptop-code").Url("/fmt").Children(
 					ac.PageItem().Label("Json").Url("json").Schema(wrap(jsonFormatter)).IsDefaultPage(true),
 					ac.PageItem().Label("Yaml").Url("yaml").Schema(wrap(yamlFormatter)),
@@ -40,9 +37,6 @@ func main() {
 	cfg := amisgo.GetDefaultConfig()
 	cfg.Theme = amisgo.ThemeDark
 	cfg.Lang = amisgo.LangEn
-	cfg.Icon = "/favicon.png"
-	cfg.AssertsPath = "/asserts"
-	cfg.AssertsFS = assertsFS
 
 	panic(amisgo.ListenAndServe(app, cfg))
 }

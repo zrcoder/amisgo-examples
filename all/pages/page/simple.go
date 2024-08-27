@@ -20,8 +20,8 @@ var Simple = comp.Page().
 	Aside("    边栏部分").
 	ClassName("white-space-pre").
 	Toolbar("工具栏").
-	InitData(func() comp.Data {
-		return comp.Data{"date": getDate()}
+	InitData(func() any {
+		return map[string]string{"date": getDate()}
 	})
 
 func getDate() string {
