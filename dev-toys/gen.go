@@ -23,6 +23,10 @@ var qrcode = comp.EditorImg("text", func(input any) (any, error) {
 	return regularPngData(q.PNG(-1))
 })
 
+var json2struct = comp.DualEditor(jsonCfg, comp.EditorCfg{Lang: "go"}, "", func(input any) (output any, err error) {
+	return util.Json2Struct([]byte(input.(string)))
+}, nil)
+
 func regularSvgData(input []byte, err error) (string, error) {
 	if err != nil {
 		return "", err

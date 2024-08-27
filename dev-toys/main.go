@@ -32,6 +32,7 @@ func main() {
 				ac.PageItem().Label("Generators").Icon("fa fa-seedling").Url("/gen").Children(
 					ac.PageItem().Label("Json viewer").Url("view").Schema(wrap(jsonViewer)),
 					ac.PageItem().Label("Qrcode").Url("qrcode").Schema(wrap(qrcode)),
+					ac.PageItem().Label("Json to Struct").Url("js-struct").Schema(wrap(json2struct)),
 				),
 			),
 		)

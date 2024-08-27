@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 
 	"github.com/BurntSushi/toml"
+	"github.com/ChimeraCoder/gojson"
 	"github.com/yosssi/gohtml"
 	"github.com/zrcoder/cdor"
 	"gopkg.in/yaml.v3"
@@ -128,4 +129,29 @@ func toSvg(fn func(*cdor.Cdor)) (*bytes.Buffer, error) {
 	fn(c)
 	data, err := c.Gen()
 	return bytes.NewBuffer(data), err
+}
+
+var StructOption = struct {
+	Name          string
+	Pkg           string
+	Tags          []string
+	ConvertFloats bool
+	SubStruct     bool
+}{
+	Name:          "Amisgo",
+	Pkg:           "pkg",
+	Tags:          []string{"json"},
+	ConvertFloats: true,
+	SubStruct:     false,
+}
+
+func Json2Struct(input []byte) (string, error) {
+	buf := bytes.NewBuffer(input)
+	out, err := gojson.Generate(buf, gojson.ParseJson,
+		StructOption.Name,
+		StructOption.Pkg,
+		StructOption.Tags,
+		StructOption.SubStruct,
+		StructOption.ConvertFloats)
+	return string(out), err
 }

@@ -6,6 +6,7 @@ toolchain go1.22.0
 
 require (
 	github.com/BurntSushi/toml v1.4.0
+	github.com/ChimeraCoder/gojson v1.1.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
 	github.com/zrcoder/amisgo v0.0.0-20240826122138-9eadd0a73fa9
@@ -56,6 +57,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240823204242-4ba0660f739c // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240823204242-4ba0660f739c // indirect
 	google.golang.org/grpc v1.65.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	oss.terrastruct.com/d2 v0.6.3 // indirect
 	oss.terrastruct.com/util-go v0.0.0-20231101220827-55b3812542c2 // indirect
 )
