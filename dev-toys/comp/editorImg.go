@@ -12,7 +12,7 @@ func EditorImg(lang string, transfor func(any) (any, error)) any {
 		),
 		comp.Flex().Style(comp.Schema{"width": "40%"}).AlignItems("center").Items(
 			comp.Wrapper().Style(comp.Schema{"width": "90%"}).Body(
-				comp.Image().Name("img").ImageMode("original"),
+				comp.Image().Name("img").ImageMode("original").InnerClassName("no-border"),
 			),
 		),
 	).Actions()
