@@ -127,6 +127,7 @@ func Json2Svg(data []byte) (*bytes.Buffer, error) {
 func toSvg(fn func(*cdor.Cdor)) (*bytes.Buffer, error) {
 	c := cdor.Ctx()
 	fn(c)
+	c.Theme(200) // dark theme
 	data, err := c.Gen()
 	return bytes.NewBuffer(data), err
 }
