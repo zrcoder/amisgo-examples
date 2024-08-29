@@ -30,6 +30,7 @@ func main() {
 					ac.PageItem().Label("Json Graph").Url("js-graph").Schema(wrap(jsonGraph)),
 					ac.PageItem().Label("Qrcode").Url("qrcode").Schema(wrap(qrcode)),
 					ac.PageItem().Label("Json to Struct").Url("js-struct").Schema(wrap(json2struct)),
+					ac.PageItem().Label("Hash").Url("hash").Schema(wrap(hash)),
 				),
 			),
 		)
