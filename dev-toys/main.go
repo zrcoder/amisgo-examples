@@ -9,7 +9,7 @@ func main() {
 	app := ac.App().
 		BrandName("⎈ DEV TOYS ⎈").
 		Header(
-			ac.Flex().Justify("end").Style(ac.Schema{"width": "100%"}).Items(
+			ac.Flex().Justify("end").Style(ac.Schema{"width": "100%", "padding-right": "50px"}).Items(
 				ac.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
 			),
 		).
@@ -42,5 +42,5 @@ func main() {
 }
 
 func wrap(c any) any {
-	return ac.Wrapper().Body(c)
+	return ac.Wrapper().Style(ac.Schema{"padding": "50px"}).Body(c)
 }

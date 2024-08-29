@@ -11,7 +11,7 @@ Examples for [amisgo](https://github.com/zrcoder/amisgo)
 - [multiple page app](multiple-page)
 - [all](all)
 - [Dev Toys](dev-toys)
-  ![devtoys](dev-toy.png)
+  ![devtoys](dev-toy-screenshot.png)
 
 ## Usage
 
