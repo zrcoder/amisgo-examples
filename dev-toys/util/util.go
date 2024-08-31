@@ -2,11 +2,17 @@ package util
 
 import (
 	"bytes"
+	"crypto/md5"
+	"crypto/sha1"
+	"crypto/sha256"
+	"crypto/sha512"
+	"encoding/hex"
 	"encoding/json"
 
 	"github.com/BurntSushi/toml"
 	"github.com/ChimeraCoder/gojson"
 	"github.com/yosssi/gohtml"
+	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/cdor"
 	"gopkg.in/yaml.v3"
 )
@@ -155,4 +161,37 @@ func Json2Struct(input []byte) (string, error) {
 		StructOption.SubStruct,
 		StructOption.ConvertFloats)
 	return string(out), err
+}
+
+func Hash(input []byte) (comp.Data, error) {
+	h := md5.New()
+	if _, err := h.Write(input); err != nil {
+		return nil, err
+	}
+	resMd5 := hex.EncodeToString(h.Sum(nil))
+
+	h = sha1.New()
+	if _, err := h.Write(input); err != nil {
+		return nil, err
+	}
+	resSha1 := hex.EncodeToString(h.Sum(nil))
+
+	h = sha256.New()
+	if _, err := h.Write(input); err != nil {
+		return nil, err
+	}
+	resSha256 := hex.EncodeToString(h.Sum(nil))
+
+	h = sha512.New()
+	if _, err := h.Write(input); err != nil {
+		return nil, err
+	}
+	resSha512 := hex.EncodeToString(h.Sum(nil))
+
+	return comp.Data{
+		"md5":    resMd5,
+		"sha1":   resSha1,
+		"sha256": resSha256,
+		"sha512": resSha512,
+	}, nil
 }

@@ -20,12 +20,10 @@ var Simple = comp.Page().
 	Aside("    边栏部分").
 	ClassName("white-space-pre").
 	Toolbar("工具栏").
-	InitData(func() any {
-		return map[string]string{"date": getDate()}
-	})
+	InitData(getDate)
 
-func getDate() string {
+func getDate() any {
 	y, m, d := time.Now().Date()
 	mm := time.Now().UnixNano()
-	return fmt.Sprintf("%d-%d-%d %d", y, m, d, mm)
+	return map[string]string{"date": fmt.Sprintf("%d-%d-%d %d", y, m, d, mm)}
 }

@@ -1,12 +1,7 @@
 package main
 
 import (
-	"crypto/md5"
-	"crypto/sha1"
-	"crypto/sha256"
-	"crypto/sha512"
 	"encoding/base64"
-	"encoding/hex"
 
 	"amisgo-examples/dev-toys/comp"
 	"amisgo-examples/dev-toys/util"
@@ -32,39 +27,8 @@ var qrcode = ac.Form().ColumnCount(2).WrapWithPanel(false).Body(
 var hash = ac.Form().WrapWithPanel(false).Body(
 	ac.Editor().Language("text").Name("editor").AllowFullscreen(false),
 	ac.Flex().Style(ac.Schema{"width": "100%"}).Items(
-		ac.Button().Icon("fa fa-arrow-down").TransformMultiple("$editor", "done", func(a any) (ac.Data, error) {
-			input := []byte(a.(string))
-
-			h := md5.New()
-			if _, err := h.Write(input); err != nil {
-				return nil, err
-			}
-			resMd5 := hex.EncodeToString(h.Sum(nil))
-
-			h = sha1.New()
-			if _, err := h.Write(input); err != nil {
-				return nil, err
-			}
-			resSha1 := hex.EncodeToString(h.Sum(nil))
-
-			h = sha256.New()
-			if _, err := h.Write(input); err != nil {
-				return nil, err
-			}
-			resSha256 := hex.EncodeToString(h.Sum(nil))
-
-			h = sha512.New()
-			if _, err := h.Write(input); err != nil {
-				return nil, err
-			}
-			resSha512 := hex.EncodeToString(h.Sum(nil))
-
-			return ac.Data{
-				"md5":    resMd5,
-				"sha1":   resSha1,
-				"sha256": resSha256,
-				"sha512": resSha512,
-			}, nil
+		ac.Button().Icon("fa fa-arrow-down").TransformMultiple("editor", "done", func(input any) (any, error) {
+			return util.Hash([]byte(input.(string)))
 		}),
 	),
 	ac.InputText().Name("md5").Label("MD5").Disabled(true),
