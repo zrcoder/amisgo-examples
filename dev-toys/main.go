@@ -31,6 +31,7 @@ func main() {
 					ac.PageItem().Label("Qrcode").Url("qrcode").Schema(wrap(qrcode)),
 					ac.PageItem().Label("Json to Struct").Url("js-struct").Schema(wrap(json2struct)),
 					ac.PageItem().Label("Hash").Url("hash").Schema(wrap(hash)),
+					ac.PageItem().Label("Ndor").Url("ndor").Schema(wrap(ndor)),
 				),
 			),
 		)
