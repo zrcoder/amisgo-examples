@@ -15,7 +15,7 @@ var jsonGraph = comp.EditorImg("json", func(s any) (any, error) {
 	return regularSvgData(buf.Bytes(), err)
 })
 
-var qrcode = ac.Form().ColumnCount(2).WrapWithPanel(false).Body(
+var qrcode = ac.Form().AutoFocus(true).ColumnCount(2).WrapWithPanel(false).Body(
 	ac.Wrapper().Style(ac.Schema{"width": "50%"}).Body(
 		comp.Editor(comp.EditorCfg{Lang: "text", Name: "editor"}),
 	),
@@ -24,7 +24,7 @@ var qrcode = ac.Form().ColumnCount(2).WrapWithPanel(false).Body(
 	),
 ).Actions()
 
-var hash = ac.Form().WrapWithPanel(false).Body(
+var hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
 	ac.Editor().Language("text").Name("editor").AllowFullscreen(false),
 	ac.Flex().Style(ac.Schema{"width": "100%"}).Items(
 		ac.Button().Icon("fa fa-arrow-down").TransformMultiple("editor", "done", func(input any) (any, error) {
