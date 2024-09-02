@@ -25,12 +25,7 @@ func main() {
 			// 		"data": comp.Schema{"input": "${input}"},
 			// 		"responses": comp.Schema{
 			// 			"200": comp.Schema{
-			// 				"then": comp.Schema{
-			// 					"actionType": "setValue",
-			// 					"args": comp.Schema{
-			// 						"value": "${response}",
-			// 					},
-			// 				},
+			// 				"then": comp.EventAction().ActionType("setValue").Args(comp.Schema{"value": "${response}"}),
 			// 			},
 			// 		},
 			// 	},
