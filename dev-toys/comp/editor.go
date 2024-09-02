@@ -6,6 +6,7 @@ type EditorCfg struct {
 	Name     string
 	Lang     string
 	Label    string
+	Value    string
 	ReadOnly bool
 }
 
@@ -17,6 +18,7 @@ func Editor(e EditorCfg) any {
 		AllowFullscreen(false).
 		Name(e.Name).
 		Language(e.Lang).
+		Value(e.Value).
 		Disabled(e.ReadOnly).
 		Size("xxl").
 		Label(e.Label)

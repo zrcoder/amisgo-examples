@@ -7,6 +7,7 @@ func DualEditor(left, right EditorCfg, title string, action, reverseAction func(
 	right.Name = "output"
 	left.ReadOnly = true
 	right.ReadOnly = true
+	right.Value = ""
 	actions := make([]any, 0, 2)
 	if action != nil {
 		left.ReadOnly = false
