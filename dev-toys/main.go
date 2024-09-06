@@ -7,7 +7,8 @@ import (
 
 func main() {
 	app := ac.App().
-		BrandName("⎈ DEV TOYS ⎈").
+		Logo("/asserts/gopher.svg").
+		BrandName("Dev Toys").
 		Header(
 			ac.Flex().Justify("end").Style(ac.Schema{"width": "100%", "padding-right": "50px"}).Items(
 				ac.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
@@ -39,6 +40,8 @@ func main() {
 	cfg := amisgo.GetDefaultConfig()
 	cfg.Theme = amisgo.ThemeDark
 	cfg.Lang = amisgo.LangEn
+	cfg.StaticDir = "asserts"
+	cfg.Icon = "/asserts/gopher.svg"
 
 	panic(amisgo.ListenAndServe(app, cfg))
 }
