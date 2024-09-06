@@ -41,18 +41,12 @@ var json2struct = comp.DualEditor(jsonCfg, comp.EditorCfg{Lang: "go"}, "", func(
 	return util.Json2Struct([]byte(input.(string)))
 }, nil)
 
+var ndor = ac.Iframe().Src("https://ndor.netlify.app").Height("70vh").ClassName("bg-gray-300")
+
 func regularSvgData(input []byte, err error) (string, error) {
 	if err != nil {
 		return "", err
 	}
 	res := "data:image/svg+xml;base64," + base64.StdEncoding.EncodeToString([]byte(input))
-	return res, nil
-}
-
-func regularPngData(input []byte, err error) (string, error) {
-	if err != nil {
-		return "", err
-	}
-	res := "data:image/png;base64," + base64.StdEncoding.EncodeToString([]byte(input))
 	return res, nil
 }
