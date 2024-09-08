@@ -7,10 +7,9 @@ Examples for [amisgo](https://github.com/zrcoder/amisgo)
 ## Usage
 
 ```sh
-# if you want to run the dev-toys demo:
-cd dev-toys
 go mod tidy
-go run .
+# if you want to run the dev-toys demo:
+go run ./dev-toys
 ```
 
 Then visit http://localhost

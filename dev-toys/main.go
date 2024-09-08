@@ -1,9 +1,15 @@
 package main
 
 import (
+	"embed"
+	"fmt"
+
 	"github.com/zrcoder/amisgo"
 	ac "github.com/zrcoder/amisgo/comp"
 )
+
+//go:embed assets/*
+var assetsFS embed.FS
 
 func main() {
 	app := ac.App().
@@ -41,8 +47,10 @@ func main() {
 	cfg.Theme = amisgo.ThemeDark
 	cfg.Lang = amisgo.LangEn
 	cfg.StaticDir = "assets"
+	cfg.StaticFS = assetsFS
 	cfg.Icon = "/assets/go.svg"
 
+	fmt.Println("Serve on http://localhost")
 	panic(amisgo.ListenAndServe(app, cfg))
 }
 
