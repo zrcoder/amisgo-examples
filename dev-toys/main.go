@@ -48,7 +48,7 @@ func main() {
 	cfg.Lang = amisgo.LangEn
 	cfg.StaticDir = "assets"
 	cfg.StaticFS = assetsFS
-	cfg.Icon = "/assets/go.svg"
+	cfg.Icon = "/assets/favicon.ico"
 
 	fmt.Println("Serve on http://localhost")
 	panic(amisgo.ListenAndServe(app, cfg))
