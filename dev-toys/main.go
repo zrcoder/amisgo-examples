@@ -40,6 +40,7 @@ func main() {
 					ac.PageItem().Label("Hash").Url("hash").Schema(wrap(hash)),
 					ac.PageItem().Label("Ndor").Url("ndor").Schema(wrap(ndor)),
 				),
+				ac.PageItem().Label("Chart").Icon("fa fa-bar-chart").Url("/chart").Schema(wrap(chart)),
 			),
 		)
 
