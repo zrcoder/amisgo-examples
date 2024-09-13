@@ -14,7 +14,8 @@ var Form = comp.Page().Title("表单页面").Body(
 		).Go(handleSubmit),
 )
 
-func handleSubmit(m map[string]any) {
-	fmt.Println("name:", m["name"])
-	fmt.Println("email:", m["email"])
+func handleSubmit(m comp.Data) error {
+	fmt.Println("name:", m.Get("name"))
+	fmt.Println("email:", m.Get("email"))
+	return nil
 }

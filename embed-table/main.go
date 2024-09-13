@@ -9,7 +9,7 @@ func main() {
 	page := comp.Page().Body(
 		comp.Service().
 			// Data(items). // 这一行直接指定数据，静态
-			FetchData(getData). // 这一行指定数据获取方法，方法里边可以动态实现，比如从数据库读取
+			GetData(getData). // 这一行指定数据获取方法，方法里边可以动态实现，比如从数据库读取
 			Body(
 				comp.Table().Source("$rows").ClassName("m-b-none").ColumnsTogglable(false).Columns(
 					comp.Column().Name("engine").Label("Engine"),
@@ -96,6 +96,6 @@ var items = Items{
 	},
 }
 
-func getData() any {
-	return items
+func getData() (any, error) {
+	return items, nil
 }

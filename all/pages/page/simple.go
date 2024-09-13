@@ -22,8 +22,8 @@ var Simple = comp.Page().
 	Toolbar("工具栏").
 	InitData(getDate)
 
-func getDate() any {
+func getDate() (any, error) {
 	y, m, d := time.Now().Date()
 	mm := time.Now().UnixNano()
-	return map[string]string{"date": fmt.Sprintf("%d-%d-%d %d", y, m, d, mm)}
+	return map[string]string{"date": fmt.Sprintf("%d-%d-%d %d", y, m, d, mm)}, nil
 }

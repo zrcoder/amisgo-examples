@@ -4,6 +4,8 @@ import (
 	"embed"
 	"fmt"
 
+	"amisgo-examples/dev-toys/comp/chart"
+
 	"github.com/zrcoder/amisgo"
 	ac "github.com/zrcoder/amisgo/comp"
 )
@@ -40,9 +42,15 @@ func main() {
 					ac.PageItem().Label("Hash").Url("hash").Schema(wrap(hash)),
 					ac.PageItem().Label("Ndor").Url("ndor").Schema(wrap(ndor)),
 				),
-				ac.PageItem().Label("Chart").Icon("fa fa-bar-chart").Url("/chart").Schema(wrap(chart)),
-			),
-		)
+				ac.PageItem().Label("Chart").Icon("fa fa-bar-chart").Url("/chart").Schema(wrap(chart.Common)).Children(
+					ac.PageItem().Label("Line").Url("line").Schema(wrap(chart.Line)),
+					ac.PageItem().Label("Bar").Url("bar").Schema(wrap(chart.Bar)),
+					ac.PageItem().Label("Pie").Url("pie").Schema(wrap(chart.Pie)),
+					ac.PageItem().Label("Scatter").Url("scatter").Schema(wrap(chart.Scatter)),
+					ac.PageItem().Label("Polar").Url("polar").Schema(wrap(chart.Polar)),
+					ac.PageItem().Label("Radar").Url("radar").Schema(wrap(chart.Radar)),
+				),
+			))
 
 	cfg := amisgo.GetDefaultConfig()
 	cfg.Theme = amisgo.ThemeDark

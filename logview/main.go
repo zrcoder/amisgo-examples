@@ -10,9 +10,10 @@ func main() {
 	page := comp.Page().Body(
 		comp.Form().Body(
 			comp.Log().Source(logApiPath).Placeholder(""),
-		).Go(func(m map[string]any) {
+		).Go(func(m comp.Data) error {
 			Logf("submit button clicked: %d\n", count)
 			count++
+			return nil
 		}),
 	)
 	panic(amisgo.ListenAndServe(page))
