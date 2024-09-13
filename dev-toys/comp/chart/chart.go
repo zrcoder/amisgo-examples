@@ -1,6 +1,7 @@
 package chart
 
 import (
+	_ "embed"
 	"encoding/json"
 	"strings"
 	"sync"
@@ -29,6 +30,9 @@ const (
 	keyCommon  = "common"
 )
 
+//go:embed sample.json
+var commCfg string
+
 var pieRadarData = map[string]any{
 	"A": 100.0,
 	"B": 88.0,
@@ -49,7 +53,7 @@ func init() {
 	storeCfg(keyPie, pieCfg)
 	storeCfg(keyScatter, scatterCfg)
 	storeCfg(keyRadar, radarCfg)
-	storeCfg(keyCommon, lineCfg)
+	storeCfg(keyCommon, genCommonCfg(commCfg))
 }
 
 var (
@@ -238,7 +242,7 @@ func genRadarCfg(kvs map[string]any) ac.ChartCfg {
 func genCommon() any {
 	return ac.Form().WrapWithPanel(false).ColumnCount(3).Body(
 		ac.Wrapper().Style(ac.Schema{"width": "50%"}).Body(
-			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Label: "Custome modify the chart config", Value: genCfg(lineXAxis, lineValues, keyLine).JsonStr()}),
+			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Label: "Chart Config", Value: commCfg}),
 		),
 		ac.ButtonGroup().Vertical(true).Buttons(
 			ac.Button().Icon("fa fa-arrow-right").Reload("out").ActionType("submit"),
@@ -258,6 +262,12 @@ func genCommon() any {
 		storeCfg(keyCommon, cfg)
 		return nil
 	})
+}
+
+func genCommonCfg(input string) ac.ChartCfg {
+	var cfg ac.ChartCfg
+	json.Unmarshal([]byte(input), &cfg)
+	return cfg
 }
 
 var ConfigCache sync.Map
