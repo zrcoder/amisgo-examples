@@ -18,15 +18,12 @@ var (
 	jsonFormatter = comp.DualEditor(jsonCfg, jsonCfg, "Json", func(input any) (any, error) {
 		return format("json", input)
 	}, nil)
-
 	yamlFormatter = comp.DualEditor(yamlCfg, yamlCfg, "Yaml", func(input any) (any, error) {
 		return format("yaml", input)
 	}, nil)
-
 	tomlFormatter = comp.DualEditor(tomlCfg, tomlCfg, "Toml", func(input any) (any, error) {
 		return format("toml", input)
 	}, nil)
-
 	htmlFormatter = comp.DualEditor(htmlCfg, htmlCfg, "Html", func(input any) (any, error) {
 		return format("html", input)
 	}, nil)

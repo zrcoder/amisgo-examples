@@ -240,7 +240,7 @@ func genRadarCfg(kvs map[string]any) ac.ChartCfg {
 }
 
 func genCommon() any {
-	return ac.Form().WrapWithPanel(false).ColumnCount(3).Body(
+	return ac.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
 		ac.Wrapper().Style(ac.Schema{"width": "50%"}).Body(
 			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Label: "Chart Config", Value: commCfg}),
 		),
