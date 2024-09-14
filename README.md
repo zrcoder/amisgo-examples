@@ -2,7 +2,7 @@
 
 Examples for [amisgo](https://github.com/zrcoder/amisgo)
 
-![devtoys](dt.png)
+![devtoys](dtoy.png)
 
 ## Usage
 
