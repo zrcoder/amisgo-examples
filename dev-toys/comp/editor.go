@@ -21,6 +21,5 @@ func Editor(e EditorCfg) any {
 		Value(e.Value).
 		Disabled(e.ReadOnly).
 		Size("xxl").
-		AllowFullscreen(true).
 		Label(e.Label)
 }

@@ -12,15 +12,6 @@ import (
 )
 
 const (
-	lineXAxis      = `Jan, Feb, Mar, Apr, May`
-	lineValues     = `5, -1, 7, 8, -3`
-	barXAxis       = `A, B, C, D, E`
-	barValues      = `40, 20, 30, 50, 10`
-	polarValues1   = "0, 0.01, 0.02, 0.06, 0.1, 0.2"
-	polarValues2   = "0, 1, 2, 3, 4, 5"
-	scatterXValues = "-30, 50, 100, 150"
-	scatterYValues = "50, 70, -20, 80"
-
 	keyLine    = "line"
 	keyBar     = "bar"
 	keyPolar   = "polar"
@@ -30,41 +21,65 @@ const (
 	keyCommon  = "common"
 )
 
-//go:embed sample.json
-var commCfg string
-
-var pieRadarData = map[string]any{
-	"A": 100.0,
-	"B": 88.0,
-	"C": 96.0,
-	"D": 72.0,
+func GenLine(xAxis, values string) any {
+	storeCfg(keyLine, genCfg(xAxis, values, keyLine))
+	return Gen(xAxis, values, keyLine)
 }
 
-func init() {
-	lineCfg := genCfg(lineXAxis, lineValues, keyLine)
-	barCfg := genCfg(barXAxis, barValues, keyBar)
-	polarCfg := genPolarCfg(polarValues1, polarValues2)
-	pieCfg := genPieCfg(pieRadarData)
-	scatterCfg := genScatterCfg(scatterXValues, scatterYValues)
-	radarCfg := genRadarCfg(pieRadarData)
-	storeCfg(keyLine, lineCfg)
-	storeCfg(keyBar, barCfg)
-	storeCfg(keyPolar, polarCfg)
-	storeCfg(keyPie, pieCfg)
-	storeCfg(keyScatter, scatterCfg)
-	storeCfg(keyRadar, radarCfg)
-	storeCfg(keyCommon, genCommonCfg(commCfg))
+func GenBar(xAxis, values string) any {
+	storeCfg(keyBar, genCfg(xAxis, values, keyBar))
+	return Gen(xAxis, values, keyBar)
 }
 
-var (
-	Line    = gen(lineXAxis, lineValues, keyLine)
-	Bar     = gen(barXAxis, barValues, keyBar)
-	Polar   = genPolar(polarValues1, polarValues2)
-	Pie     = genPie()
-	Scatter = genScatter(scatterXValues, scatterYValues)
-	Radar   = genRadar(pieRadarData)
-	Common  = genCommon()
-)
+func Gen(xAxis, values, cType string) any {
+	return ac.Wrapper().Body(
+		ac.Chart().Name("out").GetData(func() (any, error) {
+			return loadCfg(cType), nil
+		}),
+		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
+			ac.Flex().Style(ac.Schema{"padding-bottom": "20px"}).Items(
+				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
+			),
+			ac.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
+			ac.InputText().Label("Values").Name("values").Value(values),
+		).Go(func(d ac.Data) error {
+			cfg := genCfg(d.Get("xAxisData").(string), d.Get("values").(string), cType)
+			storeCfg(cType, cfg)
+			return nil
+		}),
+	)
+}
+
+func genCfg(xAxisData, values string, cType string) ac.ChartCfg {
+	return ac.ChartConfig().
+		Tooltip(ac.Schema{"trigger": "axis"}).
+		XAxis(ac.ChartAxis{"type": "category", "data": strings.Split(xAxisData, ",")}).
+		YAxis(ac.ChartAxis{"type": "value"}).
+		Series(
+			ac.ChartSeries().
+				Type(cType).
+				Data(strings.Split(values, ",")))
+}
+
+func GenPolar(input1, input2 string) any {
+	storeCfg(keyPolar, genPolarCfg(input1, input2))
+	return ac.Wrapper().Body(
+		ac.Chart().Name("out").GetData(func() (any, error) {
+			return loadCfg(keyPolar), nil
+		}),
+		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
+			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
+				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
+			),
+			ac.InputText().Label("values1").Name("xAxisData").Value(input1),
+			ac.InputText().Label("Values2").Name("values").Value(input2),
+		).Go(func(d ac.Data) error {
+			cfg := genPolarCfg(d.Get("xAxisData").(string), d.Get("values").(string))
+			storeCfg(keyPolar, cfg)
+			return nil
+		}),
+	)
+}
 
 func genPolarCfg(input1, input2 string) ac.ChartCfg {
 	values1, values2 := strings.Split(input1, ","), strings.Split(input2, ",")
@@ -88,56 +103,8 @@ func genPolarCfg(input1, input2 string) ac.ChartCfg {
 		)
 }
 
-func gen(xAxis, values, Type string) any {
-	return ac.Wrapper().Body(
-		ac.Chart().Name("out").GetData(func() (any, error) {
-			return loadCfg(Type), nil
-		}),
-		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			ac.Flex().Style(ac.Schema{"padding-bottom": "20px"}).Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
-			),
-			ac.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
-			ac.InputText().Label("Values").Name("values").Value(values),
-		).Go(func(d ac.Data) error {
-			cfg := genCfg(d.Get("xAxisData").(string), d.Get("values").(string), Type)
-			storeCfg(Type, cfg)
-			return nil
-		}),
-	)
-}
-
-func genCfg(xAxisData, values string, cType string) ac.ChartCfg {
-	return ac.ChartConfig().
-		Tooltip(ac.Schema{"trigger": "axis"}).
-		XAxis(ac.ChartAxis{"type": "category", "data": strings.Split(xAxisData, ",")}).
-		YAxis(ac.ChartAxis{"type": "value"}).
-		Series(
-			ac.ChartSeries().
-				Type(cType).
-				Data(strings.Split(values, ",")))
-}
-
-func genPolar(input1, input2 string) any {
-	return ac.Wrapper().Body(
-		ac.Chart().Name("out").GetData(func() (any, error) {
-			return loadCfg(keyPolar), nil
-		}),
-		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
-			),
-			ac.InputText().Label("values1").Name("xAxisData").Value(input1),
-			ac.InputText().Label("Values2").Name("values").Value(input2),
-		).Go(func(d ac.Data) error {
-			cfg := genPolarCfg(d.Get("xAxisData").(string), d.Get("values").(string))
-			storeCfg(keyPolar, cfg)
-			return nil
-		}),
-	)
-}
-
-func genScatter(input1, input2 string) any {
+func GenScatter(input1, input2 string) any {
+	storeCfg(keyScatter, genScatterCfg(input1, input2))
 	return ac.Wrapper().Body(
 		ac.Chart().Name("out").GetData(func() (any, error) {
 			return loadCfg(keyScatter), nil
@@ -172,7 +139,8 @@ func genScatterCfg(input1, input2 string) ac.ChartCfg {
 				ItemStyle(ac.Schema{"color": "#4CAF50"}))
 }
 
-func genPie() any {
+func GenPie(data map[string]any) any {
+	storeCfg(keyPie, genPieCfg(data))
 	return ac.Wrapper().Body(
 		ac.Chart().Name("pie-out").GetData(func() (any, error) {
 			return loadCfg(keyPie), nil
@@ -181,7 +149,7 @@ func genPie() any {
 			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
 				ac.Button().Icon("fa fa-arrow-up").Reload("pie-out").ActionType("submit"),
 			),
-			ac.InputKV().Name("pd").ValueType("input-number").Value(pieRadarData),
+			ac.InputKV().Name("pd").ValueType("input-number").Value(data),
 		).Go(func(d ac.Data) error {
 			kvs := d.Get("pd").(map[string]any)
 			storeCfg(keyPie, genPieCfg(kvs))
@@ -198,7 +166,8 @@ func genPieCfg(kvs map[string]any) ac.ChartCfg {
 	return ac.ChartConfig().Series(ac.ChartSeries().Type(keyPie).Data(data).Label(ac.Schema{"formatter": "{b}:  {d}%", "backgroundColor": "#5971C0", "borderRadius": 10, "padding": 5}))
 }
 
-func genRadar(data map[string]any) any {
+func GenRadar(data map[string]any) any {
+	storeCfg(keyRadar, genRadarCfg(data))
 	return ac.Wrapper().Body(
 		ac.Chart().Name("out").GetData(func() (any, error) {
 			return loadCfg(keyRadar), nil
@@ -239,7 +208,8 @@ func genRadarCfg(kvs map[string]any) ac.ChartCfg {
 				LineStyle(ac.Schema{"color": "#FF6384"}))
 }
 
-func genCommon() any {
+func GenCommon(commCfg string) any {
+	storeCfg(keyCommon, genCommonCfg(commCfg))
 	return ac.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
 		ac.Wrapper().Style(ac.Schema{"width": "50%"}).Body(
 			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Label: "Chart Config", Value: commCfg}),
