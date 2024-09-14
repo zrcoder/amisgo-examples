@@ -58,5 +58,5 @@ func genTab(title string, page any) any {
 }
 
 func styledTabTitle(title string) any {
-	return comp.Static().Style(comp.Schema{"margin": "5px"}).Text(title)
+	return comp.Static().Style(comp.Schema{"margin": "10px"}).Text(title)
 }

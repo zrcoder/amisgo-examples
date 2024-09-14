@@ -8,40 +8,31 @@ import (
 	"github.com/zrcoder/amisgo"
 )
 
+//go:embed assets/samples/diy_chart.json
+var sampleChartCfg string
+
+//go:embed assets/samples/sample.json
+var sampleJson string
+
+//go:embed assets/samples/sample.yaml
+var sampleYaml string
+
+//go:embed assets/samples/sample.toml
+var sampleToml string
+
 //go:embed assets/*
 var assetsFS embed.FS
 
-var appConfig = amisgo.GetDefaultConfig()
+var appConfig *amisgo.Config
 
 func init() {
+	appConfig = amisgo.GetDefaultConfig()
 	appConfig.Theme = amisgo.ThemeDark
 	appConfig.Lang = amisgo.LangEn
 	appConfig.StaticDir = "assets"
 	appConfig.StaticFS = assetsFS
 	appConfig.Icon = "/assets/favicon.ico"
 }
-
-const (
-	sampleJson = `{
-  "name": "Tom",
-  "age": 27,
-  "address": {
-    "country": "US",
-    "code": "7000000"
-  }
-}`
-	sampleYaml = `address:
-    code: "7000000"
-    country: US
-age: 27
-name: Tom`
-	sampleToml = `age = 27.0
-name = "Tom"
-
-[address]
-  code = "7000000"
-  country = "US"`
-)
 
 var (
 	jsonCfg = comp.EditorCfg{Lang: "json", Value: sampleJson}

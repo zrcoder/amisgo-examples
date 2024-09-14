@@ -24,9 +24,6 @@ var pieRadarData = map[string]any{
 	"D": 72.0,
 }
 
-//go:embed data/diy_chart.json
-var commCfg string
-
 var (
 	lineChart    = chart.GenLine(lineXAxis, lineValues)
 	barChart     = chart.GenBar(barXAxis, barValues)
@@ -34,5 +31,5 @@ var (
 	pieChart     = chart.GenPie(pieRadarData)
 	scatterChart = chart.GenScatter(scatterXValues, scatterYValues)
 	radarChart   = chart.GenRadar(pieRadarData)
-	diyChart     = chart.GenCommon(commCfg)
+	diyChart     = chart.GenCommon(sampleChartCfg)
 )
