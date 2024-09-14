@@ -15,11 +15,11 @@ func Editor(e EditorCfg) any {
 		e.Lang = "text"
 	}
 	return comp.Editor().
-		AllowFullscreen(false).
 		Name(e.Name).
 		Language(e.Lang).
+		Label(e.Label).
 		Value(e.Value).
 		Disabled(e.ReadOnly).
 		Size("xxl").
-		Label(e.Label)
+		AllowFullscreen(false)
 }

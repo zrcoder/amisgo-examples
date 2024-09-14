@@ -38,7 +38,6 @@ var (
 	json2struct = comp.DualEditor(jsonCfg, comp.EditorCfg{Lang: "go"}, "", func(input any) (output any, err error) {
 		return util.Json2Struct([]byte(input.(string)))
 	}, nil)
-	ndor = ac.Iframe().Src("https://ndor.netlify.app").Height("70vh").ClassName("bg-gray-300")
 )
 
 func regularSvgData(input []byte, err error) (string, error) {

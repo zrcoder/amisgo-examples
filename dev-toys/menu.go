@@ -5,8 +5,11 @@ import (
 )
 
 var (
-	header = comp.Flex().Justify("end").Style(comp.Schema{"width": "100%", "padding-right": "50px"}).Items(
-		comp.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
+	header = comp.Flex().Justify("end").Style(comp.Schema{"width": "100%", "padding-right": "22px"}).Items(
+		comp.ButtonToolbar().Buttons(
+			comp.Action().ActionType("url").Icon("fa fa-github").Link("https://github.com/zrcoder/amisgo").Label("amisgo"),
+			comp.Action().ActionType("url").Icon("fa fa-image").Link("https://ndor.netlify.app").Label("ndor"),
+		),
 	)
 	pages = comp.PageItem().Url("/").Redirect("/fmt").Children(
 		comp.PageItem().Label("Fommaters").Icon("fa fa-laptop-code").Url("/fmt").Schema(formatters),
@@ -30,7 +33,6 @@ var (
 		genTab("Qrcoder", qrcode),
 		genTab("Json to Struct", json2struct),
 		genTab("Hash", hash),
-		genTab("Ndor", ndor),
 	)
 	charts = genTabs(
 		genTab("Line", lineChart),
