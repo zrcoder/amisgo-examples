@@ -16,5 +16,6 @@ func main() {
 			return nil
 		}),
 	)
-	panic(amisgo.ListenAndServe(page))
+	amisgo.Serve("/", page)
+	panic(amisgo.ListenAndServe(":80"))
 }

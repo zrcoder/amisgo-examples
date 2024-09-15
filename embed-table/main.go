@@ -22,7 +22,8 @@ func main() {
 			),
 	)
 
-	panic(amisgo.ListenAndServe(page))
+	amisgo.Serve("/", page)
+	panic(amisgo.ListenAndServe(":80"))
 }
 
 type Items struct {

@@ -7,8 +7,9 @@ toolchain go1.22.0
 require (
 	github.com/BurntSushi/toml v1.4.0
 	github.com/ChimeraCoder/gojson v1.1.0
+	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.0.0-20240914090758-276cc81d38a1
+	github.com/zrcoder/amisgo v0.0.0-20240915100355-5d37acb9c6e8
 	github.com/zrcoder/cdor v0.1.2
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -29,8 +30,10 @@ require (
 	github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/pprof v0.0.0-20231205033806-a5a03c77bf08 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
+	github.com/maruel/rs v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mazznoer/csscolorparser v0.1.3 // indirect
@@ -59,4 +62,5 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	oss.terrastruct.com/d2 v0.6.3 // indirect
 	oss.terrastruct.com/util-go v0.0.0-20231101220827-55b3812542c2 // indirect
+	rsc.io/qr v0.2.0 // indirect
 )

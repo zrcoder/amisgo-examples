@@ -20,7 +20,7 @@ var (
 			comp.Editor(comp.EditorCfg{Lang: "text", Name: "editor"}),
 		),
 		ac.Flex().Style(ac.Schema{"width": "50%"}).AlignItems("center").Items(
-			ac.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M"),
+			ac.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
 		),
 	).Actions()
 	hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(

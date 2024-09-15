@@ -13,5 +13,6 @@ func main() {
 			comp.Button().Label("Toast").ActionType("toast").Toast(comp.Toast().Items(comp.Schema{"body": "Test"})),
 		),
 	)
-	panic(amisgo.ListenAndServe(page))
+	amisgo.Serve("/", page)
+	panic(amisgo.ListenAndServe(":80"))
 }

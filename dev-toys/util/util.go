@@ -11,6 +11,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/ChimeraCoder/gojson"
+	decqr "github.com/tuotoo/qrcode"
 	"github.com/yosssi/gohtml"
 	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/cdor"
@@ -194,4 +195,13 @@ func Hash(input []byte) (comp.Data, error) {
 		"sha256": resSha256,
 		"sha512": resSha512,
 	}, nil
+}
+
+func DecodeQr(img []byte) (string, error) {
+	buf := bytes.NewBuffer(img)
+	res, err := decqr.Decode(buf)
+	if err != nil {
+		return "", err
+	}
+	return res.Content, nil
 }

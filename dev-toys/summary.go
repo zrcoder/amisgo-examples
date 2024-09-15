@@ -16,6 +16,7 @@ var (
 		comp.PageItem().Label("Converters").Icon("fa fa-right-left").Url("/conv").Schema(converters),
 		comp.PageItem().Label("Generators").Icon("fa fa-seedling").Url("/gen").Schema(generaters),
 		comp.PageItem().Label("Charts").Icon("fa fa-bar-chart").Url("/chart").Schema(charts),
+		comp.PageItem().Label("Encoders/Decoders").Icon("fa fa-code").Url("/enc").Schema(encoders),
 	)
 	formatters = genTabs(
 		genTab("Json", jsonFormatter),
@@ -42,6 +43,12 @@ var (
 		genTab("Pie", pieChart),
 		genTab("Radar", radarChart),
 		genTab("DIY", diyChart),
+	)
+	encoders = genTabs(
+		genTab("Base64", base64ED),
+		genTab("Url", urlED),
+		genTab("Html", htmlED),
+		genTab("Qrcode Decoder", decqr),
 	)
 )
 
