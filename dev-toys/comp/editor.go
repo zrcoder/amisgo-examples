@@ -20,6 +20,7 @@ func Editor(e EditorCfg) any {
 		Label(e.Label).
 		Value(e.Value).
 		Disabled(e.ReadOnly).
+		Options(comp.Schema{"fontSize": 14}).
 		Size("xxl").
 		AllowFullscreen(false)
 }

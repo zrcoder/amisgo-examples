@@ -24,7 +24,7 @@ var (
 		),
 	).Actions()
 	hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
-		ac.Editor().Language("text").Name("editor").AllowFullscreen(false),
+		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(ac.Schema{"fontSize": 14}),
 		ac.Flex().Style(ac.Schema{"width": "100%"}).Items(
 			ac.Button().Icon("fa fa-arrow-down").TransformMultiple("editor", "done", func(input any) (any, error) {
 				return util.Hash([]byte(input.(string)))

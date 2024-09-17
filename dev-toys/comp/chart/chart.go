@@ -23,22 +23,22 @@ const (
 
 func GenLine(xAxis, values string) any {
 	storeCfg(keyLine, genCfg(xAxis, values, keyLine))
-	return Gen(xAxis, values, keyLine)
+	return gen(xAxis, values, keyLine)
 }
 
 func GenBar(xAxis, values string) any {
 	storeCfg(keyBar, genCfg(xAxis, values, keyBar))
-	return Gen(xAxis, values, keyBar)
+	return gen(xAxis, values, keyBar)
 }
 
-func Gen(xAxis, values, cType string) any {
+func gen(xAxis, values, cType string) any {
 	return ac.Wrapper().Body(
-		ac.Chart().Name("out").GetData(func() (any, error) {
+		ac.Chart().Name(cType).GetData(func() (any, error) {
 			return loadCfg(cType), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().Style(ac.Schema{"padding-bottom": "20px"}).Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
+				ac.Button().Icon("fa fa-arrow-up").Reload(cType).ActionType("submit"),
 			),
 			ac.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
 			ac.InputText().Label("Values").Name("values").Value(values),
@@ -64,12 +64,12 @@ func genCfg(xAxisData, values string, cType string) ac.ChartCfg {
 func GenPolar(input1, input2 string) any {
 	storeCfg(keyPolar, genPolarCfg(input1, input2))
 	return ac.Wrapper().Body(
-		ac.Chart().Name("out").GetData(func() (any, error) {
+		ac.Chart().Name("polar-out").GetData(func() (any, error) {
 			return loadCfg(keyPolar), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
+				ac.Button().Icon("fa fa-arrow-up").Reload("polar-out").ActionType("submit"),
 			),
 			ac.InputText().Label("values1").Name("xAxisData").Value(input1),
 			ac.InputText().Label("Values2").Name("values").Value(input2),
@@ -106,12 +106,12 @@ func genPolarCfg(input1, input2 string) ac.ChartCfg {
 func GenScatter(input1, input2 string) any {
 	storeCfg(keyScatter, genScatterCfg(input1, input2))
 	return ac.Wrapper().Body(
-		ac.Chart().Name("out").GetData(func() (any, error) {
+		ac.Chart().Name("scatter-out").GetData(func() (any, error) {
 			return loadCfg(keyScatter), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
+				ac.Button().Icon("fa fa-arrow-up").Reload("scatter-out").ActionType("submit"),
 			),
 			ac.InputText().Label("X").Name("x").Value(input1),
 			ac.InputText().Label("Y").Name("y").Value(input2),
@@ -169,12 +169,12 @@ func genPieCfg(kvs map[string]any) ac.ChartCfg {
 func GenRadar(data map[string]any) any {
 	storeCfg(keyRadar, genRadarCfg(data))
 	return ac.Wrapper().Body(
-		ac.Chart().Name("out").GetData(func() (any, error) {
+		ac.Chart().Name("radar-out").GetData(func() (any, error) {
 			return loadCfg(keyRadar), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("out").ActionType("submit"),
+				ac.Button().Icon("fa fa-arrow-up").Reload("radar-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("rd").ValueType("input-number").Value(data),
 		).Go(func(d ac.Data) error {
@@ -215,10 +215,10 @@ func GenCommon(commCfg string) any {
 			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Label: "Chart Config", Value: commCfg}),
 		),
 		ac.ButtonGroup().Vertical(true).Buttons(
-			ac.Button().Icon("fa fa-arrow-right").Reload("out").ActionType("submit"),
+			ac.Button().Icon("fa fa-arrow-right").Reload("diy-out").ActionType("submit"),
 		),
 		ac.Flex().Style(ac.Schema{"width": "40%"}).AlignItems("center").Items(
-			ac.Chart().Name("out").GetData(func() (any, error) {
+			ac.Chart().Name("diy-out").GetData(func() (any, error) {
 				return loadCfg(keyCommon), nil
 			}),
 		),
