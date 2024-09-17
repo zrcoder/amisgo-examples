@@ -15,23 +15,21 @@ const (
 func page(content any) any {
 	return comp.Page().
 		Aside(nav).
-		AsideClassName("w-16").
-		AsideMinWidth(80).
-		AsideMaxWidth(100).
+		AsideClassName("w-56").
 		AsideResizor(true).
 		Body(content)
 }
 
 var (
-	nav = comp.Nav().Stacked(true).Collapsed(true).Links(
-		navLink("Home", "fa fa-home", "/"),
-		comp.NavLink().Mode("group").ClassName("pt-20"),
+	nav = comp.Nav().Stacked(true).Links(
+		navLink("Dev Toys", "fa fa-home", "/"),
+		comp.NavLink().Mode("divider"),
 		navLink("Formatters", "fa fa-laptop-code", fmtPath),
 		navLink("Converters", "fa fa-right-left", convPath),
 		navLink("Generators", "fa fa-seedling", genPath),
 		navLink("Charts", "fa fa-bar-chart", chartPath),
 		navLink("Encoders/Decoders", "fa fa-code", encDecPath),
-		comp.NavLink().Mode("group").ClassName("pb-20"),
+		comp.NavLink().Mode("divider"),
 		navLink("Amisgo", "fa fa-github", "https://github.com/zrcoder/amisgo"),
 		navLink("Ndor", "fa fa-image", "https://ndor.netlify.app"),
 	)

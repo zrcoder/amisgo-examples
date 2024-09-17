@@ -212,7 +212,7 @@ func GenCommon(commCfg string) any {
 	storeCfg(keyCommon, genCommonCfg(commCfg))
 	return ac.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
 		ac.Wrapper().Style(ac.Schema{"width": "50%"}).Body(
-			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Label: "Chart Config", Value: commCfg}),
+			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Value: commCfg}),
 		),
 		ac.ButtonGroup().Vertical(true).Buttons(
 			ac.Button().Icon("fa fa-arrow-right").Reload("diy-out").ActionType("submit"),
