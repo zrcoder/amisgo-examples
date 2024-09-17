@@ -23,7 +23,6 @@ var (
 			}
 			return string(out), nil
 		})
-
 	urlED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Url",
 		func(input any) (output any, err error) {
 			return url.QueryEscape(input.(string)), nil

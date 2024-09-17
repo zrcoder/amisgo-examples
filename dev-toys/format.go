@@ -14,7 +14,6 @@ var (
 		"toml": util.Toml,
 		"html": util.Html,
 	}
-
 	jsonFormatter = comp.DualEditor(jsonCfg, jsonCfg, "Json", func(input any) (any, error) {
 		return format("json", input)
 	}, nil)

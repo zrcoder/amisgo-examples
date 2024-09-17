@@ -1,17 +1,16 @@
 package main
 
 import (
-	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
 )
 
-func init() {
-	amisgo.Serve(fmtPath, page(formatters))
-	amisgo.Serve(convPath, page(converters))
-	amisgo.Serve(genPath, page(generaters))
-	amisgo.Serve(chartPath, page(charts))
-	amisgo.Serve(encDecPath, page(encoders))
-}
+const (
+	fmtPath    = "/fmt"
+	convPath   = "/conv"
+	genPath    = "/gen"
+	chartPath  = "/chart"
+	encDecPath = "/enc"
+)
 
 func page(content any) any {
 	return comp.Page().

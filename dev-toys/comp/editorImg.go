@@ -11,7 +11,7 @@ func EditorImg(lang, value string, transfor func(any) (any, error)) any {
 			comp.Action().Icon("fa fa-arrow-right").Transform("editor", "img", "Done", transfor),
 		),
 		comp.Flex().Style(comp.Schema{"width": "40%"}).AlignItems("center").Items(
-			comp.Wrapper().Style(comp.Schema{"width": "90%"}).Body(
+			comp.Wrapper().Style(comp.Schema{"width": "80%"}).Body(
 				comp.Image().Name("img").ImageMode("original").InnerClassName("no-border"),
 			),
 		),
