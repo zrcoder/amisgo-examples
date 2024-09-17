@@ -18,39 +18,47 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Json(data []byte) (*bytes.Buffer, error) {
+func Json(data string) (string, error) {
 	buf := bytes.NewBuffer(nil)
-	err := json.Indent(buf, data, "", "    ")
-	return buf, err
+	err := json.Indent(buf, []byte(data), "", "    ")
+	if err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 }
 
-func Toml(data []byte) (*bytes.Buffer, error) {
+func Toml(data string) (string, error) {
 	var obj any
-	err := toml.Unmarshal(data, &obj)
+	err := toml.Unmarshal([]byte(data), &obj)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	buf := bytes.NewBuffer(nil)
 	err = toml.NewEncoder(buf).Encode(obj)
-	return buf, err
+	if err != nil {
+		return "", err
+	}
+	return buf.String(), err
 }
 
-func Yaml(data []byte) (*bytes.Buffer, error) {
+func Yaml(data string) (string, error) {
 	var obj any
-	err := yaml.Unmarshal(data, &obj)
+	err := yaml.Unmarshal([]byte(data), &obj)
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	buf := bytes.NewBuffer(nil)
 	encoder := yaml.NewEncoder(buf)
 	encoder.SetIndent(2)
 	err = encoder.Encode(&obj)
-	return buf, err
+	if err != nil {
+		return "", err
+	}
+	return buf.String(), err
 }
 
-func Html(data []byte) (*bytes.Buffer, error) {
-	res := gohtml.FormatBytes(data)
-	return bytes.NewBuffer(res), nil
+func Html(data string) (string, error) {
+	return gohtml.Format(data), nil
 }
 
 func Json2Yaml(data []byte) (*bytes.Buffer, error) {

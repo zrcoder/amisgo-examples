@@ -16,16 +16,16 @@ var (
 		return regularSvgData(buf.Bytes(), err)
 	})
 	qrcode = ac.Form().AutoFocus(true).ColumnCount(2).WrapWithPanel(false).Body(
-		ac.Wrapper().Style(ac.Schema{"width": "50%"}).Body(
+		ac.Wrapper().ClassName("w-2/4").Body(
 			comp.Editor(comp.EditorCfg{Lang: "text", Name: "editor"}),
 		),
-		ac.Flex().Style(ac.Schema{"width": "50%"}).AlignItems("center").Items(
+		ac.Flex().ClassName("w-2/4").AlignItems("center").Items(
 			ac.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
 		),
-	).Actions()
+	)
 	hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
 		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(ac.Schema{"fontSize": 14}),
-		ac.Flex().Style(ac.Schema{"width": "100%"}).Items(
+		ac.Flex().ClassName("w-full").Items(
 			ac.Button().Icon("fa fa-arrow-down").TransformMultiple("editor", "done", func(input any) (any, error) {
 				return util.Hash([]byte(input.(string)))
 			}),

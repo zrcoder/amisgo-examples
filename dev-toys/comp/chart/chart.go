@@ -37,7 +37,7 @@ func gen(xAxis, values, cType string) any {
 			return loadCfg(cType), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			ac.Flex().Style(ac.Schema{"padding-bottom": "20px"}).Items(
+			ac.Flex().ClassName("pb-4").Items(
 				ac.Button().Icon("fa fa-arrow-up").Reload(cType).ActionType("submit"),
 			),
 			ac.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
@@ -68,7 +68,7 @@ func GenPolar(input1, input2 string) any {
 			return loadCfg(keyPolar), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
+			ac.Flex().ClassName("pb-4").Items(
 				ac.Button().Icon("fa fa-arrow-up").Reload("polar-out").ActionType("submit"),
 			),
 			ac.InputText().Label("values1").Name("xAxisData").Value(input1),
@@ -110,7 +110,7 @@ func GenScatter(input1, input2 string) any {
 			return loadCfg(keyScatter), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
+			ac.Flex().ClassName("pb-4").Items(
 				ac.Button().Icon("fa fa-arrow-up").Reload("scatter-out").ActionType("submit"),
 			),
 			ac.InputText().Label("X").Name("x").Value(input1),
@@ -146,7 +146,7 @@ func GenPie(data map[string]any) any {
 			return loadCfg(keyPie), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
+			ac.Flex().ClassName("pb-4").Items(
 				ac.Button().Icon("fa fa-arrow-up").Reload("pie-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("pd").ValueType("input-number").Value(data),
@@ -173,7 +173,7 @@ func GenRadar(data map[string]any) any {
 			return loadCfg(keyRadar), nil
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			ac.Flex().Style(ac.Schema{"padding": "20px"}).Items(
+			ac.Flex().ClassName("pb-4").Items(
 				ac.Button().Icon("fa fa-arrow-up").Reload("radar-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("rd").ValueType("input-number").Value(data),
