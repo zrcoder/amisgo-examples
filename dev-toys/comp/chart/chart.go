@@ -132,6 +132,7 @@ func genScatterCfg(input1, input2 string) ac.ChartCfg {
 	return ac.ChartConfig().
 		XAxis(ac.ChartAxis{"type": "value"}).
 		YAxis(ac.ChartAxis{"type": "value"}).
+		Tooltip(ac.Schema{"trigger": "item"}).
 		Series(
 			ac.ChartSeries().
 				Type(keyScatter).
@@ -163,7 +164,11 @@ func genPieCfg(kvs map[string]any) ac.ChartCfg {
 	for k, v := range kvs {
 		data = append(data, ac.Data{"name": k, "value": v})
 	}
-	return ac.ChartConfig().Series(ac.ChartSeries().Type(keyPie).Data(data).Label(ac.Schema{"formatter": "{b}:  {d}%", "backgroundColor": "#5971C0", "borderRadius": 10, "padding": 5}))
+	return ac.ChartConfig().
+		Tooltip(ac.Schema{"trigger": "item"}).
+		Series(ac.ChartSeries().Type(keyPie).
+			Data(data).
+			Label(ac.Schema{"formatter": "{b}:  {d}%", "backgroundColor": "#5971C0", "borderRadius": 10, "padding": 5}))
 }
 
 func GenRadar(data map[string]any) any {
@@ -193,6 +198,7 @@ func genRadarCfg(kvs map[string]any) ac.ChartCfg {
 		values = append(values, v.(float64))
 	}
 	return ac.ChartConfig().
+		Tooltip(ac.Schema{"trigger": "item"}).
 		Radar(ac.Schema{"indicator": ind}).
 		Series(
 			ac.ChartSeries().
