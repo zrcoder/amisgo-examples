@@ -1,6 +1,7 @@
 package main
 
 import (
+	"amisgo-examples/all/crud"
 	"amisgo-examples/all/pages/form"
 	"amisgo-examples/all/pages/page"
 
@@ -23,8 +24,13 @@ func main() {
 				comp.PageItem().Url("all").Label("所有组件").Schema(form.All),
 			),
 		),
-		comp.PageItem().Label("其他").Url("other").Children(
-			comp.PageItem().Icon("fa fa-table").Label("增删改查").Children(),
+		comp.PageItem().Children(
+			comp.PageItem().Icon("fa fa-table").Url("/crud").Label("增删改查").Children(
+				comp.PageItem().Label("CRUD").Url("crud").Schema(crud.Crud),
+			),
+		),
+		comp.PageItem().Label("其他").Url("/other").Children(
+
 			comp.PageItem().Icon("fa fa-bomb").Label("弹框").Children(),
 			comp.PageItem().Icon("fa fa-clone").Label("选项卡").Children(),
 			comp.PageItem().Icon("fa fa-bolt").Label("联动").Children(),
