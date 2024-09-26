@@ -2,6 +2,8 @@
 
 Examples for [amisgo](https://github.com/zrcoder/amisgo)
 
+[Live demo for Dev-Toys](https://amisgo-examples.onrender.com)
+
 ![devtoys](dtoy.png)
 
 ## Usage
