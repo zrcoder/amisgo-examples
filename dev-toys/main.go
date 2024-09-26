@@ -2,17 +2,19 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
 )
 
 const (
-	fmtPath    = "/fmt"
-	convPath   = "/conv"
-	genPath    = "/gen"
-	chartPath  = "/chart"
-	encDecPath = "/enc"
+	fmtPath        = "/fmt"
+	convPath       = "/conv"
+	genPath        = "/gen"
+	chartPath      = "/chart"
+	encDecPath     = "/enc"
+	helthCheckPath = "/healthz"
 )
 
 var (
@@ -69,6 +71,12 @@ func main() {
 	amisgo.Serve(genPath, page(generaters))
 	amisgo.Serve(chartPath, page(charts))
 	amisgo.Serve(encDecPath, page(encoders))
+
+	// helth check endpoint, just for render now.
+	http.HandleFunc(helthCheckPath, func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+
 	fmt.Println("Serving on http://localhost")
 	panic(amisgo.ListenAndServe(":80", appConfig))
 }
