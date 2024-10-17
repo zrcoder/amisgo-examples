@@ -7,6 +7,7 @@ toolchain go1.22.0
 require (
 	github.com/BurntSushi/toml v1.4.0
 	github.com/ChimeraCoder/gojson v1.1.0
+	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
 	github.com/zrcoder/amisgo v0.0.0-20240926062856-301026c41e9a
