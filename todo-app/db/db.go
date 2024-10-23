@@ -3,7 +3,6 @@ package db
 import (
 	"database/sql"
 	_ "embed"
-	"time"
 
 	"amisgo-examples/todo-app/model"
 
@@ -39,7 +38,7 @@ VALUES (?, ?)
 RETURNING id, todo_id, detail
 `
 
-func AddTodo(title, content string) (*model.Todo, error) {
+func AddTodo(todoInput *model.TodoFull) (*model.Todo, error) {
 	tx, err := db.Begin()
 	if err != nil {
 		return nil, err
@@ -50,7 +49,7 @@ func AddTodo(title, content string) (*model.Todo, error) {
 		}
 	}()
 
-	row := tx.QueryRow(addTodo, title, 1, time.Time{}, false)
+	row := tx.QueryRow(addTodo, todoInput.Title, todoInput.Priority, todoInput.DueDate, todoInput.IsCompleted)
 	todo := &model.Todo{}
 	err = row.Scan(
 		&todo.ID,
@@ -66,7 +65,7 @@ func AddTodo(title, content string) (*model.Todo, error) {
 	}
 
 	detail := &model.TodoDetail{}
-	row = tx.QueryRow(addTodoDetail, todo.ID, content)
+	row = tx.QueryRow(addTodoDetail, todo.ID, todoInput.Detail)
 	err = row.Scan(&detail.DetailID, &detail.TodoID, &detail.Detail)
 	if err != nil {
 		return nil, err
@@ -93,7 +92,7 @@ SET detail = ?
 WHERE todo_id = ?
 `
 
-func UpdateTodo(todoID int64, title, content string) error {
+func UpdateTodo(todo *model.TodoFull) error {
 	tx, err := db.Begin()
 	if err != nil {
 		return err
@@ -103,11 +102,11 @@ func UpdateTodo(todoID int64, title, content string) error {
 			tx.Rollback()
 		}
 	}()
-	_, err = tx.Exec(updateTodo, title, 0, time.Time{}, false, todoID)
+	_, err = tx.Exec(updateTodo, todo.Title, todo.Priority, todo.DueDate, todo.IsCompleted, todo.ID)
 	if err != nil {
 		return err
 	}
-	_, err = tx.Exec(uodateTodoDetail, content, todoID)
+	_, err = tx.Exec(uodateTodoDetail, todo.Detail, todo.ID)
 	if err != nil {
 		return err
 	}

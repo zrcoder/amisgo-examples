@@ -91,9 +91,10 @@ func updateTodo(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, comp.ErrorResponse(err.Error()))
 		return
 	}
+	todo.ID = id
 
 	slog.Info("update todo", "id", id, "title", todo.Title, "detail", todo.Detail)
-	if err := db.UpdateTodo(id, todo.Title, todo.Detail); err != nil {
+	if err := db.UpdateTodo(todo); err != nil {
 		slog.Error(err.Error())
 		c.JSON(http.StatusInternalServerError, comp.ErrorResponse(err.Error()))
 		return
