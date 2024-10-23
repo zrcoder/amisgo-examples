@@ -1,24 +1,30 @@
 package main
 
 import (
-	_ "amisgo-examples/todo-app/db"
-	"amisgo-examples/todo-app/page"
-
 	"log"
+	"log/slog"
+
+	"amisgo-examples/todo-app/api"
+	"amisgo-examples/todo-app/db"
+	"amisgo-examples/todo-app/page"
 
 	"github.com/zrcoder/amisgo"
 )
 
 func main() {
-	log.SetFlags(log.Llongfile | log.LstdFlags)
+	initDb()
+	api.Init()
 
-	amisgo.Serve("/", page.List())
-
+	amisgo.Redirect("/", "/todos")
+	amisgo.Serve("/todos", page.List())
 	cfg := amisgo.GetDefaultConfig()
 	cfg.Lang = amisgo.LangEn
+	slog.Info("Listening on http://localhost")
+	log.Fatal(amisgo.ListenAndServe(":80", cfg))
+}
 
-	log.Println("Listening on http://localhost")
-	if err := amisgo.ListenAndServe(":80", cfg); err != nil {
+func initDb() {
+	if err := db.Init(); err != nil {
 		log.Fatal(err)
 	}
 }

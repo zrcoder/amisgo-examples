@@ -15,9 +15,9 @@ type Todo struct {
 }
 
 type TodoDetail struct {
-	ID     int64  `json:"id"`
-	TodoID int64  `json:"todo_id"`
-	Detail string `json:"detail"`
+	DetailID int64  `json:"detail_id"`
+	TodoID   int64  `json:"todo_id"`
+	Detail   string `json:"detail"`
 }
 
 type TodoFull struct {
