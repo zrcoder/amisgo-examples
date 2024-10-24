@@ -27,33 +27,36 @@ func List() any {
 
 func detail(getApi, editApi string) any {
 	readOnly := getApi != "" && editApi == ""
+	isCreate := getApi == ""
 	var content any = comp.Markdown().Options(comp.Schema{"html": true}).Name("detail")
 	if !readOnly {
 		content = comp.Group().Body(
-			comp.Editor().Name("detail").Language("markdown").Size("xxl").Value("${detail}"),
 			content,
+			comp.Editor().Name("detail").Language("markdown").Size("xxl").Value("${detail}"),
 		)
+	}
+	var state any = comp.Switch().Name("is_completed").Label("Done")
+	if isCreate {
+		state = comp.Checkbox().Name("is_completed").Label("Done").Disabled(true)
 	}
 	form := comp.Form().
 		Static(readOnly).
+		AutoFocus(true).
 		WrapWithPanel(false).
 		Body(
 			comp.Group().Body(
+				state,
 				comp.InputText().Name("title").Placeholder("Title"),
-				comp.Switch().Name("is_completed").Static(readOnly).Label("Done"),
 			),
-
 			content,
 		).
 		Rules(
 			comp.Rule().Rule("data.title && data.detail").Message("Both title and content can't be empty"),
 		)
-
 	if !readOnly {
 		form.Reload("todos")
 	}
-
-	if getApi == "" { // add new task
+	if isCreate {
 		form.Go(func(d comp.Data) error {
 			todo := &model.TodoFull{}
 			todo.Title = d.Get("title").(string)

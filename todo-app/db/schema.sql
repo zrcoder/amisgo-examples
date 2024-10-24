@@ -9,8 +9,7 @@ CREATE TABLE IF NOT EXISTS todos (
 );
 
 CREATE TABLE IF NOT EXISTS todo_details (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    todo_id INTEGER NOT NULL,
+    todo_id INTEGER PRIMARY KEY,
     detail TEXT,
     FOREIGN KEY (todo_id) REFERENCES todos(id) ON DELETE CASCADE
 );

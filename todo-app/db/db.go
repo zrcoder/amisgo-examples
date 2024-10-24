@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	_ "embed"
+	"log/slog"
 
 	"amisgo-examples/todo-app/model"
 
@@ -16,7 +17,13 @@ var db *sql.DB
 
 func Init() error {
 	var err error
-	db, err = sql.Open("sqlite3", "./db/todo.db")
+	db, err = sql.Open("sqlite3", "./todo-app/db/todo.db")
+	if err != nil {
+		return err
+	}
+
+	// enable foreign keys
+	_, err = db.Exec("PRAGMA foreign_keys = ON")
 	if err != nil {
 		return err
 	}
@@ -24,6 +31,11 @@ func Init() error {
 	// create tables
 	_, err = db.Exec(createTablesSql)
 	return err
+}
+
+func Close() {
+	err := db.Close()
+	slog.Info("db closed", "error", err)
 }
 
 const addTodo = `
@@ -35,7 +47,7 @@ RETURNING id, title, priority, due_date, is_completed, created_at, updated_at
 const addTodoDetail = `
 INSERT INTO todo_details (todo_id, detail)
 VALUES (?, ?)
-RETURNING id, todo_id, detail
+RETURNING todo_id, detail
 `
 
 func AddTodo(todoInput *model.TodoFull) (*model.Todo, error) {
@@ -66,7 +78,7 @@ func AddTodo(todoInput *model.TodoFull) (*model.Todo, error) {
 
 	detail := &model.TodoDetail{}
 	row = tx.QueryRow(addTodoDetail, todo.ID, todoInput.Detail)
-	err = row.Scan(&detail.DetailID, &detail.TodoID, &detail.Detail)
+	err = row.Scan(&detail.TodoID, &detail.Detail)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +165,7 @@ func ListTodos(limit, offset int) ([]model.Todo, int, error) {
 	if err != nil {
 		return nil, 0, err
 	}
-	var todos []model.Todo
+	todos := make([]model.Todo, 0, limit)
 	for rows.Next() {
 		var todo model.Todo
 		if err = rows.Scan(

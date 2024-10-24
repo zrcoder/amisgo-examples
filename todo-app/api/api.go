@@ -19,6 +19,7 @@ const (
 
 func Init() {
 	gin.SetMode(gin.ReleaseMode)
+	gin.DisableConsoleColor()
 	handler := gin.Default()
 	handler.GET(Todos, listTodos)
 	handler.GET(Todo, getTodo)
