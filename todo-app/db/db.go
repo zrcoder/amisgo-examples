@@ -17,7 +17,7 @@ var db *sql.DB
 
 func Init() error {
 	var err error
-	db, err = sql.Open("sqlite3", "./todo-app/db/todo.db")
+	db, err = sql.Open("sqlite3", "todo.db")
 	if err != nil {
 		return err
 	}
