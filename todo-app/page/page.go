@@ -1,9 +1,9 @@
 package page
 
 import (
-	"amisgo-examples/todo-app/api"
-	"amisgo-examples/todo-app/db"
-	"amisgo-examples/todo-app/model"
+	"todo/api"
+	"todo/db"
+	"todo/model"
 
 	"github.com/zrcoder/amisgo/comp"
 )

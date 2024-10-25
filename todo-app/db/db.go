@@ -5,9 +5,9 @@ import (
 	_ "embed"
 	"log/slog"
 
-	"amisgo-examples/todo-app/model"
+	"todo/model"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/glebarez/go-sqlite"
 )
 
 //go:embed schema.sql
@@ -17,13 +17,7 @@ var db *sql.DB
 
 func Init() error {
 	var err error
-	db, err = sql.Open("sqlite3", "todo.db")
-	if err != nil {
-		return err
-	}
-
-	// enable foreign keys
-	_, err = db.Exec("PRAGMA foreign_keys = ON")
+	db, err = sql.Open("sqlite", "todo.db?_pragma=foreign_keys(1)")
 	if err != nil {
 		return err
 	}
