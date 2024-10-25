@@ -5,8 +5,8 @@ import (
 	"html"
 	"net/url"
 
-	"amisgo-examples/dev-toys/comp"
-	"amisgo-examples/dev-toys/util"
+	"dtoy/comp"
+	"dtoy/util"
 
 	ac "github.com/zrcoder/amisgo/comp"
 )

@@ -3,7 +3,7 @@ package main
 import (
 	_ "embed"
 
-	"amisgo-examples/dev-toys/comp/chart"
+	"dtoy/comp/chart"
 )
 
 const (

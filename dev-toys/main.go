@@ -77,8 +77,8 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 	})
 
-	fmt.Println("Serving on http://localhost")
-	panic(amisgo.ListenAndServe(":80", appConfig))
+	fmt.Println("Serving on http://localhost:8888")
+	panic(amisgo.ListenAndServe(":8888", appConfig))
 }
 
 func page(content any) any {

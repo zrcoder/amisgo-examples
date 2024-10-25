@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/base64"
 
-	"amisgo-examples/dev-toys/comp"
-	"amisgo-examples/dev-toys/util"
+	"dtoy/comp"
+	"dtoy/util"
 
 	ac "github.com/zrcoder/amisgo/comp"
 )

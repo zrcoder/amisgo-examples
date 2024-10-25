@@ -3,7 +3,7 @@ package main
 import (
 	"embed"
 
-	"amisgo-examples/dev-toys/comp"
+	"dtoy/comp"
 
 	"github.com/zrcoder/amisgo"
 )

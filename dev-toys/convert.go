@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 
-	"amisgo-examples/dev-toys/comp"
-	"amisgo-examples/dev-toys/util"
+	"dtoy/comp"
+	"dtoy/util"
 )
 
 var (
