@@ -23,8 +23,8 @@ func main() {
 	amisgo.Serve("/todos", page.List())
 	cfg := amisgo.GetDefaultConfig()
 	cfg.Lang = amisgo.LangEn
-	slog.Info("Listening on http://localhost")
-	log.Fatal(amisgo.ListenAndServe(":80", cfg))
+	slog.Info("Listening on http://localhost:8888")
+	log.Fatal(amisgo.ListenAndServe(":8888", cfg))
 }
 
 func initDb() {
