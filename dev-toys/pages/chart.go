@@ -1,4 +1,4 @@
-package main
+package pages
 
 import (
 	_ "embed"
@@ -25,11 +25,11 @@ var pieRadarData = map[string]any{
 }
 
 var (
-	lineChart    = chart.GenLine(lineXAxis, lineValues)
-	barChart     = chart.GenBar(barXAxis, barValues)
-	polarChart   = chart.GenPolar(polarValues1, polarValues2)
-	pieChart     = chart.GenPie(pieRadarData)
-	scatterChart = chart.GenScatter(scatterXValues, scatterYValues)
-	radarChart   = chart.GenRadar(pieRadarData)
-	diyChart     = chart.GenCommon(sampleChartCfg)
+	LineChart    = chart.GenLine(lineXAxis, lineValues)
+	BarChart     = chart.GenBar(barXAxis, barValues)
+	PolarChart   = chart.GenPolar(polarValues1, polarValues2)
+	PieChart     = chart.GenPie(pieRadarData)
+	ScatterChart = chart.GenScatter(scatterXValues, scatterYValues)
+	RadarChart   = chart.GenRadar(pieRadarData)
+	DiyChart     = chart.GenCommon(sampleChartCfg)
 )

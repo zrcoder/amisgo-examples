@@ -1,4 +1,4 @@
-package main
+package pages
 
 import (
 	"encoding/base64"
@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	base64ED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Base64",
+	Base64ED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Base64",
 		func(input any) (output any, err error) {
 			return base64.StdEncoding.EncodeToString([]byte(input.(string))), nil
 		},
@@ -23,14 +23,14 @@ var (
 			}
 			return string(out), nil
 		})
-	urlED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Url",
+	UrlED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Url",
 		func(input any) (output any, err error) {
 			return url.QueryEscape(input.(string)), nil
 		},
 		func(input any) (output any, err error) {
 			return url.QueryUnescape(input.(string))
 		})
-	htmlED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Html",
+	HtmlED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Html",
 		func(input any) (output any, err error) {
 			return html.EscapeString(input.(string)), nil
 		},
@@ -39,7 +39,7 @@ var (
 		})
 
 	qrData []byte
-	decqr  = ac.Form().ColumnCount(3).WrapWithPanel(false).Body(
+	Decqr  = ac.Form().ColumnCount(3).WrapWithPanel(false).Body(
 		ac.Flex().Style(ac.Schema{"width": "45%"}).AlignItems("center").Items(
 			ac.InputImage().Name("img").Upload(int64(10*(1<<20)), func(data []byte) (path string, err error) {
 				qrData = data

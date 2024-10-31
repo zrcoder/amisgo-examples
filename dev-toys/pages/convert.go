@@ -1,4 +1,4 @@
-package main
+package pages
 
 import (
 	"bytes"
@@ -8,19 +8,19 @@ import (
 )
 
 var (
-	jsonYamlCvt = comp.DualEditor(jsonCfg, yamlCfg, "Json-Yaml",
+	JsonYamlCvt = comp.DualEditor(jsonCfg, yamlCfg, "Json-Yaml",
 		func(input any) (output any, err error) {
 			return convert(input, util.Json2Yaml)
 		}, func(input any) (output any, err error) {
 			return convert(input, util.Yaml2Json)
 		})
-	jsonTomlCvt = comp.DualEditor(jsonCfg, tomlCfg, "Json-Toml",
+	JsonTomlCvt = comp.DualEditor(jsonCfg, tomlCfg, "Json-Toml",
 		func(input any) (output any, err error) {
 			return convert(input, util.Json2Toml)
 		}, func(input any) (output any, err error) {
 			return convert(input, util.Toml2Json)
 		})
-	yamlTomlCvt = comp.DualEditor(yamlCfg, tomlCfg, "Yaml-Toml",
+	YamlTomlCvt = comp.DualEditor(yamlCfg, tomlCfg, "Yaml-Toml",
 		func(input any) (output any, err error) {
 			return convert(input, util.Yaml2Toml)
 		}, func(input any) (output any, err error) {

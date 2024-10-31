@@ -1,4 +1,4 @@
-package main
+package pages
 
 import (
 	"encoding/base64"
@@ -10,12 +10,12 @@ import (
 )
 
 var (
-	jsonGraph = comp.EditorImg("json", sampleJson, func(s any) (any, error) {
+	JsonGraph = comp.EditorImg("json", sampleJson, func(s any) (any, error) {
 		src := s.(string)
 		buf, err := util.Json2Svg([]byte(src))
 		return regularSvgData(buf.Bytes(), err)
 	})
-	qrcode = ac.Form().AutoFocus(true).ColumnCount(2).WrapWithPanel(false).Body(
+	Qrcode = ac.Form().AutoFocus(true).ColumnCount(2).WrapWithPanel(false).Body(
 		ac.Wrapper().ClassName("w-2/4").Body(
 			comp.Editor(comp.EditorCfg{Lang: "text", Name: "editor"}),
 		),
@@ -23,7 +23,7 @@ var (
 			ac.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
 		),
 	)
-	hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
+	Hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
 		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(ac.Schema{"fontSize": 14}),
 		ac.Flex().ClassName("w-full").Items(
 			ac.Button().Icon("fa fa-arrow-down").TransformMultiple("editor", "done", func(input any) (any, error) {
@@ -35,7 +35,7 @@ var (
 		ac.InputText().Name("sha256").Label("SHA256").Disabled(true),
 		ac.InputText().Name("sha512").Label("SHA512").Disabled(true),
 	)
-	json2struct = comp.DualEditor(jsonCfg, comp.EditorCfg{Lang: "go"}, "", func(input any) (output any, err error) {
+	Json2struct = comp.DualEditor(jsonCfg, comp.EditorCfg{Lang: "go"}, "", func(input any) (output any, err error) {
 		return util.Json2Struct([]byte(input.(string)))
 	}, nil)
 )
