@@ -12,6 +12,7 @@ import (
 	"todo/page"
 
 	"github.com/zrcoder/amisgo"
+	"github.com/zrcoder/amisgo/config"
 )
 
 func main() {
@@ -19,12 +20,14 @@ func main() {
 	api.Init()
 	go waitForGracefulExit()
 
-	amisgo.Redirect("/", "/todos")
-	amisgo.Serve("/todos", page.List())
-	cfg := amisgo.GetDefaultConfig()
-	cfg.Lang = amisgo.LangEn
+	ag := amisgo.New(
+		config.WithLang(config.LangEn),
+	).
+		Redirect("/", "/todos").
+		Register("/todos", page.List())
+
 	slog.Info("Listening on http://localhost:8888")
-	log.Fatal(amisgo.ListenAndServe(":8888", cfg))
+	log.Fatal(ag.Run(":8888"))
 }
 
 func initDb() {
@@ -43,5 +46,4 @@ func waitForGracefulExit() {
 	db.Close()
 
 	os.Exit(0)
-
 }

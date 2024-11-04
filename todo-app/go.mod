@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/glebarez/go-sqlite v1.22.0
-	github.com/zrcoder/amisgo v0.0.0-20241024144119-0072d0e11faf
+	github.com/zrcoder/amisgo v0.0.0-20241104032218-e1379917fbde
 )
 
 require (

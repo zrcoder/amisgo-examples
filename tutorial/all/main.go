@@ -54,6 +54,7 @@ func main() {
 			comp.PageItem().Icon("fa fa-cubes").Label("App 多页应用").Children(),
 			comp.PageItem().Icon("fa fa-desktop").Label("wizard页面").Children(),
 		))
-	amisgo.Serve("/", app)
-	panic(amisgo.ListenAndServe(":80"))
+
+	ag := amisgo.New().Register("/", app)
+	panic(ag.Run(":80"))
 }
