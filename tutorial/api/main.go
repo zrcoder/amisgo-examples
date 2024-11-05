@@ -7,6 +7,6 @@ import (
 func main() {
 	ServeApi()
 
-	amisgo.Serve("/", page)
-	panic(amisgo.ListenAndServe(":80"))
+	ag := amisgo.New().Register("/", page)
+	panic(ag.Run(":80"))
 }

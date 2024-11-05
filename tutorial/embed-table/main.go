@@ -22,8 +22,8 @@ func main() {
 			),
 	)
 
-	amisgo.Serve("/", page)
-	panic(amisgo.ListenAndServe(":80"))
+	ag := amisgo.New().Register("/", page)
+	panic(ag.Run(":80"))
 }
 
 type Items struct {
