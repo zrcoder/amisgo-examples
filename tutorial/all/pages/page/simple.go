@@ -16,8 +16,10 @@ var Simple = comp.Page().
 		Placement("right").
 		Trigger("click").
 		RootClose(true),
-	).Body("内容部分. 可以使用 \\${var} 获取变量。如: `\\$date`: ${date}").
-	Aside("    边栏部分").
+	).Body(
+	"内容部分. 可以使用 \\${var} 获取变量。如: `\\$date`: ${date}</br>",
+	comp.Image().Src("/static/amisgo.png").EnlargeAble(true),
+).Aside("    边栏部分").
 	ClassName("white-space-pre").
 	Toolbar("工具栏").
 	InitData(getDate)

@@ -1,16 +1,20 @@
 package main
 
 import (
+	"net/http"
+
+	"amisgo-examples/all/assets"
 	"amisgo-examples/all/crud"
 	"amisgo-examples/all/pages/form"
 	"amisgo-examples/all/pages/page"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
+	"github.com/zrcoder/amisgo/config"
 )
 
 func main() {
-	app := comp.App().BrandName("Amisgo 示例").Pages(
+	app := comp.App().Logo("/static/amisgo.png").BrandName("Amisgo 示例").Pages(
 		comp.PageItem().Children(
 			comp.PageItem().Icon("fa fa-th").Label("页面").Url("/pages").Children(
 				comp.PageItem().Url("simple").Label("简单页面").Schema(page.Simple),
@@ -55,6 +59,10 @@ func main() {
 			comp.PageItem().Icon("fa fa-desktop").Label("wizard页面").Children(),
 		))
 
-	ag := amisgo.New().Mount("/", app)
+	ag := amisgo.New(
+		config.WithStaticFS("/static/", http.FS(assets.FS)),
+		config.WithIcon("/static/amisgo.png"),
+	).
+		Mount("/", app)
 	panic(ag.Run(""))
 }
