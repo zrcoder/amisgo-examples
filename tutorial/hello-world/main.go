@@ -12,6 +12,8 @@ func main() {
 			comp.InputEmail().Label("Email").Name("email"),
 		),
 	)
-	ag := amisgo.New().Register("/", index)
-	panic(ag.Run(":80"))
+
+	ag := amisgo.New().Mount("/", index)
+
+	panic(ag.Run())
 }

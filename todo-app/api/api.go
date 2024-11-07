@@ -13,19 +13,28 @@ import (
 )
 
 const (
-	Todos = "/api/todos"
-	Todo  = "/api/todo"
+	Prefix = "/api/"
+	todos  = "todos"
+	todo   = "todo"
 )
 
-func Init() {
+var (
+	Todos = Prefix + todos
+	Todo  = Prefix + todo
+)
+
+func GetApiHandler() http.Handler {
 	gin.SetMode(gin.ReleaseMode)
 	gin.DisableConsoleColor()
 	handler := gin.Default()
-	handler.GET(Todos, listTodos)
-	handler.GET(Todo, getTodo)
-	handler.DELETE(Todo, deleteTodo)
-	handler.PATCH(Todo, updateTodo)
-	http.Handle("/api/", handler)
+	api := handler.Group(Prefix)
+	{
+		api.GET(todos, listTodos)
+		api.GET(todo, getTodo)
+		api.DELETE(todo, deleteTodo)
+		api.PATCH(todo, updateTodo)
+	}
+	return handler
 }
 
 func listTodos(c *gin.Context) {

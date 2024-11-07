@@ -22,7 +22,7 @@ func main() {
 			),
 	)
 
-	ag := amisgo.New().Register("/", page)
+	ag := amisgo.New().Mount("/", page)
 	panic(ag.Run(":80"))
 }
 

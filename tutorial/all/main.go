@@ -55,6 +55,6 @@ func main() {
 			comp.PageItem().Icon("fa fa-desktop").Label("wizard页面").Children(),
 		))
 
-	ag := amisgo.New().Register("/", app)
-	panic(ag.Run(":80"))
+	ag := amisgo.New().Mount("/", app)
+	panic(ag.Run(""))
 }

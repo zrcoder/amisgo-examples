@@ -1,17 +1,10 @@
 package main
 
-import (
-	"encoding/json"
-	"net/http"
-)
-
 type Resp struct {
 	Status int    `json:"status"`
 	Msg    string `json:"msg"`
 	Data   any    `json:"data"`
 }
-
-const itemsRouter = "/items"
 
 type Item struct {
 	ID       string `json:"id"`
@@ -25,13 +18,6 @@ type Item struct {
 var items = []Item{
 	{Engine: "e1", Browser: "chrome", Platform: "windows", Version: "1.0"},
 	{Browser: "safri", Platform: "macOS", Version: "2.0"},
-}
-
-func ServeApi() {
-	http.HandleFunc(itemsRouter, func(w http.ResponseWriter, r *http.Request) {
-		data, _ := json.Marshal(Resp{Data: items})
-		w.Write(data)
-	})
 }
 
 const (

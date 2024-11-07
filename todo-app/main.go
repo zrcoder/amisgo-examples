@@ -17,14 +17,15 @@ import (
 
 func main() {
 	initDb()
-	api.Init()
-	go waitForGracefulExit()
 
 	ag := amisgo.New(
 		config.WithLang(config.LangEn),
 	).
+		Handle(api.Prefix, api.GetApiHandler()).
 		Redirect("/", "/todos").
-		Register("/todos", page.List())
+		Mount("/todos", page.List())
+
+	go waitForGracefulExit()
 
 	slog.Info("Listening on http://localhost:8888")
 	log.Fatal(ag.Run(":8888"))
