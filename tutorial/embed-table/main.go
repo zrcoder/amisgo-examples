@@ -23,7 +23,7 @@ func main() {
 	)
 
 	ag := amisgo.New().Mount("/", page)
-	panic(ag.Run(":80"))
+	panic(ag.Run())
 }
 
 type Items struct {

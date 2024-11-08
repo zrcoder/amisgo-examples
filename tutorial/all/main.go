@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"amisgo-examples/all/api"
 	"amisgo-examples/all/assets"
 	"amisgo-examples/all/crud"
 	"amisgo-examples/all/pages/form"
@@ -63,6 +64,7 @@ func main() {
 		config.WithStaticFS("/static/", http.FS(assets.FS)),
 		config.WithIcon("/static/logo.svg"),
 	).
-		Mount("/", app)
+		Mount("/", app).
+		HandleFunc(api.InitDateErrorPath, api.InitDateError)
 	panic(ag.Run(""))
 }

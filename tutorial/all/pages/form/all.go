@@ -115,9 +115,9 @@ var All = comp.Page().Title("").Data(comp.Data{"id": 1}).Body(
 		),
 		comp.Divider(),
 		comp.ListSelect().Name("list4").Label("List").ImageClassName("thumb-lg").Desc("支持放张图片").Options(
-			comp.Option().Label("option 1").Value(1).Image("/TODO"),
-			comp.Option().Label("option 2").Value(2).Image("/TODO"),
-			comp.Option().Label("option 3").Value(3).Image("/TODO"),
+			comp.Option().Label("option 1").Value(1).Image("/static/logo.svg"),
+			comp.Option().Label("option 2").Value(2).Image("/static/logo-with-text.svg"),
+			comp.Option().Label("option 3").Value(3).Image("/static/logo.svg"),
 		),
 		comp.Divider(),
 		comp.ListSelect().Name("list5").Label("List").Desc("支持文字排版").Options(
@@ -219,7 +219,7 @@ var All = comp.Page().Title("").Data(comp.Data{"id": 1}).Body(
 		comp.Divider(),
 		comp.Textarea().Name("textarea").Label("多行文本禁用").Disabled(true),
 		comp.Divider(),
-		comp.Transfer().Name("a").Label("穿梭器").Source("/TODO").Searchable(true).SearchApi("/TODO").SelectMode("list").Sortable(true).Inline(true),
+		comp.Transfer().Name("a").Label("穿梭器"). /*.Source("/TODO")*/ Searchable(true). /*.SearchApi("/TODO")*/ SelectMode("list").Sortable(true).Inline(true),
 		comp.Divider(),
 		comp.JsonEditor().Name("json").Value(`{"name":"Tom","age":27}`).Label("Json Editor"),
 		comp.Divider(),

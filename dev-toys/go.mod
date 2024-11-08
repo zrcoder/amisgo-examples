@@ -7,7 +7,7 @@ require (
 	github.com/ChimeraCoder/gojson v1.1.0
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.0.0-20241107091524-06b88de99a9d
+	github.com/zrcoder/amisgo v0.0.0-20241108093039-ee1d390e8f5c
 	github.com/zrcoder/cdor v0.1.2
 	gopkg.in/yaml.v3 v3.0.1
 )

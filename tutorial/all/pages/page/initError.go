@@ -1,7 +1,7 @@
 package page
 
 import (
-	"net/http"
+	"amisgo-examples/all/api"
 
 	"github.com/zrcoder/amisgo/comp"
 )
@@ -18,14 +18,4 @@ var InitError = comp.Page().
 	Aside("    边栏").
 	ClassName("white-space-pre").
 	Toolbar("工具栏").
-	InitApi("/initDateError")
-
-func init() {
-	http.HandleFunc("/initDateError", func(w http.ResponseWriter, r *http.Request) {
-		resp := comp.Response{
-			Status: http.StatusInternalServerError,
-			Msg:    "测试返回错误",
-		}
-		w.Write(resp.Json())
-	})
-}
+	InitApi(api.InitDateErrorPath)

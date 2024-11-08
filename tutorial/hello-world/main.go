@@ -7,7 +7,7 @@ import (
 
 func main() {
 	index := comp.Page().Title("Amisgo").Body(
-		comp.Form().Mode("horizontal").Body(
+		comp.Form().Body(
 			comp.InputText().Label("Name").Name("name"),
 			comp.InputEmail().Label("Email").Name("email"),
 		),

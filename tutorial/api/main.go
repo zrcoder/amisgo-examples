@@ -16,5 +16,5 @@ func main() {
 			w.Write(data)
 		}).
 		Mount("/", page)
-	panic(ag.Run(":80"))
+	panic(ag.Run())
 }
