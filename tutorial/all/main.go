@@ -14,7 +14,7 @@ import (
 )
 
 func main() {
-	app := comp.App().Logo("/static/amisgo.png").BrandName("Amisgo 示例").Pages(
+	app := comp.App().Logo("/static/logo-with-text.svg").Pages(
 		comp.PageItem().Children(
 			comp.PageItem().Icon("fa fa-th").Label("页面").Url("/pages").Children(
 				comp.PageItem().Url("simple").Label("简单页面").Schema(page.Simple),
@@ -61,7 +61,7 @@ func main() {
 
 	ag := amisgo.New(
 		config.WithStaticFS("/static/", http.FS(assets.FS)),
-		config.WithIcon("/static/amisgo.png"),
+		config.WithIcon("/static/logo.svg"),
 	).
 		Mount("/", app)
 	panic(ag.Run(""))

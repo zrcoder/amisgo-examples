@@ -18,7 +18,8 @@ var Simple = comp.Page().
 		RootClose(true),
 	).Body(
 	"内容部分. 可以使用 \\${var} 获取变量。如: `\\$date`: ${date}</br>",
-	comp.Image().Src("/static/amisgo.png").EnlargeAble(true),
+	comp.Image().Src("/static/logo-with-text.svg").EnlargeAble(true),
+	comp.Image().Src("/static/logo.svg").EnlargeAble(true),
 ).Aside("    边栏部分").
 	ClassName("white-space-pre").
 	Toolbar("工具栏").

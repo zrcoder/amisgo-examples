@@ -20,6 +20,7 @@ func main() {
 
 	ag := amisgo.New(
 		config.WithLang(config.LangEn),
+		config.WithIcon("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"),
 	).
 		Handle(api.Prefix, api.GetApiHandler()).
 		Redirect("/", "/todos").

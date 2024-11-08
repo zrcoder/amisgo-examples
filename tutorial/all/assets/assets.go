@@ -2,5 +2,5 @@ package assets
 
 import "embed"
 
-//go:embed amisgo.png
+//go:embed *
 var FS embed.FS
