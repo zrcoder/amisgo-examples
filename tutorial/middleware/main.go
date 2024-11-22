@@ -32,7 +32,7 @@ func main() {
 
 func testMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// before actions, such as access log, auth, and so on
+		// Pre-processing actions, such as logging access, authentication, etc.
 		fmt.Println("Method:", r.Method, "Path:", r.URL.Path)
 		if r.URL.Path != loginUrl && !checkAuth(r) {
 			amisgo.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
@@ -42,7 +42,7 @@ func testMiddleware(next http.Handler) http.Handler {
 
 		next.ServeHTTP(w, r)
 
-		// after actions, such as debug logs
+		// Post-processing actions, such as logging debug information
 		fmt.Println("response heander for [test]:", w.Header().Get("test"))
 	})
 }
@@ -53,7 +53,7 @@ func echo(w http.ResponseWriter, r *http.Request) {
 }
 
 func checkAuth(r *http.Request) bool {
-	// parse token from r and process auth
-	// here just demo, randomly return the auth result
+	// Parse the token from the request and process authentication.
+	// This is just a demonstration; it randomly returns the authentication result.
 	return rand.Intn(2) == 0
 }

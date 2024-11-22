@@ -8,8 +8,8 @@ import (
 func main() {
 	page := comp.Page().Body(
 		comp.Service().
-			// Data(items). // 这一行直接指定数据，静态
-			GetData(getData). // 这一行指定数据获取方法，方法里边可以动态实现，比如从数据库读取
+			// Data(items). // This line directly specifies the data, static
+			GetData(getData). // This line specifies the data retrieval method, which can be implemented dynamically, such as reading from a database
 			Body(
 				comp.Table().Source("$rows").ClassName("m-b-none").ColumnsTogglable(false).Columns(
 					comp.Column().Name("engine").Label("Engine"),

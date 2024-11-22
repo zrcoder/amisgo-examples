@@ -72,13 +72,10 @@ var page = comp.Page().
 		comp.CrudTable().
 			ClassName("m-t-sm").
 			SyncLocation(false).
-			Api(itemsRouter). // 这里是演示 Api，也可以用 FetchData 方法，比 Api 简洁很多，不需要 ServeApi, 如下：
-			// FetchData(func() any {
-			// 	// 仅演示，直接给出数据，实际可以从数据库得到数据
-			// 	return []Item{
-			// 		{Engine: "e1", Browser: "chrome", Platform: "windows", Version: "1.0"},
-			// 		{Browser: "safri", Platform: "macOS", Version: "2.0"},
-			// 	}
+			Api(itemsRouter). // This demonstrates the use of Api;
+			// You can also use the FetchData method, which is much simpler than Api and does not require ServeApi, as shown below:
+			// FetchData(func() (any, error) {
+			// 	return items, nil
 			// }).
 			Columns(
 				comp.Column().Name("id").Label("ID"),

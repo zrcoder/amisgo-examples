@@ -25,7 +25,6 @@ const (
 func main() {
 	ag := amisgo.New(
 		config.WithTheme(config.ThemeDark),
-		config.WithLang(config.LangEn),
 		config.WithStaticFS("/static/", http.FS(assets.FS)),
 		config.WithIcon("/static/favicon.ico"),
 	).

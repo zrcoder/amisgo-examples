@@ -1,11 +1,5 @@
 package main
 
-type Resp struct {
-	Status int    `json:"status"`
-	Msg    string `json:"msg"`
-	Data   any    `json:"data"`
-}
-
 type Item struct {
 	ID       string `json:"id"`
 	Engine   string `json:"engine"`
