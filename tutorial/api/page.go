@@ -4,19 +4,6 @@ import (
 	"github.com/zrcoder/amisgo/comp"
 )
 
-/*
-Page
-
-	├── Toolbar
-	│  └─ Form 顶部表单项
-	├── Grid // 用于水平布局
-	│  ├─ Panel
-	│  │  └─ Tabs
-	│  │    └─ Chart
-	│  └─ Panel
-	│     └─ Chart
-	└── CRUD
-*/
 var page = comp.Page().
 	Toolbar(
 		comp.Form().StaticLabelClassName("").
