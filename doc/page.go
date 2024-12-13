@@ -11,15 +11,21 @@ import (
 	"github.com/zrcoder/amisgo/comp"
 )
 
+const defaultDoc = "amisgo.md"
+
 func Menu() (any, error) {
 	options, err := getMenuOptions(docs.FS, ".")
 	if err != nil {
 		return nil, err
 	}
 
-	return comp.InputTree().Name("menu").Value("amis.md").Options(
-		options...,
-	), nil
+	return comp.InputTree().
+		Name("menu").
+		ClassName("no-border").
+		Value(defaultDoc).
+		Options(
+			options...,
+		), nil
 }
 
 func Doc() any {
@@ -29,7 +35,16 @@ func Doc() any {
 }
 
 func Page(menu, doc any) any {
-	return comp.Page().Title(comp.Image().InnerClassName("no-border").Height("24px").Alt("Amisgo").Src("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo-with-text.svg")).Aside(menu).Body(doc)
+	return comp.Page().
+		Aside(
+			comp.Image().
+				Src("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo-with-text.svg").
+				Height("36px"),
+			menu,
+		).
+		AsideClassName("w-80").
+		AsideResizor(true).
+		Body(doc)
 }
 
 func getMenuOptions(f fs.FS, rootPath string) ([]any, error) {
