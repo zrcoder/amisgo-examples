@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	"dtoy/comp"
+	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 
 	ac "github.com/zrcoder/amisgo/comp"
 )

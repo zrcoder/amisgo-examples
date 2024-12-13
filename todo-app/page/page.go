@@ -1,9 +1,9 @@
 package page
 
 import (
-	"todo/api"
-	"todo/db"
-	"todo/model"
+	"github.com/zrcoder/amisgo-examples/todo-app/api"
+	"github.com/zrcoder/amisgo-examples/todo-app/db"
+	"github.com/zrcoder/amisgo-examples/todo-app/model"
 
 	"github.com/zrcoder/amisgo/comp"
 )
@@ -77,5 +77,4 @@ func detail(getApi, editApi string) any {
 		CloseOnOutside(true).
 		Confirm(!readOnly).
 		Body(form)
-
 }

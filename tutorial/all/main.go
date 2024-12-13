@@ -3,11 +3,11 @@ package main
 import (
 	"net/http"
 
-	"amisgo-examples/all/api"
-	"amisgo-examples/all/assets"
-	"amisgo-examples/all/crud"
-	"amisgo-examples/all/pages/form"
-	"amisgo-examples/all/pages/page"
+	"github.com/zrcoder/amisgo-examples/tutorial/all/api"
+	"github.com/zrcoder/amisgo-examples/tutorial/all/assets"
+	"github.com/zrcoder/amisgo-examples/tutorial/all/crud"
+	"github.com/zrcoder/amisgo-examples/tutorial/all/pages/form"
+	"github.com/zrcoder/amisgo-examples/tutorial/all/pages/page"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"

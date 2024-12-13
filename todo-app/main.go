@@ -7,9 +7,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"todo/api"
-	"todo/db"
-	"todo/page"
+	"github.com/zrcoder/amisgo-examples/todo-app/api"
+	"github.com/zrcoder/amisgo-examples/todo-app/db"
+	"github.com/zrcoder/amisgo-examples/todo-app/page"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/config"

@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"todo/db"
-	"todo/model"
+	"github.com/zrcoder/amisgo-examples/todo-app/db"
+	"github.com/zrcoder/amisgo-examples/todo-app/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zrcoder/amisgo/comp"

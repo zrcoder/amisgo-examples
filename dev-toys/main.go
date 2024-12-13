@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"dtoy/assets"
+	"github.com/zrcoder/amisgo-examples/dev-toys/assets"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/config"

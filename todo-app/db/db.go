@@ -5,7 +5,7 @@ import (
 	_ "embed"
 	"log/slog"
 
-	"todo/model"
+	"github.com/zrcoder/amisgo-examples/todo-app/model"
 
 	_ "github.com/glebarez/go-sqlite"
 )
@@ -92,6 +92,7 @@ UPDATE todos
 SET title = ?, priority = ?, due_date = ?, is_completed = ?, updated_at = CURRENT_TIMESTAMP
 WHERE id = ?
 `
+
 const uodateTodoDetail = `
 UPDATE todo_details
 SET detail = ?
@@ -142,12 +143,14 @@ func GetTodoFull(id int64) (*model.TodoFull, error) {
 	return todo, err
 }
 
-const getTotal = `SELECT COUNT(*) FROM todos`
-const listTodos = `
+const (
+	getTotal  = `SELECT COUNT(*) FROM todos`
+	listTodos = `
 SELECT id, title, priority, due_date, is_completed, created_at, updated_at
 FROM todos
 LIMIT ? OFFSET ?
 `
+)
 
 func ListTodos(limit, offset int) ([]model.Todo, int, error) {
 	total := 0

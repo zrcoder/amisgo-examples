@@ -3,8 +3,8 @@ package pages
 import (
 	"encoding/base64"
 
-	"dtoy/comp"
-	"dtoy/util"
+	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
+	"github.com/zrcoder/amisgo-examples/dev-toys/util"
 
 	ac "github.com/zrcoder/amisgo/comp"
 )

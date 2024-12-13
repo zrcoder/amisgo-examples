@@ -1,7 +1,7 @@
 package page
 
 import (
-	"amisgo-examples/all/api"
+	"github.com/zrcoder/amisgo-examples/tutorial/all/api"
 
 	"github.com/zrcoder/amisgo/comp"
 )

@@ -1,8 +1,8 @@
 package pages
 
 import (
-	"dtoy/comp"
-	"dtoy/util"
+	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
+	"github.com/zrcoder/amisgo-examples/dev-toys/util"
 )
 
 var (

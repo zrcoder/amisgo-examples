@@ -3,7 +3,7 @@ package pages
 import (
 	_ "embed"
 
-	"dtoy/comp"
+	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 )
 
 //go:embed samples/diy_chart.json

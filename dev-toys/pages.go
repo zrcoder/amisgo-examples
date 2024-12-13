@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dtoy/pages"
+	"github.com/zrcoder/amisgo-examples/dev-toys/pages"
 
 	"github.com/zrcoder/amisgo/comp"
 )
