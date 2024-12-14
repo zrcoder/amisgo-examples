@@ -9,7 +9,7 @@ require (
 	github.com/glebarez/go-sqlite v1.22.0
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.0.0-20241213092833-60596775362a
+	github.com/zrcoder/amisgo v0.0.0-20241214082618-64e13825be12
 	github.com/zrcoder/cdor v0.1.2
 	gopkg.in/yaml.v3 v3.0.1
 )

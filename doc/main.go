@@ -2,6 +2,9 @@ package main
 
 import (
 	"log"
+	"net/http"
+
+	"github.com/zrcoder/amisgo-examples/doc/static"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/config"
@@ -13,7 +16,10 @@ func main() {
 		log.Panic(err)
 	}
 	index := Page(menu, Doc())
-	ag := amisgo.New(config.WithTheme(config.ThemeAntd)).
+	ag := amisgo.New(
+		config.WithTheme(config.ThemeAntd),
+		config.WithStaticFS("/static/", http.FS(static.FS)),
+	).
 		Mount("/", index).
 		HandleFunc(docsApi, getDoc)
 

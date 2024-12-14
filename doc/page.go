@@ -30,21 +30,27 @@ func Menu() (any, error) {
 
 func Doc() any {
 	return comp.Markdown().
-		Name("doc").
 		Src(fmt.Sprintf("%s?%s=${menu}", docsApi, docQuery))
 }
 
 func Page(menu, doc any) any {
-	return comp.Page().
-		Aside(
-			comp.Image().
-				Src("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo-with-text.svg").
-				Height("36px"),
-			menu,
-		).
-		AsideClassName("w-80").
-		AsideResizor(true).
-		Body(doc)
+	return comp.Wrapper().
+		Body(
+			comp.Page().
+				Name("doc-main").
+				Aside(
+					comp.Image().
+						Src("/static/logo-with-text.svg").
+						Alt("Amisgo").
+						Height("28px"),
+					menu,
+				).
+				AsideClassName("w-80").
+				AsideResizor(true).
+				Body(
+					doc,
+				),
+		)
 }
 
 func getMenuOptions(f fs.FS, rootPath string) ([]any, error) {
