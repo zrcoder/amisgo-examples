@@ -61,9 +61,9 @@ func main() {
 		))
 
 	ag := amisgo.New(
-		config.WithStaticFS("/static/", http.FS(assets.FS)),
 		config.WithIcon("/static/logo.svg"),
 	).
+		StaticFS("/static/", http.FS(assets.FS)).
 		Mount("/", app).
 		HandleFunc(api.InitDateErrorPath, api.InitDateError)
 	panic(ag.Run(""))

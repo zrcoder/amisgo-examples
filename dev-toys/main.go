@@ -25,9 +25,9 @@ const (
 func main() {
 	ag := amisgo.New(
 		config.WithTheme(config.ThemeDark),
-		config.WithStaticFS("/static/", http.FS(assets.FS)),
 		config.WithIcon("/static/favicon.ico"),
 	).
+		StaticFS("/static/", http.FS(assets.FS)).
 		Redirect("/", fmtPath).
 		Mount(fmtPath, formatPage).
 		Mount(convPath, convPage).

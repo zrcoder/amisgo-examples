@@ -18,8 +18,8 @@ func main() {
 	index := Page(menu, Doc())
 	ag := amisgo.New(
 		config.WithTheme(config.ThemeAntd),
-		config.WithStaticFS("/static/", http.FS(static.FS)),
 	).
+		StaticFS("/static/", http.FS(static.FS)).
 		Mount("/", index).
 		HandleFunc(docsApi, getDoc)
 
