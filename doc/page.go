@@ -42,6 +42,7 @@ func Page(menu, doc any) any {
 					comp.Image().
 						Src("/static/logo-with-text.svg").
 						Alt("Amisgo").
+						InnerClassName("border-none").
 						Height("28px"),
 					menu,
 				).
