@@ -12,14 +12,14 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/page"
 
 	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo/config"
+	"github.com/zrcoder/amisgo/conf"
 )
 
 func main() {
 	initDb()
 
 	ag := amisgo.New(
-		config.WithIcon("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"),
+		conf.WithIcon("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"),
 	).
 		Handle(api.Prefix, api.GetApiHandler()).
 		Redirect("/", "/todos").

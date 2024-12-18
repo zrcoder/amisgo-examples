@@ -7,7 +7,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/doc/static"
 
 	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo/config"
+	"github.com/zrcoder/amisgo/conf"
 )
 
 func main() {
@@ -17,7 +17,7 @@ func main() {
 	}
 	index := Page(menu, Doc())
 	ag := amisgo.New(
-		config.WithTheme(config.ThemeAntd),
+		conf.WithTheme(conf.ThemeAntd),
 	).
 		StaticFS("/static/", http.FS(static.FS)).
 		Mount("/", index).

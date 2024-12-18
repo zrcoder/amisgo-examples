@@ -58,11 +58,10 @@ func detail(getApi, editApi string) any {
 	}
 	if isCreate {
 		form.Go(func(d comp.Data) error {
-			todo := &model.TodoFull{}
+			todo := &model.Todo{}
 			todo.Title = d.Get("title").(string)
 			todo.Detail = d.Get("detail").(string)
-			_, err := db.AddTodo(todo)
-			return err
+			return db.AddTodo(todo)
 		})
 	} else {
 		form.InitApi(getApi)

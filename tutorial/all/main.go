@@ -11,7 +11,7 @@ import (
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
-	"github.com/zrcoder/amisgo/config"
+	"github.com/zrcoder/amisgo/conf"
 )
 
 func main() {
@@ -61,7 +61,7 @@ func main() {
 		))
 
 	ag := amisgo.New(
-		config.WithIcon("/static/logo.svg"),
+		conf.WithIcon("/static/logo.svg"),
 	).
 		StaticFS("/static/", http.FS(assets.FS)).
 		Mount("/", app).

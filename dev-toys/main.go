@@ -7,7 +7,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/dev-toys/assets"
 
 	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo/config"
+	"github.com/zrcoder/amisgo/conf"
 )
 
 const (
@@ -24,8 +24,8 @@ const (
 
 func main() {
 	ag := amisgo.New(
-		config.WithTheme(config.ThemeDark),
-		config.WithIcon("/static/favicon.ico"),
+		conf.WithTheme(conf.ThemeDark),
+		conf.WithIcon("/static/favicon.ico"),
 	).
 		StaticFS("/static/", http.FS(assets.FS)).
 		Redirect("/", fmtPath).

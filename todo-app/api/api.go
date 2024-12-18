@@ -59,7 +59,7 @@ func getTodo(c *gin.Context) {
 		return
 	}
 
-	todo, err := db.GetTodoFull(id)
+	todo, err := db.GetTodo(id)
 	if err != nil {
 		slog.Error(err.Error())
 		c.JSON(http.StatusBadRequest, comp.ErrorResponse(err.Error()))
@@ -95,7 +95,7 @@ func updateTodo(c *gin.Context) {
 		return
 	}
 
-	todo := &model.TodoFull{}
+	todo := &model.Todo{}
 	if err := c.ShouldBindJSON(todo); err != nil {
 		slog.Error(err.Error())
 		c.JSON(http.StatusBadRequest, comp.ErrorResponse(err.Error()))

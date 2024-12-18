@@ -33,51 +33,14 @@ func Close() {
 }
 
 const addTodo = `
-INSERT INTO todos (title, priority, due_date, is_completed, created_at, updated_at)
-VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-RETURNING id, title, priority, due_date, is_completed, created_at, updated_at
+INSERT INTO todos (title, priority, due_date, is_completed, detail, created_at, updated_at)
+VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
 `
 
-const addTodoDetail = `
-INSERT INTO todo_details (todo_id, detail)
-VALUES (?, ?)
-RETURNING todo_id, detail
-`
-
-func AddTodo(todoInput *model.TodoFull) (*model.Todo, error) {
-	tx, err := db.Begin()
-	if err != nil {
-		return nil, err
-	}
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-		}
-	}()
-
-	row := tx.QueryRow(addTodo, todoInput.Title, todoInput.Priority, todoInput.DueDate, todoInput.IsCompleted)
-	todo := &model.Todo{}
-	err = row.Scan(
-		&todo.ID,
-		&todo.Title,
-		&todo.Priority,
-		&todo.DueDate,
-		&todo.IsCompleted,
-		&todo.CreatedAt,
-		&todo.UpdatedAt,
-	)
-	if err != nil {
-		return nil, err
-	}
-
-	detail := &model.TodoDetail{}
-	row = tx.QueryRow(addTodoDetail, todo.ID, todoInput.Detail)
-	err = row.Scan(&detail.TodoID, &detail.Detail)
-	if err != nil {
-		return nil, err
-	}
-	err = tx.Commit()
-	return todo, err
+func AddTodo(todoInput *model.Todo) error {
+	_, err := db.Exec(addTodo,
+		todoInput.Title, todoInput.Priority, todoInput.DueDate, todoInput.IsCompleted, todoInput.Detail)
+	return err
 }
 
 const deleteTodo = `DELETE FROM todos WHERE id = ?`
@@ -89,47 +52,24 @@ func DeleteTodo(id int64) error {
 
 const updateTodo = `
 UPDATE todos
-SET title = ?, priority = ?, due_date = ?, is_completed = ?, updated_at = CURRENT_TIMESTAMP
+SET title = ?, priority = ?, due_date = ?, is_completed = ?, detail = ?, updated_at = CURRENT_TIMESTAMP
 WHERE id = ?
 `
 
-const uodateTodoDetail = `
-UPDATE todo_details
-SET detail = ?
-WHERE todo_id = ?
-`
-
-func UpdateTodo(todo *model.TodoFull) error {
-	tx, err := db.Begin()
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err != nil {
-			tx.Rollback()
-		}
-	}()
-	_, err = tx.Exec(updateTodo, todo.Title, todo.Priority, todo.DueDate, todo.IsCompleted, todo.ID)
-	if err != nil {
-		return err
-	}
-	_, err = tx.Exec(uodateTodoDetail, todo.Detail, todo.ID)
-	if err != nil {
-		return err
-	}
-	return tx.Commit()
+func UpdateTodo(todo *model.Todo) error {
+	_, err := db.Exec(updateTodo, todo.Title, todo.Priority, todo.DueDate, todo.IsCompleted, todo.Detail, todo.ID)
+	return err
 }
 
-const getTodoFull = `
-SELECT todos.id, todos.title, todos.priority, todos.due_date, todos.is_completed, todos.created_at, todos.updated_at, todo_details.detail
+const getTodo = `
+SELECT todos.id, todos.title, todos.priority, todos.due_date, todos.is_completed, todos.created_at, todos.updated_at, todos.detail
 FROM todos
-LEFT JOIN todo_details ON todos.id = todo_details.todo_id
 WHERE todos.id = ? LIMIT 1
 `
 
-func GetTodoFull(id int64) (*model.TodoFull, error) {
-	row := db.QueryRow(getTodoFull, id)
-	todo := &model.TodoFull{}
+func GetTodo(id int64) (*model.Todo, error) {
+	row := db.QueryRow(getTodo, id)
+	todo := &model.Todo{}
 	err := row.Scan(
 		&todo.ID,
 		&todo.Title,
