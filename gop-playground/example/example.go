@@ -1,4 +1,4 @@
-package ex
+package example
 
 import (
 	"embed"
@@ -28,7 +28,9 @@ func Get() (options []any, defaultCode string, err error) {
 		if err != nil {
 			return nil, "", err
 		}
-		key := strings.TrimSuffix(filepath.Base(f.Name()), filepath.Ext(f.Name()))
+		key := filepath.Base(f.Name())
+		key = strings.TrimSuffix(key, filepath.Ext(f.Name()))
+		key = strings.ReplaceAll(key, "-", "/")
 		val := string(data)
 		if key == defaultCodeKey {
 			defaultCode = val
