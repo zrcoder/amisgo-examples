@@ -40,8 +40,8 @@ func compile(input string) (string, error) {
 }
 
 type FormatResult struct {
-	Errors string
-	Body   string
+	Error string
+	Body  string
 }
 
 func format(input string) (string, error) {
@@ -50,8 +50,11 @@ func format(input string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if res.Errors != "" {
-		return "", errors.New(res.Errors)
+	if res.Error != "" {
+		return "", errors.New(res.Error)
+	}
+	if res.Body == "" {
+		return "", errors.New("syntax error")
 	}
 
 	return res.Body, nil
@@ -78,8 +81,6 @@ func post[T any](body, apiURL string, respInput T) (T, error) {
 	defer resp.Body.Close()
 
 	res := json.NewDecoder(resp.Body)
-	defer resp.Body.Close()
-
 	err = res.Decode(respInput)
 	return respInput, err
 }
