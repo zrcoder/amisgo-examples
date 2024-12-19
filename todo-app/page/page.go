@@ -17,7 +17,6 @@ func List() any {
 			comp.Column().Name("updated_at").Label("Update Time").Type("datetime"),
 			comp.Column().Name("is_completed").Label("Done").Type("status"),
 			comp.Column().Type("operation").Buttons(
-				// comp.Button().Icon("fa fa-eye").Label("Detail").ActionType("drawer").Drawer(detail(api.Todo+"?id=${id}", "")),
 				comp.Button().Icon("fa fa-edit").Label("Edit").ActionType("drawer").Drawer(detail(api.Todo+"?id=${id}", "patch:"+api.Todo+"?id=${id}")),
 				comp.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete this task?").Api("delete:"+api.Todo+"?id=${id}").ReloadWindow(),
 			),
