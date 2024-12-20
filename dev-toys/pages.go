@@ -26,8 +26,8 @@ func initNav() any {
 		navLink("Charts", "fa fa-bar-chart", chartPath),
 		navLink("Encoders/Decoders", "fa fa-code", encDecPath),
 		comp.NavLink().Mode("divider"),
-		navLink("Amisgo", "fa fa-github", "https://github.com/zrcoder/amisgo"),
-		navLink("Ndor", "fa fa-image", "https://ndor.netlify.app"),
+		navExtraLink("Amisgo", "fa fa-github", "https://github.com/zrcoder/amisgo"),
+		navExtraLink("Ndor", "fa fa-image", "https://ndor.netlify.app"),
 	)
 }
 
@@ -88,6 +88,10 @@ func page(content any) any {
 
 func navLink(label, icon, path string) any {
 	return comp.NavLink().Label(label).Icon(icon).To(path)
+}
+
+func navExtraLink(label, icon, path string) any {
+	return comp.NavLink().Label(label).Icon(icon).To(path).Target("_blank")
 }
 
 func genTabs(tabs ...any) any {
