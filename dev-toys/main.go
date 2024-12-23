@@ -24,6 +24,7 @@ const (
 
 func main() {
 	ag := amisgo.New(
+		conf.WithTitle("Dev Toys"),
 		conf.WithTheme(conf.ThemeDark),
 		conf.WithIcon("/static/favicon.ico"),
 	).

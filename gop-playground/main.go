@@ -8,6 +8,7 @@ import (
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
+	"github.com/zrcoder/amisgo/conf"
 )
 
 func main() {
@@ -39,7 +40,7 @@ func main() {
 		),
 	)
 
-	ag := amisgo.New().Mount("/", index).StaticFS("/static/", http.FS(static.FS))
+	ag := amisgo.New(conf.WithTitle("Goplus Playground")).Mount("/", index).StaticFS("/static/", http.FS(static.FS))
 
 	err = ag.Run()
 	check(err)
