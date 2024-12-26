@@ -8,4 +8,4 @@ Examples for [amisgo](https://github.com/zrcoder/amisgo)
 - [gop-play live demo](https://amisgo-gopplay.up.railway.app)
   ![gop-play](gop-play.png)
 
-Also explore our [wiki](https://github.com/zrcoder/amisgo/wiki) for in-depth tutorials and guides.
+Also explore our [documentation](https://amisgo.pages.dev) for in-depth tutorials and guides.
