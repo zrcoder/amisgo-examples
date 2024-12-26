@@ -29,7 +29,7 @@ func main() {
 		conf.WithIcon("/static/favicon.ico"),
 	).
 		StaticFS("/static/", http.FS(assets.FS)).
-		Redirect("/", fmtPath).
+		Redirect("/", fmtPath, http.StatusPermanentRedirect).
 		Mount(fmtPath, formatPage).
 		Mount(convPath, convPage).
 		Mount(genPath, genPage).

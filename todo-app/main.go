@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"log/slog"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -22,7 +23,7 @@ func main() {
 		conf.WithIcon("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"),
 	).
 		Handle(api.Prefix, api.GetApiHandler()).
-		Redirect("/", "/todos").
+		Redirect("/", "/todos", http.StatusPermanentRedirect).
 		Mount("/todos", page.List())
 
 	go waitForGracefulExit()
