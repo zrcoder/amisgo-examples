@@ -21,6 +21,8 @@ func main() {
 
 	ag := amisgo.New(
 		conf.WithIcon("https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"),
+		conf.WithTitle("Todo"),
+		conf.WithTheme(conf.ThemeAng),
 	).
 		Handle(api.Prefix, api.GetApiHandler()).
 		Redirect("/", "/todos", http.StatusPermanentRedirect).

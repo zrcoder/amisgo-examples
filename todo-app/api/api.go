@@ -1,9 +1,12 @@
 package api
 
 import (
+	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
 	"github.com/zrcoder/amisgo-examples/todo-app/model"
@@ -25,7 +28,6 @@ var (
 
 func GetApiHandler() http.Handler {
 	gin.SetMode(gin.ReleaseMode)
-	gin.DisableConsoleColor()
 	handler := gin.Default()
 	api := handler.Group(Prefix)
 	{
@@ -70,21 +72,38 @@ func getTodo(c *gin.Context) {
 }
 
 func deleteTodo(c *gin.Context) {
-	id, errMsg := parseID(c)
-	if errMsg != "" {
-		slog.Error(errMsg)
-		c.JSON(http.StatusBadRequest, comp.ErrorResponse(errMsg))
+	ids, err := parseIDs(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, comp.ErrorResponse(err.Error()))
 		return
 	}
-
-	err := db.DeleteTodo(id)
+	err = db.DeleteTodos(ids)
 	if err != nil {
 		slog.Error(err.Error())
 		c.JSON(http.StatusBadRequest, comp.ErrorResponse(err.Error()))
 		return
 	}
-
 	c.Status(http.StatusNoContent)
+}
+
+func parseIDs(c *gin.Context) ([]int64, error) {
+	ids := strings.Split(c.Query("ids"), ",")
+	fmt.Println("IDS:", ids)
+
+	if len(ids) == 0 {
+		return nil, errors.New("no ids found")
+	}
+
+	var err error
+	res := make([]int64, len(ids))
+	for i, v := range ids {
+		res[i], err = strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			slog.Error("pars id failed", slog.String("id", v), slog.String("error", err.Error()))
+			return nil, errors.New("invalid id")
+		}
+	}
+	return res, nil
 }
 
 func updateTodo(c *gin.Context) {

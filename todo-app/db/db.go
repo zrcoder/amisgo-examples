@@ -1,23 +1,24 @@
 package db
 
 import (
-	"database/sql"
 	_ "embed"
+	"fmt"
 	"log/slog"
 
 	"github.com/zrcoder/amisgo-examples/todo-app/model"
 
 	_ "github.com/glebarez/go-sqlite"
+	"github.com/jmoiron/sqlx"
 )
 
 //go:embed schema.sql
 var createTablesSql string
 
-var db *sql.DB
+var db *sqlx.DB
 
 func Init() error {
 	var err error
-	db, err = sql.Open("sqlite", "todo.db?_pragma=foreign_keys(1)")
+	db, err = sqlx.Open("sqlite", "todo.db?_pragma=foreign_keys(1)")
 	if err != nil {
 		return err
 	}
@@ -43,11 +44,24 @@ func AddTodo(todoInput *model.Todo) error {
 	return err
 }
 
-const deleteTodo = `DELETE FROM todos WHERE id = ?`
+const deleteTodo = `DELETE FROM todos WHERE id IN (?)`
 
-func DeleteTodo(id int64) error {
-	_, err := db.Exec(deleteTodo, id)
-	return err
+func DeleteTodos(ids []int64) error {
+	if len(ids) == 0 {
+		return nil
+	}
+
+	query, args, err := sqlx.In(deleteTodo, ids)
+	if err != nil {
+		return fmt.Errorf("prepare query error: %w", err)
+	}
+
+	query = db.Rebind(query)
+	_, err = db.Exec(query, args...)
+	if err != nil {
+		return fmt.Errorf("error deleting todos: %w", err)
+	}
+	return nil
 }
 
 const updateTodo = `

@@ -1,6 +1,9 @@
 package page
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
 	"github.com/zrcoder/amisgo-examples/todo-app/model"
@@ -9,57 +12,73 @@ import (
 )
 
 func List() any {
-	return comp.Page().Body(
-		comp.Button().Icon("fa fa-plus").Level("primary").ActionType("drawer").Drawer(detail("", "")),
-		comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).Columns(
-			comp.Column().Name("title").Label("Title"),
-			comp.Column().Name("created_at").Label("Create Time").Type("datetime"),
-			comp.Column().Name("updated_at").Label("Update Time").Type("datetime"),
-			comp.Column().Name("is_completed").Label("Done").Type("status"),
-			comp.Column().Type("operation").Buttons(
-				comp.Button().Icon("fa fa-edit").Label("Edit").ActionType("drawer").Drawer(detail(api.Todo+"?id=${id}", "patch:"+api.Todo+"?id=${id}")),
-				comp.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete this task?").Api("delete:"+api.Todo+"?id=${id}").ReloadWindow(),
-			),
+	return comp.Flex().Items(
+		comp.Page().ClassName("py-20 w-3/4").Title("My Todos").Body(
+			comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).Columns(
+				comp.Column().Name("title").Label("Title"),
+				comp.Column().Name("due_date").Label("Due Date").Type("date"),
+				comp.Column().Name("is_completed").Label("Done").Type("status"),
+				comp.Column().Name("created_at").Label("Create Time").Type("datetime"),
+			).OnEvent(
+				comp.Schema{
+					"rowClick": comp.Schema{
+						"actions": []comp.MEventAction{
+							comp.EventAction().ActionType("drawer").Drawer(
+								detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
+							),
+						},
+					},
+				},
+			).
+				HeaderToolbar(
+					comp.Button().Icon("fa fa-plus").Label("Add").ActionType("drawer").Drawer(detail("", "")),
+				).
+				FooterToolbar(
+					"bulkActions",
+					"pagination",
+				).
+				BulkActions(
+					comp.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:" + api.Todo + "?ids=${ids}").ReloadWindow(),
+				),
 		),
 	)
 }
 
 func detail(getApi, editApi string) any {
-	readOnly := getApi != "" && editApi == ""
 	isCreate := getApi == ""
-	var content any = comp.Markdown().Options(comp.Schema{"html": true}).Name("detail")
-	if !readOnly {
-		content = comp.Group().Body(
-			content,
-			comp.Editor().Name("detail").Language("markdown").Size("xxl").Value("${detail}"),
-		)
-	}
-	var state any = comp.Switch().Name("is_completed").Label("Done")
-	if isCreate {
-		state = comp.Checkbox().Name("is_completed").Label("Done").Disabled(true)
-	}
+
 	form := comp.Form().
-		Static(readOnly).
+		Mode("normal").
 		AutoFocus(true).
 		WrapWithPanel(false).
 		Body(
 			comp.Group().Body(
-				state,
-				comp.InputText().Name("title").Placeholder("Title"),
+				comp.InputText().Name("title").Placeholder("Title").Label("Title"),
+				comp.InputDatetime().Name("due_date").Label("Due Date").Value("+1days").ValueFormat("YYYY-MM-DDTHH:mm:ssZ"),
 			),
-			content,
+			comp.Switch().Name("is_completed").Option("Done").Disabled(isCreate),
+			comp.Group().Label("Detail").Body(
+				comp.Editor().Name("detail").Language("markdown").Size("xxl").Value("${detail}").AllowFullscreen(false).Options(
+					comp.Schema{
+						"overviewRulerBorder": false,
+					},
+				),
+				comp.Markdown().Options(comp.Schema{"html": true}).Name("detail"),
+			),
 		).
 		Rules(
 			comp.Rule().Rule("data.title && data.detail").Message("Both title and content can't be empty"),
-		)
-	if !readOnly {
-		form.Reload("todos")
-	}
+		).
+		Reload("todos")
+
 	if isCreate {
 		form.Go(func(d comp.Data) error {
 			todo := &model.Todo{}
-			todo.Title = d.Get("title").(string)
-			todo.Detail = d.Get("detail").(string)
+			fmt.Println("---", string(d.Json()))
+			err := json.Unmarshal(d.Json(), todo)
+			if err != nil {
+				return err
+			}
 			return db.AddTodo(todo)
 		})
 	} else {
@@ -73,6 +92,5 @@ func detail(getApi, editApi string) any {
 		Size("xl").
 		ShowCloseButton(false).
 		CloseOnOutside(true).
-		Confirm(!readOnly).
 		Body(form)
 }
