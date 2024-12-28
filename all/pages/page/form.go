@@ -11,7 +11,7 @@ var Form = comp.Page().Title("表单页面").Body(
 		Body(
 			comp.InputText().Label("姓名").Name("name"),
 			comp.InputEmail().Label("邮箱").Name("email"),
-		).Go(handleSubmit),
+		).Submit(handleSubmit),
 )
 
 func handleSubmit(m comp.Data) error {

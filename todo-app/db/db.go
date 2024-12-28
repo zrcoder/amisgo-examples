@@ -4,6 +4,8 @@ import (
 	_ "embed"
 	"fmt"
 	"log/slog"
+	"strconv"
+	"strings"
 
 	"github.com/zrcoder/amisgo-examples/todo-app/model"
 
@@ -97,46 +99,76 @@ func GetTodo(id int64) (*model.Todo, error) {
 	return todo, err
 }
 
-const (
-	getTotal  = `SELECT COUNT(*) FROM todos`
-	listTodos = `
-SELECT id, title, priority, due_date, is_completed, created_at, updated_at
-FROM todos
-LIMIT ? OFFSET ?
-`
-)
+func ListTodos(params *model.ListRequest) ([]model.Todo, int, error) {
+	conditions := []string{}
+	args := map[string]any{}
 
-func ListTodos(limit, offset int) ([]model.Todo, int, error) {
-	total := 0
-	err := db.QueryRow(getTotal).Scan(&total)
-	if err != nil {
-		return nil, 0, err
+	if params.TitleKeywords != "" {
+		conditions = append(conditions, "title LIKE :title")
+		args["title"] = "%" + params.TitleKeywords + "%"
 	}
-	rows, err := db.Query(listTodos, limit, offset)
-	if err != nil {
-		return nil, 0, err
-	}
-	todos := make([]model.Todo, 0, limit)
-	for rows.Next() {
-		var todo model.Todo
-		if err = rows.Scan(
-			&todo.ID,
-			&todo.Title,
-			&todo.Priority,
-			&todo.DueDate,
-			&todo.IsCompleted,
-			&todo.CreatedAt,
-			&todo.UpdatedAt,
-		); err != nil {
-			rows.Close()
-			return nil, 0, err
+	if params.IsCompleted != "" {
+		if completed, err := strconv.ParseBool(params.IsCompleted); err == nil {
+			conditions = append(conditions, "is_completed = :is_completed")
+			args["is_completed"] = completed
 		}
-		todos = append(todos, todo)
 	}
-	if err = rows.Close(); err != nil {
+
+	whereClause := ""
+	if len(conditions) > 0 {
+		whereClause = "WHERE " + strings.Join(conditions, " AND ")
+	}
+
+	orderClause := ""
+	if params.OrderBy != "" {
+		validOrderFields := map[string]bool{
+			"created_at": true,
+			"due_date":   true,
+			"title":      true,
+			"priority":   true,
+		}
+
+		if validOrderFields[params.OrderBy] {
+			orderDir := "ASC"
+			if params.OrderDir == "desc" {
+				orderDir = "DESC"
+			}
+			orderClause = fmt.Sprintf("ORDER BY %s %s", params.OrderBy, orderDir)
+		}
+	}
+
+	args["limit"] = params.Limit
+	args["offset"] = params.Offset
+
+	countQuery := "SELECT COUNT(*) FROM todos " + whereClause
+	countQuery, countArgs, err := sqlx.Named(countQuery, args)
+	if err != nil {
 		return nil, 0, err
 	}
-	if err := rows.Err(); err != nil {
+	countQuery = db.Rebind(countQuery)
+
+	var total int
+	err = db.Get(&total, countQuery, countArgs...)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	listQuery := fmt.Sprintf(`
+		SELECT id, title, priority, due_date, is_completed, created_at, updated_at
+		FROM todos
+		%s
+		%s
+		LIMIT :limit OFFSET :offset
+	`, whereClause, orderClause)
+
+	listQuery, listArgs, err := sqlx.Named(listQuery, args)
+	if err != nil {
+		return nil, 0, err
+	}
+	listQuery = db.Rebind(listQuery)
+	todos := []model.Todo{}
+	err = db.Select(&todos, listQuery, listArgs...)
+	if err != nil {
 		return nil, 0, err
 	}
 	return todos, total, nil

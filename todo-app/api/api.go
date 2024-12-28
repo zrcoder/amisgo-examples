@@ -40,10 +40,14 @@ func GetApiHandler() http.Handler {
 }
 
 func listTodos(c *gin.Context) {
-	page, perPage := parsePage(c)
-	slog.Info("list todos", "page", page, "perPage", perPage)
+	req := &model.ListRequest{}
+	if err := c.ShouldBindQuery(req); err != nil {
+		c.JSON(http.StatusBadRequest, comp.ErrorResponse(err.Error()))
+		return
+	}
+	req.Regular()
 
-	todos, total, err := db.ListTodos(perPage, (page-1)*perPage)
+	todos, total, err := db.ListTodos(req)
 	if err != nil {
 		slog.Error(err.Error())
 		c.JSON(http.StatusInternalServerError, comp.ErrorResponse(err.Error()))
@@ -138,15 +142,4 @@ func parseID(c *gin.Context) (int64, string) {
 		return 0, err.Error()
 	}
 	return id, ""
-}
-
-func parsePage(c *gin.Context) (int, int) {
-	page, perPage := 1, 10
-	if p, err := strconv.Atoi(c.Query("page")); err == nil {
-		page = p
-	}
-	if p, err := strconv.Atoi(c.Query("perPage")); err == nil {
-		perPage = p
-	}
-	return page, perPage
 }

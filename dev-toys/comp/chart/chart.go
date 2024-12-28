@@ -42,7 +42,7 @@ func gen(xAxis, values, cType string) any {
 			),
 			ac.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
 			ac.InputText().Label("Values").Name("values").Value(values),
-		).Go(func(d ac.Data) error {
+		).Submit(func(d ac.Data) error {
 			cfg := genCfg(d.Get("xAxisData").(string), d.Get("values").(string), cType)
 			storeCfg(cType, cfg)
 			return nil
@@ -73,7 +73,7 @@ func GenPolar(input1, input2 string) any {
 			),
 			ac.InputText().Label("values1").Name("xAxisData").Value(input1),
 			ac.InputText().Label("Values2").Name("values").Value(input2),
-		).Go(func(d ac.Data) error {
+		).Submit(func(d ac.Data) error {
 			cfg := genPolarCfg(d.Get("xAxisData").(string), d.Get("values").(string))
 			storeCfg(keyPolar, cfg)
 			return nil
@@ -115,7 +115,7 @@ func GenScatter(input1, input2 string) any {
 			),
 			ac.InputText().Label("X").Name("x").Value(input1),
 			ac.InputText().Label("Y").Name("y").Value(input2),
-		).Go(func(d ac.Data) error {
+		).Submit(func(d ac.Data) error {
 			cfg := genScatterCfg(d.Get("x").(string), d.Get("y").(string))
 			storeCfg(keyScatter, cfg)
 			return nil
@@ -151,7 +151,7 @@ func GenPie(data map[string]any) any {
 				ac.Button().Icon("fa fa-arrow-up").Reload("pie-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("pd").ValueType("input-number").Value(data),
-		).Go(func(d ac.Data) error {
+		).Submit(func(d ac.Data) error {
 			kvs := d.Get("pd").(map[string]any)
 			storeCfg(keyPie, genPieCfg(kvs))
 			return nil
@@ -182,7 +182,7 @@ func GenRadar(data map[string]any) any {
 				ac.Button().Icon("fa fa-arrow-up").Reload("radar-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("rd").ValueType("input-number").Value(data),
-		).Go(func(d ac.Data) error {
+		).Submit(func(d ac.Data) error {
 			kvs := d.Get("rd").(map[string]any)
 			storeCfg(keyRadar, genRadarCfg(kvs))
 			return nil
@@ -228,7 +228,7 @@ func GenCommon(commCfg string) any {
 				return loadCfg(keyCommon), nil
 			}),
 		),
-	).Go(func(d ac.Data) error {
+	).Submit(func(d ac.Data) error {
 		data := []byte(d.Get("in").(string))
 		var cfg ac.ChartCfg
 		err := json.Unmarshal(data, &cfg)

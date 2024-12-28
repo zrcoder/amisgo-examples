@@ -62,7 +62,7 @@ var Crud = comp.Page().Body(
 				comp.Form().Body(
 					comp.InputText().Label("Engine").Name("engine"),
 					comp.InputText().Label("Platform").Name("platform"),
-				).Go(func(d comp.Data) error {
+				).Submit(func(d comp.Data) error {
 					engine := d.Get("engine").(string)
 					platform := d.Get("platform").(string)
 					items.Rows = append(items.Rows, Item{Engine: engine, Platform: platform})
@@ -85,7 +85,7 @@ func dialogBody(disableInput bool, action ...func(d comp.Data) error) any {
 		))
 
 	if action != nil {
-		res.Go(action[0])
+		res.Submit(action[0])
 	}
 	return res
 }
