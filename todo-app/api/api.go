@@ -10,6 +10,7 @@ import (
 
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
 	"github.com/zrcoder/amisgo-examples/todo-app/model"
+	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zrcoder/amisgo/comp"
@@ -19,6 +20,8 @@ const (
 	Prefix = "/api/"
 	todos  = "todos"
 	todo   = "todo"
+
+	ReadonlyMsg = "the demo is readonly"
 )
 
 var (
@@ -76,6 +79,10 @@ func getTodo(c *gin.Context) {
 }
 
 func deleteTodo(c *gin.Context) {
+	if util.ReadOnly() {
+		c.String(http.StatusForbidden, ReadonlyMsg)
+		return
+	}
 	ids, err := parseIDs(c)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, comp.ErrorResponse(err.Error()))
@@ -111,6 +118,10 @@ func parseIDs(c *gin.Context) ([]int64, error) {
 }
 
 func updateTodo(c *gin.Context) {
+	if util.ReadOnly() {
+		c.String(http.StatusForbidden, ReadonlyMsg)
+		return
+	}
 	id, errMsg := parseID(c)
 	if errMsg != "" {
 		slog.Error(errMsg)

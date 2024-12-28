@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/zrcoder/amisgo-examples/todo-app/model"
+	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	_ "github.com/glebarez/go-sqlite"
 	"github.com/jmoiron/sqlx"
@@ -19,8 +20,12 @@ var createTablesSql string
 var db *sqlx.DB
 
 func Init() error {
+	dbName := "todo.db"
+	if util.ReadOnly() {
+		dbName = "todo-sample.db"
+	}
 	var err error
-	db, err = sqlx.Open("sqlite", "todo.db?_pragma=foreign_keys(1)")
+	db, err = sqlx.Open("sqlite", dbName+"?_pragma=foreign_keys(1)")
 	if err != nil {
 		return err
 	}

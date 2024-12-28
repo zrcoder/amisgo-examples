@@ -1,9 +1,12 @@
 package page
 
 import (
+	"errors"
+
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
 	"github.com/zrcoder/amisgo-examples/todo-app/model"
+	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/zrcoder/amisgo/comp"
 )
@@ -70,6 +73,9 @@ func detail(getApi, editApi string) any {
 
 	if isCreate {
 		form.SubmitTo(&model.Todo{}, func(a any) error {
+			if util.ReadOnly() {
+				return errors.New(api.ReadonlyMsg)
+			}
 			return db.AddTodo(a.(*model.Todo))
 		})
 	} else {
