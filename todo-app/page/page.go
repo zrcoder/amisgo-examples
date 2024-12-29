@@ -18,7 +18,7 @@ func List() any {
 				comp.Column().Name("is_completed").Label("Done").Type("status"),
 				comp.Column().Name("title").Label("Title"),
 				comp.Column().Name("due_date").Label("Due Date").Type("date").Sortable(true),
-				comp.Column().Name("created_at").Label("Create Time").Type("datetime").Sortable(true),
+				// comp.Column().Name("created_at").Label("Create Time").Type("datetime").Sortable(true),
 			).
 			FilterDefaultVisible(false).FilterTogglable(true).
 			Filter(
@@ -61,12 +61,10 @@ func detail(getApi, editApi string) any {
 			comp.InputDatetime().Name("due_date").Label("Due Date").Value("+1days").DisplayFormat("YYYY-MM-DD").ValueFormat("YYYY-MM-DDTHH:mm:ssZ"),
 		),
 		comp.Switch().Name("is_completed").Option("Done").Disabled(isCreate),
-		comp.Group().Label("Detail").Body(
-			comp.Editor().Name("detail").Language("markdown").Size("xxl").Value("${detail}").AllowFullscreen(false).Options(comp.Schema{
-				"overviewRulerBorder": false,
-			}),
-			comp.Markdown().Options(comp.Schema{"html": true}).Name("detail"),
-		),
+		comp.Markdown().Options(comp.Schema{"html": true}).Name("detail"),
+		comp.Editor().Name("detail").Language("markdown").Size("xl").Value("${detail}").AllowFullscreen(false).Options(comp.Schema{
+			"overviewRulerBorder": false,
+		}),
 	).Rules(
 		comp.Rule().Rule("data.title && data.detail").Message("Both title and content can't be empty"),
 	).Reload("todos")

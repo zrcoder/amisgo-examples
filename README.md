@@ -10,6 +10,6 @@ Examples for [amisgo](https://github.com/zrcoder/amisgo)
 
 - [todo-app live demo](https://amisgo-todo.up.railway.app)
 
-  ![todo-app](images/todo.png)
+  ![todo-app](images/todo-app.png)
 
 Also explore our [documentation](https://amisgo.pages.dev) for in-depth tutorials and guides.

@@ -2,8 +2,6 @@ package example
 
 import (
 	"embed"
-	"io/fs"
-	"path/filepath"
 	"strings"
 
 	"github.com/zrcoder/amisgo/comp"
@@ -14,22 +12,22 @@ var FS embed.FS
 
 const defaultCodeKey = "Hello, Go+"
 
+var keys = []string{
+	defaultCodeKey,
+	"Go+ Basic",
+	"Range",
+	"Rational",
+	"Slice literal",
+	"List-Map comprehension",
+	"Error Wrap",
+}
+
 func Get() (options []any, defaultCode string, err error) {
-	var es []fs.DirEntry
-	es, err = FS.ReadDir(".")
-	if err != nil {
-		return
-	}
-	for _, f := range es {
-		if !strings.HasSuffix(f.Name(), ".gop") {
-			continue
-		}
-		data, err := FS.ReadFile(f.Name())
+	for _, key := range keys {
+		data, err := FS.ReadFile(key + ".gop")
 		if err != nil {
 			return nil, "", err
 		}
-		key := filepath.Base(f.Name())
-		key = strings.TrimSuffix(key, filepath.Ext(f.Name()))
 		key = strings.ReplaceAll(key, "-", "/")
 		val := string(data)
 		if key == defaultCodeKey {

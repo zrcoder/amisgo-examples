@@ -34,13 +34,18 @@ func main() {
 				),
 				comp.Button().Label("Github").ActionType("url").Icon("fa fa-github").Url("https://github.com/goplus/gop"),
 			),
-			comp.Editor().Language("c").Name("body").Size("xl").Value("${examples}").
+			comp.Editor().Language("c").Name("body").Size("xxl").Value("${examples}").
 				AllowFullscreen(false).Options(comp.Schema{"fontSize": 15}),
 			comp.Code().Name("result").Language("plaintext"),
 		),
 	)
 
-	ag := amisgo.New(conf.WithTitle("Goplus Playground")).Mount("/", index).StaticFS("/static/", http.FS(static.FS))
+	ag := amisgo.New(
+		conf.WithTitle("Goplus Playground"),
+		conf.WithIcon("/static/gop.svg"),
+	).
+		Mount("/", index).
+		StaticFS("/static/", http.FS(static.FS))
 
 	err = ag.Run()
 	check(err)
