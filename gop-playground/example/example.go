@@ -33,7 +33,7 @@ func Get() (options []any, defaultCode string, err error) {
 		if key == defaultCodeKey {
 			defaultCode = val
 		}
-		options = append(options, comp.Option().Label(key).Value(val))
+		options = append(options, comp.Schema{"label": key, "value": val})
 	}
 	return
 }

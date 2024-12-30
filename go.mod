@@ -10,7 +10,7 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.0.0-20241229121202-d9955f3ead0c
+	github.com/zrcoder/amisgo v0.0.0-20241230142408-cc1d3c6a5732
 	github.com/zrcoder/cdor v0.2.0
 	gopkg.in/yaml.v3 v3.0.1
 )
