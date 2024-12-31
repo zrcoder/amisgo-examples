@@ -28,7 +28,7 @@ func main() {
 		conf.WithTheme(conf.ThemeDark),
 		conf.WithIcon("/static/favicon.ico"),
 	).
-		StaticFS("/static/", http.FS(assets.FS)).
+		StaticFS("/static", http.FS(assets.FS)).
 		Redirect("/", fmtPath, http.StatusPermanentRedirect).
 		Mount(fmtPath, formatPage).
 		Mount(convPath, convPage).

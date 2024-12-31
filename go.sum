@@ -211,8 +211,8 @@ github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4/go.mod h1:+ccdNT0xMY
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 github.com/yuin/goldmark v1.6.0 h1:boZcn2GTjpsynOsC0iJHnBWa4Bi0qzfJjthwauItG68=
 github.com/yuin/goldmark v1.6.0/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
-github.com/zrcoder/amisgo v0.0.0-20241230142408-cc1d3c6a5732 h1:ZqVuiZIpqtaNPiFu7nUfpMC1UoU5ADvlrXRtlJnXl1o=
-github.com/zrcoder/amisgo v0.0.0-20241230142408-cc1d3c6a5732/go.mod h1:S9ywPkM6KkiQfeTIi7Y+6MYSBCXiO1PWi29Nu7KoUdY=
+github.com/zrcoder/amisgo v0.0.0-20250103031209-4c8cd828511f h1:BmObUCoeeI013eQC/Jvl4HKQ6UeyuCQrba4/DGk/r+8=
+github.com/zrcoder/amisgo v0.0.0-20250103031209-4c8cd828511f/go.mod h1:S9ywPkM6KkiQfeTIi7Y+6MYSBCXiO1PWi29Nu7KoUdY=
 github.com/zrcoder/cdor v0.2.0 h1:LMx9x+jrBpGO/HuhZuZT1v08UBuYYfOT3DfdrmkEEjU=
 github.com/zrcoder/cdor v0.2.0/go.mod h1:1nChI0jdgqTRQY8/KIIz4zRbdgY6P1Dx4mDSS8jJBIc=
 go.opencensus.io v0.24.0 h1:y73uSU6J157QMP2kn2r30vwW1A2W2WFwSCGnAVxeaD0=

@@ -45,7 +45,7 @@ func main() {
 		conf.WithIcon("/static/gop.svg"),
 	).
 		Mount("/", index).
-		StaticFS("/static/", http.FS(static.FS))
+		StaticFS("/static", http.FS(static.FS))
 
 	err = ag.Run()
 	check(err)

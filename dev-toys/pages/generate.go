@@ -26,9 +26,13 @@ var (
 	Hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
 		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(ac.Schema{"fontSize": 14}),
 		ac.Flex().ClassName("w-full").Items(
-			ac.Button().Icon("fa fa-arrow-down").TransformMultiple("editor", "done", func(input any) (any, error) {
-				return util.Hash([]byte(input.(string)))
-			}),
+			ac.Button().Icon("fa fa-arrow-down").TransformMultiple(
+				" ",
+				func(d ac.Data) (ac.Data, error) {
+					return util.Hash([]byte(d.Get("editor").(string)))
+				},
+				"editor",
+			),
 		),
 		ac.InputText().Name("md5").Label("MD5").Disabled(true),
 		ac.InputText().Name("sha1").Label("SHA1").Disabled(true),
