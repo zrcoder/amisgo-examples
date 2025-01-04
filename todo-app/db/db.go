@@ -3,7 +3,7 @@ package db
 import (
 	_ "embed"
 	"fmt"
-	"log/slog"
+	"log"
 	"strconv"
 	"strings"
 
@@ -19,7 +19,7 @@ var createTablesSql string
 
 var db *sqlx.DB
 
-func Init() error {
+func init() {
 	dbName := "todo.db"
 	if util.ReadOnly() {
 		dbName = "todo-sample.db"
@@ -27,17 +27,18 @@ func Init() error {
 	var err error
 	db, err = sqlx.Open("sqlite", dbName+"?_pragma=foreign_keys(1)")
 	if err != nil {
-		return err
+		log.Fatal("open db error:", err)
 	}
 
 	// create tables
 	_, err = db.Exec(createTablesSql)
-	return err
+	if err != nil {
+		log.Fatal("create tables error:", err)
+	}
 }
 
-func Close() {
-	err := db.Close()
-	slog.Info("db closed", "error", err)
+func Close() error {
+	return db.Close()
 }
 
 const addTodo = `
@@ -105,6 +106,26 @@ func GetTodo(id int64) (*model.Todo, error) {
 }
 
 func ListTodos(params *model.ListRequest) ([]model.Todo, int, error) {
+	whereClause, args := buildWhereClause(params)
+	orderClause := buildOrderClause(params)
+
+	args["limit"] = params.Limit
+	args["offset"] = params.Offset
+
+	total, err := getTotalCount(whereClause, args)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	todos, err := getTodos(whereClause, orderClause, args)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return todos, total, nil
+}
+
+func buildWhereClause(params *model.ListRequest) (string, map[string]any) {
 	conditions := []string{}
 	args := map[string]any{}
 
@@ -124,57 +145,70 @@ func ListTodos(params *model.ListRequest) ([]model.Todo, int, error) {
 		whereClause = "WHERE " + strings.Join(conditions, " AND ")
 	}
 
-	orderClause := ""
-	if params.OrderBy != "" {
-		validOrderFields := map[string]bool{
-			"created_at": true,
-			"due_date":   true,
-			"title":      true,
-			"priority":   true,
-		}
+	return whereClause, args
+}
 
-		if validOrderFields[params.OrderBy] {
-			orderDir := "ASC"
-			if params.OrderDir == "desc" {
-				orderDir = "DESC"
-			}
-			orderClause = fmt.Sprintf("ORDER BY %s %s", params.OrderBy, orderDir)
-		}
+func buildOrderClause(params *model.ListRequest) string {
+	if params.OrderBy == "" {
+		return ""
 	}
 
-	args["limit"] = params.Limit
-	args["offset"] = params.Offset
+	validOrderFields := map[string]bool{
+		"created_at": true,
+		"due_date":   true,
+		"title":      true,
+		"priority":   true,
+	}
 
+	if !validOrderFields[params.OrderBy] {
+		return ""
+	}
+
+	orderDir := "ASC"
+	if params.OrderDir == "desc" {
+		orderDir = "DESC"
+	}
+
+	return fmt.Sprintf("ORDER BY %s %s", params.OrderBy, orderDir)
+}
+
+func getTotalCount(whereClause string, args map[string]any) (int, error) {
 	countQuery := "SELECT COUNT(*) FROM todos " + whereClause
 	countQuery, countArgs, err := sqlx.Named(countQuery, args)
 	if err != nil {
-		return nil, 0, err
+		return 0, err
 	}
 	countQuery = db.Rebind(countQuery)
 
 	var total int
 	err = db.Get(&total, countQuery, countArgs...)
 	if err != nil {
-		return nil, 0, err
+		return 0, err
 	}
 
+	return total, nil
+}
+
+func getTodos(whereClause, orderClause string, args map[string]any) ([]model.Todo, error) {
 	listQuery := fmt.Sprintf(`
-		SELECT id, title, priority, due_date, is_completed, created_at, updated_at
-		FROM todos
-		%s
-		%s
-		LIMIT :limit OFFSET :offset
-	`, whereClause, orderClause)
+        SELECT id, title, priority, due_date, is_completed, created_at, updated_at
+        FROM todos
+        %s
+        %s
+        LIMIT :limit OFFSET :offset
+    `, whereClause, orderClause)
 
 	listQuery, listArgs, err := sqlx.Named(listQuery, args)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
 	listQuery = db.Rebind(listQuery)
+
 	todos := []model.Todo{}
 	err = db.Select(&todos, listQuery, listArgs...)
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
-	return todos, total, nil
+
+	return todos, nil
 }

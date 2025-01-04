@@ -40,14 +40,14 @@ func main() {
 		),
 	)
 
-	ag := amisgo.New(
+	app := amisgo.New(
 		conf.WithTitle("Goplus Playground"),
 		conf.WithIcon("/static/gop.svg"),
 	).
 		Mount("/", index).
 		StaticFS("/static", http.FS(static.FS))
 
-	err = ag.Run()
+	err = app.Run()
 	check(err)
 }
 

@@ -11,14 +11,13 @@ import (
 	"github.com/zrcoder/amisgo/comp"
 )
 
-func List() any {
+func Index() any {
 	return comp.Page().ClassName("p-8").Title(comp.Tpl().Tpl("TODOs").ClassName("font-bold")).Body(
 		comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
 			Columns(
 				comp.Column().Name("is_completed").Label("Done").Type("status"),
 				comp.Column().Name("title").Label("Title"),
 				comp.Column().Name("due_date").Label("Due Date").Type("date").Sortable(true),
-				// comp.Column().Name("created_at").Label("Create Time").Type("datetime").Sortable(true),
 			).
 			FilterDefaultVisible(false).FilterTogglable(true).
 			Filter(

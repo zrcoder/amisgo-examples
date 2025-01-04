@@ -23,7 +23,7 @@ const (
 )
 
 func main() {
-	ag := amisgo.New(
+	app := amisgo.New(
 		conf.WithTitle("Dev Toys"),
 		conf.WithTheme(conf.ThemeDark),
 		conf.WithIcon("/static/favicon.ico"),
@@ -42,7 +42,7 @@ func main() {
 	port := ":8888"
 	log.Printf("Starting server on http://localhost%s\n", port)
 
-	if err := ag.Run(port); err != nil {
+	if err := app.Run(port); err != nil {
 		log.Fatalf("Server failed to start: %v\n", err)
 	}
 }

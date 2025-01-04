@@ -2,7 +2,6 @@ package api
 
 import (
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"strconv"
@@ -29,7 +28,7 @@ var (
 	Todo  = Prefix + todo
 )
 
-func GetApiHandler() http.Handler {
+func New() http.Handler {
 	gin.SetMode(gin.ReleaseMode)
 	handler := gin.Default()
 	api := handler.Group(Prefix)
@@ -97,26 +96,6 @@ func deleteTodo(c *gin.Context) {
 	c.Status(http.StatusNoContent)
 }
 
-func parseIDs(c *gin.Context) ([]int64, error) {
-	ids := strings.Split(c.Query("ids"), ",")
-	fmt.Println("IDS:", ids)
-
-	if len(ids) == 0 {
-		return nil, errors.New("no ids found")
-	}
-
-	var err error
-	res := make([]int64, len(ids))
-	for i, v := range ids {
-		res[i], err = strconv.ParseInt(v, 10, 64)
-		if err != nil {
-			slog.Error("pars id failed", slog.String("id", v), slog.String("error", err.Error()))
-			return nil, errors.New("invalid id")
-		}
-	}
-	return res, nil
-}
-
 func updateTodo(c *gin.Context) {
 	if util.ReadOnly() {
 		c.String(http.StatusForbidden, ReadonlyMsg)
@@ -145,6 +124,26 @@ func updateTodo(c *gin.Context) {
 	}
 
 	c.Status(http.StatusNoContent)
+}
+
+func parseIDs(c *gin.Context) ([]int64, error) {
+	ids := strings.Split(c.Query("ids"), ",")
+	slog.Debug("pars ids", "ids", ids)
+
+	if len(ids) == 0 {
+		return nil, errors.New("no ids found")
+	}
+
+	var err error
+	res := make([]int64, len(ids))
+	for i, v := range ids {
+		res[i], err = strconv.ParseInt(v, 10, 64)
+		if err != nil {
+			slog.Error("pars id failed", slog.String("id", v), slog.String("error", err.Error()))
+			return nil, errors.New("invalid id")
+		}
+	}
+	return res, nil
 }
 
 func parseID(c *gin.Context) (int64, string) {
