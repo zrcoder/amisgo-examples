@@ -26,7 +26,7 @@ var (
 	Hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
 		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(ac.Schema{"fontSize": 14}),
 		ac.Flex().ClassName("w-full").Items(
-			ac.Button().Icon("fa fa-arrow-down").TransformMultiple(
+			ac.Button().Label("▼").TransformMultiple(
 				" ",
 				func(d ac.Data) (ac.Data, error) {
 					return util.Hash([]byte(d.Get("editor").(string)))

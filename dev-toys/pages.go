@@ -26,7 +26,7 @@ func initNav() any {
 		navLink("Charts", "fa fa-bar-chart", chartPath),
 		navLink("Encoders/Decoders", "fa fa-code", encDecPath),
 		comp.NavLink().Mode("divider"),
-		navExtraLink("Amisgo", "fa fa-github", "https://github.com/zrcoder/amisgo"),
+		navExtraLink("amisgo", "fa fa-github", "https://github.com/zrcoder/amisgo"),
 		navExtraLink("Ndor", "fa fa-image", "https://ndor.netlify.app"),
 	)
 }

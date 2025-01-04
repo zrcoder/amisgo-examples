@@ -38,7 +38,7 @@ func gen(xAxis, values, cType string) any {
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().ClassName("pb-4").Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload(cType).ActionType("submit"),
+				ac.Button().Label("▲").Reload(cType).ActionType("submit"),
 			),
 			ac.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
 			ac.InputText().Label("Values").Name("values").Value(values),
@@ -69,7 +69,7 @@ func GenPolar(input1, input2 string) any {
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().ClassName("pb-4").Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("polar-out").ActionType("submit"),
+				ac.Button().Label("▲").Reload("polar-out").ActionType("submit"),
 			),
 			ac.InputText().Label("values1").Name("xAxisData").Value(input1),
 			ac.InputText().Label("Values2").Name("values").Value(input2),
@@ -111,7 +111,7 @@ func GenScatter(input1, input2 string) any {
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().ClassName("pb-4").Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("scatter-out").ActionType("submit"),
+				ac.Button().Label("▲").Reload("scatter-out").ActionType("submit"),
 			),
 			ac.InputText().Label("X").Name("x").Value(input1),
 			ac.InputText().Label("Y").Name("y").Value(input2),
@@ -148,7 +148,7 @@ func GenPie(data map[string]any) any {
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().ClassName("pb-4").Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("pie-out").ActionType("submit"),
+				ac.Button().Label("▲").Reload("pie-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("pd").ValueType("input-number").Value(data),
 		).Submit(func(d ac.Data) error {
@@ -179,7 +179,7 @@ func GenRadar(data map[string]any) any {
 		}),
 		ac.Form().Mode("horizontal").Horizontal(ac.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
 			ac.Flex().ClassName("pb-4").Items(
-				ac.Button().Icon("fa fa-arrow-up").Reload("radar-out").ActionType("submit"),
+				ac.Button().Label("▲").Reload("radar-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("rd").ValueType("input-number").Value(data),
 		).Submit(func(d ac.Data) error {
@@ -221,7 +221,7 @@ func GenCommon(commCfg string) any {
 			comp.Editor(comp.EditorCfg{Lang: "json", Name: "in", Value: commCfg}),
 		),
 		ac.ButtonGroup().Vertical(true).Buttons(
-			ac.Button().Icon("fa fa-arrow-right").Reload("diy-out").ActionType("submit"),
+			ac.Button().Label("▶︎").Reload("diy-out").ActionType("submit"),
 		),
 		ac.Flex().Style(ac.Schema{"width": "40%"}).AlignItems("center").Items(
 			ac.Chart().Name("diy-out").GetData(func() (any, error) {

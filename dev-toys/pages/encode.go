@@ -47,7 +47,7 @@ var (
 			}),
 		),
 		ac.Flex().Style(ac.Schema{"width": "10%"}).AlignItems("center").Items(
-			ac.Action().ActionType("submit").Icon("fa fa-arrow-right").Reload("out"),
+			ac.Action().ActionType("submit").Label("▶︎").Reload("out"),
 		),
 		ac.Service().Style(ac.Schema{"width": "45%"}).
 			Name("out").
