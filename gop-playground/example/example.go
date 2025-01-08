@@ -4,7 +4,7 @@ import (
 	"embed"
 	"strings"
 
-	"github.com/zrcoder/amisgo/comp"
+	"github.com/zrcoder/amisgo/model"
 )
 
 //go:embed *
@@ -33,7 +33,7 @@ func Get() (options []any, defaultCode string, err error) {
 		if key == defaultCodeKey {
 			defaultCode = val
 		}
-		options = append(options, comp.Schema{"label": key, "value": val})
+		options = append(options, model.Schema{"label": key, "value": val})
 	}
 	return
 }

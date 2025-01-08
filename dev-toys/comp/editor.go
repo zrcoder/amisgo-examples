@@ -1,6 +1,9 @@
 package comp
 
-import "github.com/zrcoder/amisgo/comp"
+import (
+	"github.com/zrcoder/amisgo/comp"
+	"github.com/zrcoder/amisgo/model"
+)
 
 type EditorCfg struct {
 	Name     string
@@ -20,7 +23,7 @@ func Editor(e EditorCfg) any {
 		Label(e.Label).
 		Value(e.Value).
 		Disabled(e.ReadOnly).
-		Options(comp.Schema{"fontSize": 14}).
+		Options(model.Schema{"fontSize": 14}).
 		Size("xxl").
 		AllowFullscreen(false)
 }

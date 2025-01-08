@@ -13,7 +13,7 @@ import (
 	"github.com/ChimeraCoder/gojson"
 	decqr "github.com/tuotoo/qrcode"
 	"github.com/yosssi/gohtml"
-	"github.com/zrcoder/amisgo/comp"
+	"github.com/zrcoder/amisgo/model"
 	"github.com/zrcoder/cdor"
 	"gopkg.in/yaml.v3"
 )
@@ -172,7 +172,7 @@ func Json2Struct(input []byte) (string, error) {
 	return string(out), err
 }
 
-func Hash(input []byte) (comp.Data, error) {
+func Hash(input []byte) (model.Data, error) {
 	h := md5.New()
 	if _, err := h.Write(input); err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func Hash(input []byte) (comp.Data, error) {
 	}
 	resSha512 := hex.EncodeToString(h.Sum(nil))
 
-	return comp.Data{
+	return model.Data{
 		"md5":    resMd5,
 		"sha1":   resSha1,
 		"sha256": resSha256,

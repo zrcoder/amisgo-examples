@@ -2,13 +2,16 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/zrcoder/amisgo-examples/gop-playground/example"
 	"github.com/zrcoder/amisgo-examples/gop-playground/static"
 
+	"gitee.com/rdor/amis-sdk/sdk"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/amisgo/conf"
+	"github.com/zrcoder/amisgo/model"
 )
 
 func main() {
@@ -35,15 +38,20 @@ func main() {
 				comp.Button().Label("Github").ActionType("url").Icon("fa fa-github").Url("https://github.com/goplus/gop"),
 			),
 			comp.Editor().Language("c").Name("body").Size("xxl").Value("${examples}").
-				AllowFullscreen(false).Options(comp.Schema{"fontSize": 15}),
+				AllowFullscreen(false).Options(model.Schema{"fontSize": 15}),
 			comp.Code().Name("result").Language("plaintext"),
 		),
 	)
 
-	app := amisgo.New(
+	options := []conf.Option{
 		conf.WithTitle("Goplus Playground"),
 		conf.WithIcon("/static/gop.svg"),
-	).
+	}
+	if os.Getenv("DEV") == "1" {
+		options = append(options, conf.WithLocalSdk(http.FS(sdk.FS)))
+	}
+
+	app := amisgo.New(options...).
 		Mount("/", index).
 		StaticFS("/static", http.FS(static.FS))
 

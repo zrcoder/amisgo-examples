@@ -9,6 +9,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/dev-toys/util"
 
 	ac "github.com/zrcoder/amisgo/comp"
+	am "github.com/zrcoder/amisgo/model"
 )
 
 var (
@@ -40,23 +41,23 @@ var (
 
 	qrData []byte
 	Decqr  = ac.Form().ColumnCount(3).WrapWithPanel(false).Body(
-		ac.Flex().Style(ac.Schema{"width": "45%"}).AlignItems("center").Items(
+		ac.Flex().Style(am.Schema{"width": "45%"}).AlignItems("center").Items(
 			ac.InputImage().Name("img").Upload(int64(10*(1<<20)), func(data []byte) (path string, err error) {
 				qrData = data
 				return "", err
 			}),
 		),
-		ac.Flex().Style(ac.Schema{"width": "10%"}).AlignItems("center").Items(
+		ac.Flex().Style(am.Schema{"width": "10%"}).AlignItems("center").Items(
 			ac.Action().ActionType("submit").Label("▶︎").Reload("out"),
 		),
-		ac.Service().Style(ac.Schema{"width": "45%"}).
+		ac.Service().Style(am.Schema{"width": "45%"}).
 			Name("out").
 			GetData(func() (any, error) {
 				if qrData == nil {
 					return "", nil
 				}
 				decodecQr, err := util.DecodeQr(qrData)
-				return ac.Data{"decqr": decodecQr}, err
+				return am.Data{"decqr": decodecQr}, err
 			}).Body(
 			comp.Editor(comp.EditorCfg{Name: "text", ReadOnly: true, Value: "${decqr}"}),
 		),

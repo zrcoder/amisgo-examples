@@ -9,6 +9,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/zrcoder/amisgo/comp"
+	am "github.com/zrcoder/amisgo/model"
 )
 
 func Index() any {
@@ -28,8 +29,8 @@ func Index() any {
 					comp.Button().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
 				).Actions()).
 			OnEvent(
-				comp.Schema{
-					"rowClick": comp.Schema{
+				am.Schema{
+					"rowClick": am.Schema{
 						"actions": []comp.MEventAction{
 							comp.EventAction().ActionType("drawer").Drawer(
 								detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
@@ -60,8 +61,8 @@ func detail(getApi, editApi string) any {
 			comp.InputDatetime().Name("due_date").Label("Due Date").Value("+1days").DisplayFormat("YYYY-MM-DD").ValueFormat("YYYY-MM-DDTHH:mm:ssZ"),
 		),
 		comp.Switch().Name("is_completed").Option("Done").Disabled(isCreate),
-		comp.Markdown().Options(comp.Schema{"html": true}).Name("detail"),
-		comp.Editor().Name("detail").Language("markdown").Size("xl").Value("${detail}").AllowFullscreen(false).Options(comp.Schema{
+		comp.Markdown().Options(am.Schema{"html": true}).Name("detail"),
+		comp.Editor().Name("detail").Language("markdown").Size("xl").Value("${detail}").AllowFullscreen(false).Options(am.Schema{
 			"overviewRulerBorder": false,
 		}),
 	).Rules(

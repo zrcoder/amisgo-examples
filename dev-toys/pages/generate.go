@@ -7,6 +7,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/dev-toys/util"
 
 	ac "github.com/zrcoder/amisgo/comp"
+	am "github.com/zrcoder/amisgo/model"
 )
 
 var (
@@ -24,11 +25,11 @@ var (
 		),
 	)
 	Hash = ac.Form().AutoFocus(true).WrapWithPanel(false).Body(
-		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(ac.Schema{"fontSize": 14}),
+		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(am.Schema{"fontSize": 14}),
 		ac.Flex().ClassName("w-full").Items(
 			ac.Button().Label("▼").TransformMultiple(
 				" ",
-				func(d ac.Data) (ac.Data, error) {
+				func(d am.Data) (am.Data, error) {
 					return util.Hash([]byte(d.Get("editor").(string)))
 				},
 				"editor",
