@@ -3,5 +3,5 @@ package util
 import "os"
 
 func ReadOnly() bool {
-	return os.Getenv("DEV") == ""
+	return os.Getenv("PROD") == ""
 }

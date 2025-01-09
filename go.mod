@@ -9,10 +9,12 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/glebarez/go-sqlite v1.22.0
 	github.com/jmoiron/sqlx v1.4.0
+	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.0.0-20250108032116-8fa5ab5d3e26
+	github.com/zrcoder/amisgo v0.0.0-20250109133036-a0915df182d8
 	github.com/zrcoder/cdor v0.2.0
+	golang.org/x/crypto v0.23.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -62,7 +64,6 @@ require (
 	github.com/yuin/goldmark v1.6.0 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	golang.org/x/arch v0.8.0 // indirect
-	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/exp v0.0.0-20231127185646-65229373498e // indirect
 	golang.org/x/image v0.14.0 // indirect
 	golang.org/x/net v0.25.0 // indirect

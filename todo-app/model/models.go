@@ -5,8 +5,15 @@ import (
 	"time"
 )
 
+type User struct {
+	ID           int64  `json:"id" db:"id"`
+	Name         string `json:"name" db:"name"`
+	PasswordHash string `json:"-" db:"password_hash"`
+}
+
 type Todo struct {
 	ID          int64     `json:"id" db:"id"`
+	UserID      int64     `json:"user_id" db:"user_id"`
 	Title       string    `json:"title" db:"title"`
 	Priority    int64     `json:"priority" db:"priority"`
 	DueDate     time.Time `json:"due_date" db:"due_date"`
@@ -17,6 +24,7 @@ type Todo struct {
 }
 
 type ListRequest struct {
+	UserID        int64
 	TitleKeywords string `form:"title"`
 	IsCompleted   string `form:"is_completed"`
 	OrderBy       string `form:"orderBy"`
@@ -25,6 +33,11 @@ type ListRequest struct {
 	PerPage       string `form:"perPage"`
 	Limit         int    `form:"-"`
 	Offset        int    `form:"-"`
+}
+
+type UserRequest struct {
+	Name     string `form:"name"`
+	Password string `form:password"`
 }
 
 func (r *ListRequest) Regular() {

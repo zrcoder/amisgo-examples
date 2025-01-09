@@ -1,55 +1,60 @@
 package page
 
 import (
-	"errors"
-
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
-	"github.com/zrcoder/amisgo-examples/todo-app/db"
-	"github.com/zrcoder/amisgo-examples/todo-app/model"
-	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/zrcoder/amisgo/comp"
 	am "github.com/zrcoder/amisgo/model"
 )
 
 func Index() any {
-	return comp.Page().ClassName("p-8").Title(comp.Tpl().Tpl("TODOs").ClassName("font-bold")).Body(
-		comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
-			Columns(
-				comp.Column().Name("is_completed").Label("Done").Type("status"),
-				comp.Column().Name("title").Label("Title"),
-				comp.Column().Name("due_date").Label("Due Date").Type("date").Sortable(true),
-			).
-			FilterDefaultVisible(false).FilterTogglable(true).
-			Filter(
-				comp.Form().Title("").Body(
-					comp.Switch().Name("is_completed").Label("Done"),
-					comp.InputText().Name("title").Label("Keywords"),
-					comp.Button().Icon("fa fa-search").Label("Search").Primary(true).ActionType("submit"),
-					comp.Button().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
-				).Actions()).
-			OnEvent(
-				am.Schema{
-					"rowClick": am.Schema{
-						"actions": []comp.MEventAction{
-							comp.EventAction().ActionType("drawer").Drawer(
-								detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
-							),
+	return comp.Page().ClassName("p-8").
+		Title(comp.Tpl().Tpl("TODOs").ClassName("font-bold")).
+		Toolbar(
+			comp.Form().WrapWithPanel(false).InitApi(api.User).Api(api.Logout).Mode("inline").Body(
+				comp.InputGroup().Body(
+					comp.Tpl().ClassName("font-bold").ID("name").Tpl("${name}"),
+					comp.Button().Label("Logout").ActionType("submit").Redirect("/login"),
+				),
+			),
+		).
+		Body(
+			comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
+				Columns(
+					comp.Column().Name("is_completed").Label("Done").Type("status"),
+					comp.Column().Name("title").Label("Title"),
+					comp.Column().Name("due_date").Label("Due Date").Type("date").Sortable(true),
+				).
+				FilterDefaultVisible(false).FilterTogglable(true).
+				Filter(
+					comp.Form().Title("").Body(
+						comp.Switch().Name("is_completed").Label("Done"),
+						comp.InputText().Name("title").Label("Keywords"),
+						comp.Button().Icon("fa fa-search").Label("Search").Primary(true).ActionType("submit"),
+						comp.Button().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
+					).Actions()).
+				OnEvent(
+					am.Schema{
+						"rowClick": am.Schema{
+							"actions": []comp.MEventAction{
+								comp.EventAction().ActionType("drawer").Drawer(
+									detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
+								),
+							},
 						},
 					},
-				},
-			).
-			HeaderToolbar(
-				"filter-toggler",
-				"bulkActions",
-				"pagination",
-			).
-			FooterToolbar().
-			BulkActions(
-				comp.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
-			),
-		comp.Button().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").ActionType("drawer").Drawer(detail("", "")),
-	)
+				).
+				HeaderToolbar(
+					"filter-toggler",
+					"bulkActions",
+					"pagination",
+				).
+				FooterToolbar().
+				BulkActions(
+					comp.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
+				),
+			comp.Button().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").ActionType("drawer").Drawer(detail("", "")),
+		)
 }
 
 func detail(getApi, editApi string) any {
@@ -70,12 +75,7 @@ func detail(getApi, editApi string) any {
 	).Reload("todos")
 
 	if isCreate {
-		form.SubmitTo(&model.Todo{}, func(a any) error {
-			if util.ReadOnly() {
-				return errors.New(api.ReadonlyMsg)
-			}
-			return db.AddTodo(a.(*model.Todo))
-		})
+		form.Api(api.Todo)
 	} else {
 		form.InitApi(getApi)
 	}

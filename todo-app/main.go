@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
+	"github.com/zrcoder/amisgo-examples/todo-app/auth"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
 	"github.com/zrcoder/amisgo-examples/todo-app/page"
 
@@ -20,11 +21,12 @@ import (
 
 const (
 	icon  = "https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"
-	title = "Todo"
+	title = "Todos"
 	theme = conf.ThemeAng
 )
 
 func main() {
+	slog.SetLogLoggerLevel(slog.LevelDebug)
 	app := setupRoutes()
 	done := make(chan bool, 1)
 
@@ -46,7 +48,9 @@ func setupRoutes() *amisgo.Engine {
 	).
 		Handle(api.Prefix, api.New()).
 		Redirect("/", "/todos", http.StatusPermanentRedirect).
-		Mount("/todos", page.Index())
+		Mount("/login", page.Login()).
+		Mount("/register", page.Register()).
+		Mount("/todos", page.Index(), auth.UI)
 }
 
 func run(app *amisgo.Engine) error {
