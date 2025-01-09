@@ -14,6 +14,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/auth"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
 	"github.com/zrcoder/amisgo-examples/todo-app/page"
+	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/conf"
@@ -26,21 +27,21 @@ const (
 )
 
 func main() {
-	slog.SetLogLoggerLevel(slog.LevelDebug)
-	app := setupRoutes()
+	app := setup()
 	done := make(chan bool, 1)
 
 	go waitForGracefulExit(app, done)
-
-	if err := run(app); err != nil && err != http.ErrServerClosed {
-		log.Fatalf("http server error: %s", err)
-	}
+	go run(app)
 
 	<-done
 	slog.Info("Graceful shutdown complete.")
 }
 
-func setupRoutes() *amisgo.Engine {
+func setup() *amisgo.Engine {
+	if !util.ReadOnly() {
+		slog.SetLogLoggerLevel(slog.LevelDebug)
+	}
+
 	return amisgo.New(
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
@@ -48,18 +49,21 @@ func setupRoutes() *amisgo.Engine {
 	).
 		Handle(api.Prefix, api.New()).
 		Redirect("/", "/todos", http.StatusPermanentRedirect).
+		Mount("/todos", page.Index(), auth.UI).
 		Mount("/login", page.Login()).
-		Mount("/register", page.Register()).
-		Mount("/todos", page.Index(), auth.UI)
+		Mount("/register", page.Register())
 }
 
-func run(app *amisgo.Engine) error {
+func run(app *amisgo.Engine) {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 	slog.Info("Listening on http://localhost:" + port)
-	return app.Run(":" + port)
+	err := app.Run(":" + port)
+	if err != nil && err != http.ErrServerClosed {
+		log.Fatalf("http server error: %s", err)
+	}
 }
 
 func waitForGracefulExit(app *amisgo.Engine, done chan bool) {
