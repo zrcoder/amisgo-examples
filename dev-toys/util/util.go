@@ -172,7 +172,7 @@ func Json2Struct(input []byte) (string, error) {
 	return string(out), err
 }
 
-func Hash(input []byte) (model.Data, error) {
+func Hash(input []byte) (model.Schema, error) {
 	h := md5.New()
 	if _, err := h.Write(input); err != nil {
 		return nil, err
@@ -197,7 +197,7 @@ func Hash(input []byte) (model.Data, error) {
 	}
 	resSha512 := hex.EncodeToString(h.Sum(nil))
 
-	return model.Data{
+	return model.Schema{
 		"md5":    resMd5,
 		"sha1":   resSha1,
 		"sha256": resSha256,

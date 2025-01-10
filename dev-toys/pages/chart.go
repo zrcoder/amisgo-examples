@@ -1,8 +1,6 @@
 package pages
 
 import (
-	_ "embed"
-
 	"github.com/zrcoder/amisgo-examples/dev-toys/comp/chart"
 )
 

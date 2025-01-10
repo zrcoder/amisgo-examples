@@ -11,7 +11,7 @@ func EditorImg(lang, value string, transfor func(any) (any, error)) any {
 			Editor(EditorCfg{Lang: lang, Name: "editor", Value: value}),
 		),
 		comp.ButtonGroup().Vertical(true).Buttons(
-			comp.Action().Label("▶").Transform("editor", "img", "Done", transfor),
+			comp.Action().Label("▶").Transform(transfor, "editor", "img"),
 		),
 		comp.Flex().Style(model.Schema{"width": "40%"}).AlignItems("center").Items(
 			comp.Wrapper().Style(model.Schema{"width": "80%"}).Body(

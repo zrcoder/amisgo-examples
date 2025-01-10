@@ -137,12 +137,13 @@ func getUser(c *gin.Context) {
 		c.JSON(http.StatusOK, am.ErrorResponse(err.Error()))
 		return
 	}
-	c.JSON(http.StatusOK, am.SuccessResponse("success", am.Data{"name": user.Name}))
+	c.JSON(http.StatusOK, am.SuccessResponse("success", am.Schema{"name": user.Name}))
 }
 
 func invalidInputResp(c *gin.Context) {
 	c.JSON(http.StatusBadRequest, am.ErrorResponse("invalid input"))
 }
+
 func internalErrorResp(c *gin.Context) {
 	c.JSON(http.StatusInternalServerError, am.ErrorResponse("internal error"))
 }

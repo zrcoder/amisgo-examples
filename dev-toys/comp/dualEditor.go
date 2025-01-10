@@ -12,12 +12,12 @@ func DualEditor(left, right EditorCfg, title string, action, reverseAction func(
 	if action != nil {
 		left.ReadOnly = false
 		actions = append(actions,
-			comp.Action().Label("▶").Transform(left.Name, right.Name, "Done", action))
+			comp.Action().Label("▶").Transform(action, left.Name, right.Name))
 	}
 	if reverseAction != nil {
 		right.ReadOnly = false
 		actions = append(actions,
-			comp.Action().Label("◀︎").Transform(right.Name, left.Name, "Done", reverseAction))
+			comp.Action().Label("◀︎").Transform(reverseAction, right.Name, left.Name))
 	}
 	return comp.Form().Title(title).ColumnCount(3).AutoFocus(true).WrapWithPanel(false).Body(
 		Editor(left),

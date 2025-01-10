@@ -43,7 +43,7 @@ func gen(xAxis, values, cType string) any {
 			),
 			ac.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
 			ac.InputText().Label("Values").Name("values").Value(values),
-		).Submit(func(d am.Data) error {
+		).Submit(func(d am.Schema) error {
 			cfg := genCfg(d.Get("xAxisData").(string), d.Get("values").(string), cType)
 			storeCfg(cType, cfg)
 			return nil
@@ -74,7 +74,7 @@ func GenPolar(input1, input2 string) any {
 			),
 			ac.InputText().Label("values1").Name("xAxisData").Value(input1),
 			ac.InputText().Label("Values2").Name("values").Value(input2),
-		).Submit(func(d am.Data) error {
+		).Submit(func(d am.Schema) error {
 			cfg := genPolarCfg(d.Get("xAxisData").(string), d.Get("values").(string))
 			storeCfg(keyPolar, cfg)
 			return nil
@@ -116,7 +116,7 @@ func GenScatter(input1, input2 string) any {
 			),
 			ac.InputText().Label("X").Name("x").Value(input1),
 			ac.InputText().Label("Y").Name("y").Value(input2),
-		).Submit(func(d am.Data) error {
+		).Submit(func(d am.Schema) error {
 			cfg := genScatterCfg(d.Get("x").(string), d.Get("y").(string))
 			storeCfg(keyScatter, cfg)
 			return nil
@@ -152,7 +152,7 @@ func GenPie(data map[string]any) any {
 				ac.Button().Label("▲").Reload("pie-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("pd").ValueType("input-number").Value(data),
-		).Submit(func(d am.Data) error {
+		).Submit(func(d am.Schema) error {
 			kvs := d.Get("pd").(map[string]any)
 			storeCfg(keyPie, genPieCfg(kvs))
 			return nil
@@ -161,9 +161,9 @@ func GenPie(data map[string]any) any {
 }
 
 func genPieCfg(kvs map[string]any) ac.ChartCfg {
-	data := make([]am.Data, 0, len(kvs))
+	data := make([]am.Schema, 0, len(kvs))
 	for k, v := range kvs {
-		data = append(data, am.Data{"name": k, "value": v})
+		data = append(data, am.Schema{"name": k, "value": v})
 	}
 	return ac.ChartConfig().
 		Tooltip(am.Schema{"trigger": "item"}).
@@ -183,7 +183,7 @@ func GenRadar(data map[string]any) any {
 				ac.Button().Label("▲").Reload("radar-out").ActionType("submit"),
 			),
 			ac.InputKV().Name("rd").ValueType("input-number").Value(data),
-		).Submit(func(d am.Data) error {
+		).Submit(func(d am.Schema) error {
 			kvs := d.Get("rd").(map[string]any)
 			storeCfg(keyRadar, genRadarCfg(kvs))
 			return nil
@@ -192,10 +192,10 @@ func GenRadar(data map[string]any) any {
 }
 
 func genRadarCfg(kvs map[string]any) ac.ChartCfg {
-	ind := make([]am.Data, 0, len(kvs))
+	ind := make([]am.Schema, 0, len(kvs))
 	values := make([]float64, 0, len(kvs))
 	for k, v := range kvs {
-		ind = append(ind, am.Data{"name": k, "max": 100})
+		ind = append(ind, am.Schema{"name": k, "max": 100})
 		values = append(values, v.(float64))
 	}
 	return ac.ChartConfig().
@@ -229,7 +229,7 @@ func GenCommon(commCfg string) any {
 				return loadCfg(keyCommon), nil
 			}),
 		),
-	).Submit(func(d am.Data) error {
+	).Submit(func(d am.Schema) error {
 		data := []byte(d.Get("in").(string))
 		var cfg ac.ChartCfg
 		err := json.Unmarshal(data, &cfg)

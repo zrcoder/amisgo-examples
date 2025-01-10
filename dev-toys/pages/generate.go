@@ -28,8 +28,7 @@ var (
 		ac.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(am.Schema{"fontSize": 14}),
 		ac.Flex().ClassName("w-full").Items(
 			ac.Button().Label("▼").TransformMultiple(
-				" ",
-				func(d am.Data) (am.Data, error) {
+				func(d am.Schema) (am.Schema, error) {
 					return util.Hash([]byte(d.Get("editor").(string)))
 				},
 				"editor",

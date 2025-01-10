@@ -11,7 +11,7 @@ import (
 )
 
 //go:embed schema.sql
-var createTablesSql string
+var prepareSQL string
 
 var db *sqlx.DB
 
@@ -27,7 +27,7 @@ func init() {
 	}
 
 	// create tables
-	_, err = db.Exec(createTablesSql)
+	_, err = db.Exec(prepareSQL)
 	if err != nil {
 		log.Fatal("create tables error:", err)
 	}

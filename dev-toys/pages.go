@@ -6,17 +6,24 @@ import (
 	"github.com/zrcoder/amisgo/comp"
 )
 
-var nav = initNav()
-
 var (
-	formatPage = page(initFormatters())
-	convPage   = page(initConverters())
-	genPage    = page(initGenerators())
-	chartPage  = page(initCharts())
-	encDecPage = page(initEncoders())
+	nav        = getNav()
+	formatPage = page(getFormatters())
+	convPage   = page(getConverters())
+	genPage    = page(getGenerators())
+	chartPage  = page(getCharts())
+	encDecPage = page(getEncoders())
 )
 
-func initNav() any {
+func page(content any) any {
+	return comp.Page().
+		Aside(nav).
+		AsideClassName("w-56").
+		AsideResizor(true).
+		Body(content)
+}
+
+func getNav() any {
 	return comp.Nav().Stacked(true).Links(
 		navLink("Dev Toys", "fa fa-home", "/"),
 		comp.NavLink().Mode("divider"),
@@ -31,7 +38,15 @@ func initNav() any {
 	)
 }
 
-func initFormatters() any {
+func navLink(label, icon, path string) any {
+	return comp.NavLink().Label(label).Icon(icon).To(path)
+}
+
+func navExtraLink(label, icon, path string) any {
+	return comp.NavLink().Label(label).Icon(icon).To(path).Target("_blank")
+}
+
+func getFormatters() any {
 	return genTabs(
 		genTab("Json", pages.JsonFormatter),
 		genTab("Yaml", pages.YamlFormatter),
@@ -40,7 +55,7 @@ func initFormatters() any {
 	)
 }
 
-func initConverters() any {
+func getConverters() any {
 	return genTabs(
 		genTab("Json-Yaml", pages.JsonYamlCvt),
 		genTab("Yaml-Toml", pages.YamlTomlCvt),
@@ -48,7 +63,7 @@ func initConverters() any {
 	)
 }
 
-func initGenerators() any {
+func getGenerators() any {
 	return genTabs(
 		genTab("Json Graph", pages.JsonGraph),
 		genTab("Qrcoder", pages.Qrcode),
@@ -57,7 +72,7 @@ func initGenerators() any {
 	)
 }
 
-func initCharts() any {
+func getCharts() any {
 	return genTabs(
 		genTab("Line", pages.LineChart),
 		genTab("Bar", pages.BarChart),
@@ -69,29 +84,13 @@ func initCharts() any {
 	)
 }
 
-func initEncoders() any {
+func getEncoders() any {
 	return genTabs(
 		genTab("Base64", pages.Base64ED),
 		genTab("Url", pages.UrlED),
 		genTab("Html", pages.HtmlED),
 		genTab("Qrcode Decoder", pages.Decqr),
 	)
-}
-
-func page(content any) any {
-	return comp.Page().
-		Aside(nav).
-		AsideClassName("w-56").
-		AsideResizor(true).
-		Body(content)
-}
-
-func navLink(label, icon, path string) any {
-	return comp.NavLink().Label(label).Icon(icon).To(path)
-}
-
-func navExtraLink(label, icon, path string) any {
-	return comp.NavLink().Label(label).Icon(icon).To(path).Target("_blank")
 }
 
 func genTabs(tabs ...any) any {

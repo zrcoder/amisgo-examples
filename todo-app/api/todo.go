@@ -32,7 +32,7 @@ func listTodos(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, am.SuccessResponse("", am.Data{"items": todos, "total": total}))
+	c.JSON(http.StatusOK, am.SuccessResponse("", am.Schema{"items": todos, "total": total}))
 }
 
 func getTodo(c *gin.Context) {

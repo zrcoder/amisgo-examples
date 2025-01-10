@@ -11,15 +11,13 @@ import (
 )
 
 const (
-	healthCheckPath = "/healthz"
-)
-
-const (
 	fmtPath    = "/fmt"
 	convPath   = "/conv"
 	genPath    = "/gen"
 	chartPath  = "/chart"
 	encDecPath = "/enc"
+
+	healthCheckPath = "/healthz"
 )
 
 func main() {
@@ -35,9 +33,7 @@ func main() {
 		Mount(genPath, genPage).
 		Mount(chartPath, chartPage).
 		Mount(encDecPath, encDecPage).
-		HandleFunc(healthCheckPath, func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-		})
+		HandleFunc(healthCheckPath, healthz)
 
 	port := ":8888"
 	log.Printf("Starting server on http://localhost%s\n", port)
@@ -45,4 +41,8 @@ func main() {
 	if err := app.Run(port); err != nil {
 		log.Fatalf("Server failed to start: %v\n", err)
 	}
+}
+
+func healthz(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
 }

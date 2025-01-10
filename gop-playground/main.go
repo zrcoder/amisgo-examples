@@ -24,12 +24,12 @@ func main() {
 				comp.Group().Mode("inline").Body(
 					comp.Image().Alt("Go+").Src("/static/gop.svg").Height("20px").InnerClassName("border-none"),
 					comp.InputGroup().Body(
-						comp.Button().Primary(true).Label("Run").Transform("body", "result", "Done", func(input any) (any, error) {
+						comp.Button().Primary(true).Label("Run").Transform(func(input any) (any, error) {
 							return compile(input.(string))
-						}),
-						comp.Button().Primary(true).Label("Format").Transform("body", "body", "Done", func(input any) (any, error) {
+						}, "body", "result"),
+						comp.Button().Primary(true).Label("Format").Transform(func(input any) (any, error) {
 							return format(input.(string))
-						}),
+						}, "body", "body"),
 					),
 					comp.Select().Name("examples").Value(defaultExample).Options(
 						examples...,

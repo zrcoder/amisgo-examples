@@ -8,7 +8,7 @@ import (
 )
 
 //go:embed *
-var FS embed.FS
+var fs embed.FS
 
 const defaultCodeKey = "Hello, Go+"
 
@@ -24,7 +24,7 @@ var keys = []string{
 
 func Get() (options []any, defaultCode string, err error) {
 	for _, key := range keys {
-		data, err := FS.ReadFile(key + ".gop")
+		data, err := fs.ReadFile(key + ".gop")
 		if err != nil {
 			return nil, "", err
 		}

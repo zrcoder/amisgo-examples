@@ -57,7 +57,7 @@ var (
 					return "", nil
 				}
 				decodecQr, err := util.DecodeQr(qrData)
-				return am.Data{"decqr": decodecQr}, err
+				return am.Schema{"decqr": decodecQr}, err
 			}).Body(
 			comp.Editor(comp.EditorCfg{Name: "text", ReadOnly: true, Value: "${decqr}"}),
 		),
