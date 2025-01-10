@@ -2,10 +2,8 @@ package api
 
 import (
 	"database/sql"
-	"fmt"
 	"log/slog"
 	"net/http"
-	"time"
 
 	"github.com/zrcoder/amisgo-examples/todo-app/auth"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
@@ -84,14 +82,15 @@ func login(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, am.ErrorResponse("invalid user or password"))
 		return
 	}
-	id := fmt.Sprintf("%d", time.Now().UnixNano())
+	id := auth.GenSessionID()
 	err = auth.Add(id, user.ID)
 	if err != nil {
 		slog.Error("add session cache", slog.String("error", err.Error()))
 		internalErrorResp(c)
 		return
 	}
-	c.SetCookie(auth.SessionKey, id, 1800, "/", "", true, true)
+	slog.Debug("login", slog.String("id", id), slog.Int64("user id", user.ID))
+	c.SetCookie(auth.SessionKey, id, 0, "/", "", true, true)
 	c.JSON(http.StatusOK, am.SuccessResponse("succeed", nil))
 }
 

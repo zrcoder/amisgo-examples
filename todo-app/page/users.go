@@ -12,15 +12,16 @@ func Login() any {
 	if util.ReadOnly() {
 		demoInput = "amisgo"
 	}
-	return comp.Page().ClassName("bg-blue").Body(
+	return page(
+		"",
 		comp.Flex().ClassName("pt-20 bg-red").Items(
 			comp.Wrapper().ClassName("w-96").Body(
-				comp.Form().Title("").Api(api.Login).AutoFocus(true).Body(
+				comp.Form().Title("").Api(api.Login).AutoFocus(true).Redirect("/todos").Body(
 					comp.InputText().Name("name").Label("Name").Value(demoInput),
 					comp.InputPassword().Name("password").Label("Password").Value(demoInput),
 				).Actions(
 					comp.Button().Label("sign up").ActionType("link").Link("/register"),
-					comp.Button().Primary(true).Label("login").ActionType("submit").Redirect("/todos"),
+					comp.Button().Primary(true).Label("login").ActionType("submit"),
 				),
 			),
 		),
@@ -28,14 +29,15 @@ func Login() any {
 }
 
 func Register() any {
-	return comp.Page().Body(
+	return page(
+		"",
 		comp.Flex().ClassName("pt-20").Items(
 			comp.Wrapper().ClassName("w-96").Body(
-				comp.Form().Title("").Api(api.Register).AutoFocus(true).Body(
+				comp.Form().Title("").Api(api.Register).AutoFocus(true).Redirect("/login").Body(
 					comp.InputText().Name("name").Label("Name"),
 					comp.InputPassword().Name("password").Label("Password"),
 				).Actions(
-					comp.Button().ActionType("submit").Label("submit").Redirect("/login"),
+					comp.Button().ActionType("submit").Label("sign up"),
 				),
 			),
 		),

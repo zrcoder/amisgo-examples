@@ -39,7 +39,8 @@ func main() {
 
 func setup() *amisgo.Engine {
 	if !util.ReadOnly() {
-		slog.SetLogLoggerLevel(slog.LevelDebug)
+		logHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{AddSource: true, Level: slog.LevelDebug})
+		slog.SetDefault(slog.New(logHandler))
 	}
 
 	return amisgo.New(

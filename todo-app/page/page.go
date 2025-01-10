@@ -8,53 +8,53 @@ import (
 )
 
 func Index() any {
-	return comp.Page().ClassName("p-8").
-		Title(comp.Tpl().Tpl("TODOs").ClassName("font-bold")).
-		Toolbar(
-			comp.Form().WrapWithPanel(false).InitApi(api.User).Api(api.Logout).Mode("inline").Body(
-				comp.InputGroup().Body(
-					comp.Tpl().ClassName("font-bold").ID("name").Tpl("${name}"),
-					comp.Button().Label("Logout").ActionType("submit").Redirect("/login"),
-				),
+	return page(
+		comp.Form().WrapWithPanel(false).InitApi(api.User).Api(api.Logout).Mode("inline").Body(
+			comp.InputGroup().Body(
+				comp.Tpl().ClassName("font-bold").ID("name").Tpl("${name}"),
+				comp.Button().Label("Logout").ActionType("submit").Redirect("/login"),
 			),
-		).
-		Body(
-			comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
-				Columns(
-					comp.Column().Name("is_completed").Label("Done").Type("status"),
-					comp.Column().Name("title").Label("Title"),
-					comp.Column().Name("due_date").Label("Due Date").Type("date").Sortable(true),
-				).
-				FilterDefaultVisible(false).FilterTogglable(true).
-				Filter(
-					comp.Form().Title("").Body(
-						comp.Switch().Name("is_completed").Label("Done"),
-						comp.InputText().Name("title").Label("Keywords"),
-						comp.Button().Icon("fa fa-search").Label("Search").Primary(true).ActionType("submit"),
-						comp.Button().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
-					).Actions()).
-				OnEvent(
-					am.Schema{
-						"rowClick": am.Schema{
-							"actions": []comp.MEventAction{
-								comp.EventAction().ActionType("drawer").Drawer(
-									detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
-								),
-							},
+		),
+		comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
+			Columns(
+				comp.Column().Name("is_completed").Label("Done").Type("status"),
+				comp.Column().Name("title").Label("Title"),
+				comp.Column().Name("due_date").Label("Due Date").Type("date").Sortable(true),
+			).
+			FilterDefaultVisible(false).FilterTogglable(true).
+			Filter(
+				comp.Form().Title("").Body(
+					comp.Switch().Name("is_completed").Label("Done"),
+					comp.InputText().Name("title").Label("Keywords"),
+					comp.Button().Icon("fa fa-search").Label("Search").Primary(true).ActionType("submit"),
+					comp.Button().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
+				).Actions()).
+			OnEvent(
+				am.Schema{
+					"rowClick": am.Schema{
+						"actions": []comp.MEventAction{
+							comp.EventAction().ActionType("drawer").Drawer(
+								detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
+							),
 						},
 					},
-				).
-				HeaderToolbar(
-					"filter-toggler",
-					"bulkActions",
-					"pagination",
-				).
-				FooterToolbar().
-				BulkActions(
-					comp.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
-				),
-			comp.Button().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").ActionType("drawer").Drawer(detail("", "")),
-		)
+				},
+			).
+			HeaderToolbar(
+				"filter-toggler",
+				"bulkActions",
+				"pagination",
+			).
+			FooterToolbar().
+			BulkActions(
+				comp.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
+			),
+		comp.Button().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").ActionType("drawer").Drawer(detail("", "")),
+	)
+}
+
+func page(toolbar any, body ...any) any {
+	return comp.Page().ClassName("p-8").Title(comp.Tpl().Tpl("TODOs").ClassName("font-bold")).Toolbar(toolbar).Body(body...)
 }
 
 func detail(getApi, editApi string) any {

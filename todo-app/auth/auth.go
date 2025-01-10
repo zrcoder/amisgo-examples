@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/patrickmn/go-cache"
 	"github.com/zrcoder/amisgo/model"
 	"github.com/zrcoder/amisgo/util"
@@ -70,4 +71,8 @@ func Get(sessionID string) int64 {
 		return res.(int64)
 	}
 	return -1
+}
+
+func GenSessionID() string {
+	return uuid.NewString()
 }
