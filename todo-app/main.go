@@ -23,7 +23,6 @@ import (
 const (
 	icon  = "https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"
 	title = "Todos"
-	theme = conf.ThemeAng
 )
 
 func main() {
@@ -50,7 +49,6 @@ func setup() *amisgo.Engine {
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
 		conf.WithThemes(conf.ThemeAng, conf.ThemeDark),
-		conf.WithTheme(theme),
 	).
 		Handle(api.Prefix, api.New()).
 		Redirect("/", "/todos", http.StatusPermanentRedirect).

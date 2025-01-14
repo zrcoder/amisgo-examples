@@ -6,7 +6,6 @@ import (
 
 	"github.com/zrcoder/amisgo-examples/dev-toys/assets"
 
-	"gitee.com/rdor/amis-sdk/sdk"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/conf"
 )
@@ -25,7 +24,6 @@ func main() {
 	app := amisgo.New(
 		conf.WithTitle("Dev Toys"),
 		conf.WithThemes(conf.ThemeCxd, conf.ThemeDark, conf.ThemeAntd, conf.ThemeAng),
-		conf.WithLocalSdk(http.FS(sdk.FS)),
 		conf.WithIcon("/static/favicon.ico"),
 	).
 		StaticFS("/static", http.FS(assets.FS)).

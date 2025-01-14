@@ -30,11 +30,7 @@ func encDecPage() any {
 
 func page(content any) any {
 	return comp.Page().
-		Title("Dev Toys").
-		Toolbar(
-			comp.ThemeSelect().Name("theme").Label("Theme").Mode("inline"),
-		).
-		Aside(nav).
+		Aside(nav, comp.ThemeSelect().Label("Theme").ClassName("px-5")).
 		AsideClassName("w-56").
 		AsideResizor(true).
 		Body(content)
@@ -42,7 +38,7 @@ func page(content any) any {
 
 func getNav() any {
 	return comp.Nav().Stacked(true).Links(
-		navLink("", "fa fa-home", "/"),
+		navLink("Dev Toys", "fa fa-home", "/"),
 		comp.NavLink().Mode("divider"),
 		navLink("Formatters", "fa fa-laptop-code", fmtPath),
 		navLink("Converters", "fa fa-right-left", convPath),
@@ -52,6 +48,7 @@ func getNav() any {
 		comp.NavLink().Mode("divider"),
 		navExtraLink("amisgo", "fa fa-github", "https://github.com/zrcoder/amisgo"),
 		navExtraLink("Ndor", "fa fa-image", "https://ndor.netlify.app"),
+		comp.NavLink().Mode("divider"),
 	)
 }
 
