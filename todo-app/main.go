@@ -49,6 +49,7 @@ func setup() *amisgo.Engine {
 	return amisgo.New(
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
+		conf.WithThemes(conf.ThemeAng, conf.ThemeDark),
 		conf.WithTheme(theme),
 	).
 		Handle(api.Prefix, api.New()).

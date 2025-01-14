@@ -6,17 +6,34 @@ import (
 	"github.com/zrcoder/amisgo/comp"
 )
 
-var (
-	nav        = getNav()
-	formatPage = page(getFormatters())
-	convPage   = page(getConverters())
-	genPage    = page(getGenerators())
-	chartPage  = page(getCharts())
-	encDecPage = page(getEncoders())
-)
+var nav = getNav()
+
+func formatPage() any {
+	return page(getFormatters())
+}
+
+func convPage() any {
+	return page(getConverters())
+}
+
+func genPage() any {
+	return page(getGenerators())
+}
+
+func chartPage() any {
+	return page(getCharts())
+}
+
+func encDecPage() any {
+	return page(getEncoders())
+}
 
 func page(content any) any {
 	return comp.Page().
+		Title("Dev Toys").
+		Toolbar(
+			comp.ThemeSelect().Name("theme").Label("Theme").Mode("inline"),
+		).
 		Aside(nav).
 		AsideClassName("w-56").
 		AsideResizor(true).
@@ -25,7 +42,7 @@ func page(content any) any {
 
 func getNav() any {
 	return comp.Nav().Stacked(true).Links(
-		navLink("Dev Toys", "fa fa-home", "/"),
+		navLink("", "fa fa-home", "/"),
 		comp.NavLink().Mode("divider"),
 		navLink("Formatters", "fa fa-laptop-code", fmtPath),
 		navLink("Converters", "fa fa-right-left", convPath),

@@ -54,6 +54,7 @@ func Index() any {
 }
 
 func page(toolbar any, body ...any) any {
+	toolbar = comp.InputGroup().Body(comp.ThemeButtonGroupSelect().Name("theme"), comp.Wrapper(), toolbar)
 	return comp.Page().ClassName("p-8").Title(comp.Tpl().Tpl("TODOs").ClassName("font-bold")).Toolbar(toolbar).Body(body...)
 }
 

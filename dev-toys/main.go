@@ -6,6 +6,7 @@ import (
 
 	"github.com/zrcoder/amisgo-examples/dev-toys/assets"
 
+	"gitee.com/rdor/amis-sdk/sdk"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/conf"
 )
@@ -23,16 +24,17 @@ const (
 func main() {
 	app := amisgo.New(
 		conf.WithTitle("Dev Toys"),
-		conf.WithTheme(conf.ThemeDark),
+		conf.WithThemes(conf.ThemeCxd, conf.ThemeDark, conf.ThemeAntd, conf.ThemeAng),
+		conf.WithLocalSdk(http.FS(sdk.FS)),
 		conf.WithIcon("/static/favicon.ico"),
 	).
 		StaticFS("/static", http.FS(assets.FS)).
 		Redirect("/", fmtPath, http.StatusPermanentRedirect).
-		Mount(fmtPath, formatPage).
-		Mount(convPath, convPage).
-		Mount(genPath, genPage).
-		Mount(chartPath, chartPage).
-		Mount(encDecPath, encDecPage).
+		Mount(fmtPath, formatPage()).
+		Mount(convPath, convPage()).
+		Mount(genPath, genPage()).
+		Mount(chartPath, chartPage()).
+		Mount(encDecPath, encDecPage()).
 		HandleFunc(healthCheckPath, healthz)
 
 	port := ":8888"

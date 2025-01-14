@@ -15,10 +15,26 @@ import (
 )
 
 func main() {
+	options := []conf.Option{
+		conf.WithTitle("Goplus Playground"),
+		conf.WithIcon("/static/gop.svg"),
+	}
+	if os.Getenv("DEV") == "1" {
+		options = append(options, conf.WithLocalSdk(http.FS(sdk.FS)))
+	}
+
+	app := amisgo.New(options...).
+		Mount("/", index()).
+		StaticFS("/static", http.FS(static.FS))
+
+	err := app.Run()
+	check(err)
+}
+
+func index() any {
 	examples, defaultExample, err := example.Get()
 	check(err)
-
-	index := comp.Page().Body(
+	return comp.Page().Body(
 		comp.Form().WrapWithPanel(false).Body(
 			comp.Flex().Justify("space-between").Items(
 				comp.Group().Mode("inline").Body(
@@ -42,21 +58,6 @@ func main() {
 			comp.Code().Name("result").Language("plaintext"),
 		),
 	)
-
-	options := []conf.Option{
-		conf.WithTitle("Goplus Playground"),
-		conf.WithIcon("/static/gop.svg"),
-	}
-	if os.Getenv("DEV") == "1" {
-		options = append(options, conf.WithLocalSdk(http.FS(sdk.FS)))
-	}
-
-	app := amisgo.New(options...).
-		Mount("/", index).
-		StaticFS("/static", http.FS(static.FS))
-
-	err = app.Run()
-	check(err)
 }
 
 func check(err error) {
