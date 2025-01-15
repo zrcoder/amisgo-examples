@@ -9,11 +9,8 @@ import (
 
 func Index() any {
 	return page(
-		comp.Form().WrapWithPanel(false).InitApi(api.User).Api(api.Logout).Mode("inline").Body(
-			comp.InputGroup().Body(
-				comp.Tpl().ClassName("font-bold").ID("name").Tpl("${name}"),
-				comp.Button().Label("Logout").ActionType("submit").Redirect("/login"),
-			),
+		comp.Form().WrapWithPanel(false).Api(api.Logout).Mode("inline").Body(
+			comp.Button().Label("Logout").ActionType("submit").Redirect("/login"),
 		),
 		comp.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
 			Columns(
@@ -51,11 +48,6 @@ func Index() any {
 			),
 		comp.Button().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").ActionType("drawer").Drawer(detail("", "")),
 	)
-}
-
-func page(toolbar any, body ...any) any {
-	toolbar = comp.InputGroup().Body(comp.ThemeButtonGroupSelect().Name("theme"), comp.Wrapper(), toolbar)
-	return comp.Page().ClassName("p-8").Title(comp.Tpl().Tpl("TODOs").ClassName("font-bold")).Toolbar(toolbar).Body(body...)
 }
 
 func detail(getApi, editApi string) any {

@@ -17,8 +17,8 @@ func Login() any {
 		comp.Flex().ClassName("pt-20 bg-red").Items(
 			comp.Wrapper().ClassName("w-96").Body(
 				comp.Form().Title("").Api(api.Login).AutoFocus(true).Redirect("/todos").Body(
-					comp.InputText().Name("name").Label("Name").Value(demoInput),
-					comp.InputPassword().Name("password").Label("Password").Value(demoInput),
+					comp.InputText().Name("name").Label("Name").Value(demoInput).Required(true),
+					comp.InputPassword().Name("password").Label("Password").Value(demoInput).Required(true),
 				).Actions(
 					comp.Button().Label("sign up").ActionType("link").Link("/register"),
 					comp.Button().Primary(true).Label("login").ActionType("submit"),
@@ -34,8 +34,8 @@ func Register() any {
 		comp.Flex().ClassName("pt-20").Items(
 			comp.Wrapper().ClassName("w-96").Body(
 				comp.Form().Title("").Api(api.Register).AutoFocus(true).Redirect("/login").Body(
-					comp.InputText().Name("name").Label("Name"),
-					comp.InputPassword().Name("password").Label("Password"),
+					comp.InputText().Name("name").Label("Name").Required(true),
+					comp.InputPassword().Name("password").Label("Password").Required(true),
 				).Actions(
 					comp.Button().ActionType("submit").Label("sign up"),
 				),
