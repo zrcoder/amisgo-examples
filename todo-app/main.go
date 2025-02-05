@@ -36,7 +36,7 @@ func main() {
 	slog.Info("Graceful shutdown complete.")
 }
 
-func setup() *amisgo.Engine {
+func setup() *amisgo.App {
 	if !util.ReadOnly() {
 		logHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 			AddSource: true,
@@ -45,19 +45,21 @@ func setup() *amisgo.Engine {
 		slog.SetDefault(slog.New(logHandler))
 	}
 
-	return amisgo.New(
+	app := amisgo.New(
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
 		conf.WithThemes(conf.ThemeAng, conf.ThemeDark),
-	).
-		Handle(api.Prefix, api.New()).
-		Redirect("/", "/todos", http.StatusPermanentRedirect).
-		Mount("/todos", page.Index(), auth.UI).
-		Mount("/login", page.Login()).
-		Mount("/register", page.Register())
+	)
+	app.Handle(api.Prefix, api.New())
+	app.Redirect("/", "/todos", http.StatusPermanentRedirect)
+	app.Mount("/todos", page.Index(app), auth.UI)
+	app.Mount("/login", page.Login(app))
+	app.Mount("/register", page.Register(app))
+
+	return app
 }
 
-func run(app *amisgo.Engine) {
+func run(app *amisgo.App) {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
@@ -69,7 +71,7 @@ func run(app *amisgo.Engine) {
 	}
 }
 
-func waitForGracefulExit(app *amisgo.Engine, done chan bool) {
+func waitForGracefulExit(app *amisgo.App, done chan bool) {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 

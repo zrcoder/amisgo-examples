@@ -1,8 +1,10 @@
 package comp
 
-import "github.com/zrcoder/amisgo/comp"
+import (
+	"github.com/zrcoder/amisgo"
+)
 
-func DualEditor(left, right EditorCfg, title string, action, reverseAction func(input any) (output any, err error)) any {
+func DualEditor(app *amisgo.App, left, right EditorCfg, title string, action, reverseAction func(input any) (output any, err error)) any {
 	left.Name = "input"
 	right.Name = "output"
 	left.ReadOnly = true
@@ -12,18 +14,18 @@ func DualEditor(left, right EditorCfg, title string, action, reverseAction func(
 	if action != nil {
 		left.ReadOnly = false
 		actions = append(actions,
-			comp.Action().Label("▶").Transform(action, left.Name, right.Name))
+			app.Action().Label("▶").Transform(action, left.Name, right.Name))
 	}
 	if reverseAction != nil {
 		right.ReadOnly = false
 		actions = append(actions,
-			comp.Action().Label("◀︎").Transform(reverseAction, right.Name, left.Name))
+			app.Action().Label("◀︎").Transform(reverseAction, right.Name, left.Name))
 	}
-	return comp.Form().Title(title).ColumnCount(3).AutoFocus(true).WrapWithPanel(false).Body(
-		Editor(left),
-		comp.ButtonGroup().Vertical(true).Buttons(
+	return app.Form().Title(title).ColumnCount(3).AutoFocus(true).WrapWithPanel(false).Body(
+		Editor(app, left),
+		app.ButtonGroup().Vertical(true).Buttons(
 			actions...,
 		),
-		Editor(right),
+		Editor(app, right),
 	).Actions()
 }

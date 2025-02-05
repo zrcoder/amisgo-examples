@@ -1,21 +1,31 @@
 package pages
 
 import (
+	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 	"github.com/zrcoder/amisgo-examples/dev-toys/util"
 )
 
-var (
-	JsonFormatter = comp.DualEditor(jsonCfg, jsonCfg, "Json", func(input any) (any, error) {
+func JsonFormatter(app *amisgo.App) any {
+	return comp.DualEditor(app, jsonCfg, jsonCfg, "Json", func(input any) (any, error) {
 		return util.Json((input.(string)))
 	}, nil)
-	YamlFormatter = comp.DualEditor(yamlCfg, yamlCfg, "Yaml", func(input any) (any, error) {
+}
+
+func YamlFormatter(app *amisgo.App) any {
+	return comp.DualEditor(app, yamlCfg, yamlCfg, "Yaml", func(input any) (any, error) {
 		return util.Yaml((input.(string)))
 	}, nil)
-	TomlFormatter = comp.DualEditor(tomlCfg, tomlCfg, "Toml", func(input any) (any, error) {
+}
+
+func TomlFormatter(app *amisgo.App) any {
+	return comp.DualEditor(app, tomlCfg, tomlCfg, "Toml", func(input any) (any, error) {
 		return util.Toml((input.(string)))
 	}, nil)
-	HtmlFormatter = comp.DualEditor(htmlCfg, htmlCfg, "Html", func(input any) (any, error) {
+}
+
+func HtmlFormatter(app *amisgo.App) any {
+	return comp.DualEditor(app, htmlCfg, htmlCfg, "Html", func(input any) (any, error) {
 		return util.Html((input.(string)))
 	}, nil)
-)
+}

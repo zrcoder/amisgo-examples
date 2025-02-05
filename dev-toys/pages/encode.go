@@ -5,15 +5,16 @@ import (
 	"html"
 	"net/url"
 
+	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 	"github.com/zrcoder/amisgo-examples/dev-toys/util"
-
-	ac "github.com/zrcoder/amisgo/comp"
 	am "github.com/zrcoder/amisgo/model"
 )
 
-var (
-	Base64ED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Base64",
+func Base64ED(app *amisgo.App) any {
+	return comp.DualEditor(
+		app,
+		comp.EditorCfg{}, comp.EditorCfg{}, "Base64",
 		func(input any) (output any, err error) {
 			return base64.StdEncoding.EncodeToString([]byte(input.(string))), nil
 		},
@@ -24,33 +25,45 @@ var (
 			}
 			return string(out), nil
 		})
-	UrlED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Url",
+}
+
+func UrlED(app *amisgo.App) any {
+	return comp.DualEditor(
+		app,
+		comp.EditorCfg{}, comp.EditorCfg{}, "Url",
 		func(input any) (output any, err error) {
 			return url.QueryEscape(input.(string)), nil
 		},
 		func(input any) (output any, err error) {
 			return url.QueryUnescape(input.(string))
 		})
-	HtmlED = comp.DualEditor(comp.EditorCfg{}, comp.EditorCfg{}, "Html",
+}
+
+func HtmlED(app *amisgo.App) any {
+	return comp.DualEditor(
+		app,
+		comp.EditorCfg{}, comp.EditorCfg{}, "Html",
 		func(input any) (output any, err error) {
 			return html.EscapeString(input.(string)), nil
 		},
 		func(input any) (output any, err error) {
 			return html.UnescapeString(input.(string)), nil
 		})
+}
 
-	qrData []byte
-	Decqr  = ac.Form().ColumnCount(3).WrapWithPanel(false).Body(
-		ac.Flex().Style(am.Schema{"width": "45%"}).AlignItems("center").Items(
-			ac.InputImage().Name("img").Upload(int64(10*(1<<20)), func(data []byte) (path string, err error) {
+func Decqr(app *amisgo.App) any {
+	var qrData []byte
+	return app.Form().ColumnCount(3).WrapWithPanel(false).Body(
+		app.Flex().Style(am.Schema{"width": "45%"}).AlignItems("center").Items(
+			app.InputImage().Name("img").Upload(int64(10*(1<<20)), func(data []byte) (path string, err error) {
 				qrData = data
 				return "", err
 			}),
 		),
-		ac.Flex().Style(am.Schema{"width": "10%"}).AlignItems("center").Items(
-			ac.Action().ActionType("submit").Label("▶︎").Reload("out"),
+		app.Flex().Style(am.Schema{"width": "10%"}).AlignItems("center").Items(
+			app.Action().ActionType("submit").Label("▶︎").Reload("out"),
 		),
-		ac.Service().Style(am.Schema{"width": "45%"}).
+		app.Service().Style(am.Schema{"width": "45%"}).
 			Name("out").
 			GetData(func() (any, error) {
 				if qrData == nil {
@@ -59,7 +72,7 @@ var (
 				decodecQr, err := util.DecodeQr(qrData)
 				return am.Schema{"decqr": decodecQr}, err
 			}).Body(
-			comp.Editor(comp.EditorCfg{Name: "text", ReadOnly: true, Value: "${decqr}"}),
+			comp.Editor(app, comp.EditorCfg{Name: "text", ReadOnly: true, Value: "${decqr}"}),
 		),
 	)
-)
+}

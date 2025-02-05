@@ -9,24 +9,24 @@ import (
 
 	"gitee.com/rdor/amis-sdk/sdk"
 	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/amisgo/conf"
 	"github.com/zrcoder/amisgo/model"
 )
+
+var app *amisgo.App
 
 func main() {
 	options := []conf.Option{
 		conf.WithTitle("Goplus Playground"),
 		conf.WithIcon("/static/gop.svg"),
 	}
-	if os.Getenv("DEV") == "1" {
+	if os.Getenv("DEV") != "" {
 		options = append(options, conf.WithLocalSdk(http.FS(sdk.FS)))
 	}
 
-	app := amisgo.New(options...).
-		Mount("/", index()).
-		StaticFS("/static", http.FS(static.FS))
-
+	app = amisgo.New(options...)
+	app.Mount("/", index())
+	app.StaticFS("/static", http.FS(static.FS))
 	err := app.Run()
 	check(err)
 }
@@ -34,28 +34,28 @@ func main() {
 func index() any {
 	examples, defaultExample, err := example.Get()
 	check(err)
-	return comp.Page().Body(
-		comp.Form().WrapWithPanel(false).Body(
-			comp.Flex().Justify("space-between").Items(
-				comp.Group().Mode("inline").Body(
-					comp.Image().Alt("Go+").Src("/static/gop.svg").Height("20px").InnerClassName("border-none"),
-					comp.InputGroup().Body(
-						comp.Button().Primary(true).Label("Run").Transform(func(input any) (any, error) {
+	return app.Page().Body(
+		app.Form().WrapWithPanel(false).Body(
+			app.Flex().Justify("space-between").Items(
+				app.Group().Mode("inline").Body(
+					app.Image().Alt("Go+").Src("/static/gop.svg").Height("20px").InnerClassName("border-none"),
+					app.InputGroup().Body(
+						app.Button().Primary(true).Label("Run").Transform(func(input any) (any, error) {
 							return compile(input.(string))
 						}, "body", "result"),
-						comp.Button().Primary(true).Label("Format").Transform(func(input any) (any, error) {
+						app.Button().Primary(true).Label("Format").Transform(func(input any) (any, error) {
 							return format(input.(string))
 						}, "body", "body"),
 					),
-					comp.Select().Name("examples").Value(defaultExample).Options(
+					app.Select().Name("examples").Value(defaultExample).Options(
 						examples...,
 					),
 				),
-				comp.Button().Label("Github").ActionType("url").Icon("fa fa-github").Url("https://github.com/goplus/gop"),
+				app.Button().Label("Github").ActionType("url").Icon("fa fa-github").Url("https://github.com/goplus/gop"),
 			),
-			comp.Editor().Language("c").Name("body").Size("xxl").Value("${examples}").
+			app.Editor().Language("c").Name("body").Size("xxl").Value("${examples}").
 				AllowFullscreen(false).Options(model.Schema{"fontSize": 15}),
-			comp.Code().Name("result").Language("plaintext"),
+			app.Code().Name("result").Language("plaintext"),
 		),
 	)
 }

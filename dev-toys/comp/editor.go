@@ -1,7 +1,7 @@
 package comp
 
 import (
-	"github.com/zrcoder/amisgo/comp"
+	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/model"
 )
 
@@ -13,11 +13,11 @@ type EditorCfg struct {
 	ReadOnly bool
 }
 
-func Editor(e EditorCfg) any {
+func Editor(app *amisgo.App, e EditorCfg) any {
 	if e.Lang == "" {
 		e.Lang = "text"
 	}
-	return comp.Editor().
+	return app.Editor().
 		Name(e.Name).
 		Language(e.Lang).
 		Label(e.Label).

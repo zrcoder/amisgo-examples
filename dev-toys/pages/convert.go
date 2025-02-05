@@ -3,30 +3,37 @@ package pages
 import (
 	"bytes"
 
+	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 	"github.com/zrcoder/amisgo-examples/dev-toys/util"
 )
 
-var (
-	JsonYamlCvt = comp.DualEditor(jsonCfg, yamlCfg, "Json-Yaml",
+func JsonYamlCvt(app *amisgo.App) any {
+	return comp.DualEditor(app, jsonCfg, yamlCfg, "Json-Yaml",
 		func(input any) (output any, err error) {
 			return convert(input, util.Json2Yaml)
 		}, func(input any) (output any, err error) {
 			return convert(input, util.Yaml2Json)
 		})
-	JsonTomlCvt = comp.DualEditor(jsonCfg, tomlCfg, "Json-Toml",
+}
+
+func JsonTomlCvt(app *amisgo.App) any {
+	return comp.DualEditor(app, jsonCfg, tomlCfg, "Json-Toml",
 		func(input any) (output any, err error) {
 			return convert(input, util.Json2Toml)
 		}, func(input any) (output any, err error) {
 			return convert(input, util.Toml2Json)
 		})
-	YamlTomlCvt = comp.DualEditor(yamlCfg, tomlCfg, "Yaml-Toml",
+}
+
+func YamlTomlCvt(app *amisgo.App) any {
+	return comp.DualEditor(app, yamlCfg, tomlCfg, "Yaml-Toml",
 		func(input any) (output any, err error) {
 			return convert(input, util.Yaml2Toml)
 		}, func(input any) (output any, err error) {
 			return convert(input, util.Toml2Yaml)
 		})
-)
+}
 
 func convert(input any, cvt func([]byte) (*bytes.Buffer, error)) (string, error) {
 	buf, err := cvt([]byte(input.(string)))

@@ -1,10 +1,12 @@
 package page
 
-import "github.com/zrcoder/amisgo/comp"
+import (
+	"github.com/zrcoder/amisgo"
+)
 
-func page(toolbar any, body ...any) any {
-	toolbar = comp.InputGroup().Body(comp.ThemeButtonGroupSelect(), comp.Wrapper(), toolbar)
-	return comp.Page().UseMobileUI(false).ClassName("p-8").Title(
-		comp.Button().Label("TODOs").ActionType("link").Link("/").ClassName("font-bold bg-none border-none"),
+func page(app *amisgo.App, toolbar any, body ...any) any {
+	toolbar = app.InputGroup().Body(app.ThemeButtonGroupSelect(), app.Wrapper(), toolbar)
+	return app.Page().UseMobileUI(false).ClassName("p-8").Title(
+		app.Button().Label("TODOs").ActionType("link").Link("/").ClassName("font-bold bg-none border-none"),
 	).Toolbar(toolbar).Body(body...)
 }

@@ -12,6 +12,10 @@ import (
 	"github.com/BurntSushi/toml"
 	"github.com/ChimeraCoder/gojson"
 	decqr "github.com/tuotoo/qrcode"
+	"github.com/yassinebenaid/bunster/analyser"
+	"github.com/yassinebenaid/bunster/generator"
+	"github.com/yassinebenaid/bunster/lexer"
+	"github.com/yassinebenaid/bunster/parser"
 	"github.com/yosssi/gohtml"
 	"github.com/zrcoder/amisgo/model"
 	"github.com/zrcoder/cdor"
@@ -212,4 +216,20 @@ func DecodeQr(img []byte) (string, error) {
 		return "", err
 	}
 	return res.Content, nil
+}
+
+func Shell2Go(data []byte) (*bytes.Buffer, error) {
+	script, err := parser.Parse(lexer.New(data))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := analyser.Analyse(script); err != nil {
+		return nil, err
+	}
+
+	program := generator.Generate(script)
+	res := bytes.NewBuffer(nil)
+	res.WriteString(program.String())
+	return res, nil
 }
