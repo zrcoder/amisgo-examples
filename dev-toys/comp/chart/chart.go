@@ -22,80 +22,89 @@ const (
 	keyCommon  = "common"
 )
 
-func GenLine(app *amisgo.App, xAxis, values string) any {
-	storeCfg(keyLine, genCfg(app, xAxis, values, keyLine))
-	return gen(app, xAxis, values, keyLine)
+type Chart struct {
+	*amisgo.App
+	ConfigCache *sync.Map
 }
 
-func GenBar(app *amisgo.App, xAxis, values string) any {
-	storeCfg(keyBar, genCfg(app, xAxis, values, keyBar))
-	return gen(app, xAxis, values, keyBar)
+func New(app *amisgo.App) *Chart {
+	return &Chart{App: app, ConfigCache: &sync.Map{}}
 }
 
-func gen(app *amisgo.App, xAxis, values, cType string) any {
-	return app.Wrapper().Body(
-		app.Chart().Name(cType).GetData(func() (any, error) {
-			return loadCfg(cType), nil
+func (c *Chart) GenLine(xAxis, values string) any {
+	c.storeCfg(keyLine, c.genCfg(xAxis, values, keyLine))
+	return c.gen(xAxis, values, keyLine)
+}
+
+func (c *Chart) GenBar(xAxis, values string) any {
+	c.storeCfg(keyBar, c.genCfg(xAxis, values, keyBar))
+	return c.gen(xAxis, values, keyBar)
+}
+
+func (c *Chart) gen(xAxis, values, cType string) any {
+	return c.Wrapper().Body(
+		c.Chart().Name(cType).GetData(func() (any, error) {
+			return c.loadCfg(cType), nil
 		}),
-		app.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			app.Flex().ClassName("pb-4").Items(
-				app.Button().Label("▲").Reload(cType).ActionType("submit"),
+		c.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
+			c.Flex().ClassName("pb-4").Items(
+				c.Button().Label("▲").Reload(cType).ActionType("submit"),
 			),
-			app.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
-			app.InputText().Label("Values").Name("values").Value(values),
+			c.InputText().Label("XAxis").Name("xAxisData").Value(xAxis),
+			c.InputText().Label("Values").Name("values").Value(values),
 		).Submit(func(d am.Schema) error {
-			cfg := genCfg(app, d.Get("xAxisData").(string), d.Get("values").(string), cType)
-			storeCfg(cType, cfg)
+			cfg := c.genCfg(d.Get("xAxisData").(string), d.Get("values").(string), cType)
+			c.storeCfg(cType, cfg)
 			return nil
 		}),
 	)
 }
 
-func genCfg(app *amisgo.App, xAxisData, values string, cType string) am.ChartCfg {
-	return app.ChartConfig().
+func (c *Chart) genCfg(xAxisData, values string, cType string) am.ChartCfg {
+	return c.ChartConfig().
 		Tooltip(am.Schema{"trigger": "axis"}).
-		XAxis(am.ChartAxis{"type": "category", "data": strings.Split(xAxisData, ",")}).
-		YAxis(am.ChartAxis{"type": "value"}).
+		XAxis(c.ChartAxis().Type("category").Data(strings.Split(xAxisData, ","))).
+		YAxis(c.ChartAxis().Type("value")).
 		Series(
-			app.ChartSeries().
+			c.ChartSeries().
 				Type(cType).
 				Data(strings.Split(values, ",")))
 }
 
-func GenPolar(app *amisgo.App, input1, input2 string) any {
-	storeCfg(keyPolar, genPolarCfg(app, input1, input2))
-	return app.Wrapper().Body(
-		app.Chart().Name("polar-out").GetData(func() (any, error) {
-			return loadCfg(keyPolar), nil
+func (c *Chart) GenPolar(input1, input2 string) any {
+	c.storeCfg(keyPolar, c.genPolarCfg(input1, input2))
+	return c.Wrapper().Body(
+		c.Chart().Name("polar-out").GetData(func() (any, error) {
+			return c.loadCfg(keyPolar), nil
 		}),
-		app.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			app.Flex().ClassName("pb-4").Items(
-				app.Button().Label("▲").Reload("polar-out").ActionType("submit"),
+		c.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
+			c.Flex().ClassName("pb-4").Items(
+				c.Button().Label("▲").Reload("polar-out").ActionType("submit"),
 			),
-			app.InputText().Label("values1").Name("xAxisData").Value(input1),
-			app.InputText().Label("Values2").Name("values").Value(input2),
+			c.InputText().Label("values1").Name("xAxisData").Value(input1),
+			c.InputText().Label("Values2").Name("values").Value(input2),
 		).Submit(func(d am.Schema) error {
-			cfg := genPolarCfg(app, d.Get("xAxisData").(string), d.Get("values").(string))
-			storeCfg(keyPolar, cfg)
+			cfg := c.genPolarCfg(d.Get("xAxisData").(string), d.Get("values").(string))
+			c.storeCfg(keyPolar, cfg)
 			return nil
 		}),
 	)
 }
 
-func genPolarCfg(app *amisgo.App, input1, input2 string) am.ChartCfg {
+func (c *Chart) genPolarCfg(input1, input2 string) am.ChartCfg {
 	values1, values2 := strings.Split(input1, ","), strings.Split(input2, ",")
 	data := make([][2]string, min(len(values1), len(values2)))
 	for i := range data {
 		data[i] = [2]string{values1[i], values2[i]}
 	}
-	return app.ChartConfig().
+	return c.ChartConfig().
 		Polar(am.Schema{"center": []string{"50%", "54%"}}).
 		Tooltip(am.Schema{"trigger": "axis", "axisPointer": am.Schema{"type": "cross"}}).
-		AngleAxis(am.ChartAxis{"type": "value"}).
-		RadiusAxis(am.ChartAxis{"min": 0}).
-		AngleAxis(am.ChartAxis{"type": "value", "startAngle": 0}).
+		AngleAxis(c.ChartAxis().Type("value")).
+		RadiusAxis(c.ChartAxis().Min(0)).
+		AngleAxis(c.ChartAxis().Type("value").StartAngle(0)).
 		Series(
-			app.ChartSeries().
+			c.ChartSeries().
 				CoordinateSystem(keyPolar).
 				Name(keyLine).
 				Type(keyLine).
@@ -104,105 +113,105 @@ func genPolarCfg(app *amisgo.App, input1, input2 string) am.ChartCfg {
 		)
 }
 
-func GenScatter(app *amisgo.App, input1, input2 string) any {
-	storeCfg(keyScatter, genScatterCfg(app, input1, input2))
-	return app.Wrapper().Body(
-		app.Chart().Name("scatter-out").GetData(func() (any, error) {
-			return loadCfg(keyScatter), nil
+func (c *Chart) GenScatter(input1, input2 string) any {
+	c.storeCfg(keyScatter, c.genScatterCfg(input1, input2))
+	return c.Wrapper().Body(
+		c.Chart().Name("scatter-out").GetData(func() (any, error) {
+			return c.loadCfg(keyScatter), nil
 		}),
-		app.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			app.Flex().ClassName("pb-4").Items(
-				app.Button().Label("▲").Reload("scatter-out").ActionType("submit"),
+		c.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
+			c.Flex().ClassName("pb-4").Items(
+				c.Button().Label("▲").Reload("scatter-out").ActionType("submit"),
 			),
-			app.InputText().Label("X").Name("x").Value(input1),
-			app.InputText().Label("Y").Name("y").Value(input2),
+			c.InputText().Label("X").Name("x").Value(input1),
+			c.InputText().Label("Y").Name("y").Value(input2),
 		).Submit(func(d am.Schema) error {
-			cfg := genScatterCfg(app, d.Get("x").(string), d.Get("y").(string))
-			storeCfg(keyScatter, cfg)
+			cfg := c.genScatterCfg(d.Get("x").(string), d.Get("y").(string))
+			c.storeCfg(keyScatter, cfg)
 			return nil
 		}),
 	)
 }
 
-func genScatterCfg(app *amisgo.App, input1, input2 string) am.ChartCfg {
+func (c *Chart) genScatterCfg(input1, input2 string) am.ChartCfg {
 	arr1, arr2 := strings.Split(input1, ","), strings.Split(input2, ",")
 	data := make([][2]string, min(len(arr1), len(arr2)))
 	for i := range data {
 		data[i] = [2]string{strings.TrimSpace(arr1[i]), strings.TrimSpace(arr2[i])}
 	}
-	return app.ChartConfig().
-		XAxis(am.ChartAxis{"type": "value"}).
-		YAxis(am.ChartAxis{"type": "value"}).
+	return c.ChartConfig().
+		XAxis(c.ChartAxis().Type("value")).
+		YAxis(c.ChartAxis().Type("value")).
 		Tooltip(am.Schema{"trigger": "item"}).
 		Series(
-			app.ChartSeries().
+			c.ChartSeries().
 				Type(keyScatter).
 				Data(data).
 				ItemStyle(am.Schema{"color": "#4CAF50"}))
 }
 
-func GenPie(app *amisgo.App, data map[string]any) any {
-	storeCfg(keyPie, genPieCfg(app, data))
-	return app.Wrapper().Body(
-		app.Chart().Name("pie-out").GetData(func() (any, error) {
-			return loadCfg(keyPie), nil
+func (c *Chart) GenPie(data map[string]any) any {
+	c.storeCfg(keyPie, c.genPieCfg(data))
+	return c.Wrapper().Body(
+		c.Chart().Name("pie-out").GetData(func() (any, error) {
+			return c.loadCfg(keyPie), nil
 		}),
-		app.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			app.Flex().ClassName("pb-4").Items(
-				app.Button().Label("▲").Reload("pie-out").ActionType("submit"),
+		c.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
+			c.Flex().ClassName("pb-4").Items(
+				c.Button().Label("▲").Reload("pie-out").ActionType("submit"),
 			),
-			app.InputKV().Name("pd").ValueType("input-number").Value(data),
+			c.InputKV().Name("pd").ValueType("input-number").Value(data),
 		).Submit(func(d am.Schema) error {
 			kvs := d.Get("pd").(map[string]any)
-			storeCfg(keyPie, genPieCfg(app, kvs))
+			c.storeCfg(keyPie, c.genPieCfg(kvs))
 			return nil
 		}),
 	)
 }
 
-func genPieCfg(app *amisgo.App, kvs map[string]any) am.ChartCfg {
+func (c *Chart) genPieCfg(kvs map[string]any) am.ChartCfg {
 	data := make([]am.Schema, 0, len(kvs))
 	for k, v := range kvs {
 		data = append(data, am.Schema{"name": k, "value": v})
 	}
-	return app.ChartConfig().
+	return c.ChartConfig().
 		Tooltip(am.Schema{"trigger": "item"}).
-		Series(app.ChartSeries().Type(keyPie).
+		Series(c.ChartSeries().Type(keyPie).
 			Data(data).
 			Label(am.Schema{"formatter": "{b}:  {d}%", "backgroundColor": "#5971C0", "borderRadius": 10, "padding": 5}))
 }
 
-func GenRadar(app *amisgo.App, data map[string]any) any {
-	storeCfg(keyRadar, genRadarCfg(app, data))
-	return app.Wrapper().Body(
-		app.Chart().Name("radar-out").GetData(func() (any, error) {
-			return loadCfg(keyRadar), nil
+func (c *Chart) GenRadar(data map[string]any) any {
+	c.storeCfg(keyRadar, c.genRadarCfg(data))
+	return c.Wrapper().Body(
+		c.Chart().Name("radar-out").GetData(func() (any, error) {
+			return c.loadCfg(keyRadar), nil
 		}),
-		app.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
-			app.Flex().ClassName("pb-4").Items(
-				app.Button().Label("▲").Reload("radar-out").ActionType("submit"),
+		c.Form().Mode("horizontal").Horizontal(am.Schema{"justify": true}).WrapWithPanel(false).Actions().Body(
+			c.Flex().ClassName("pb-4").Items(
+				c.Button().Label("▲").Reload("radar-out").ActionType("submit"),
 			),
-			app.InputKV().Name("rd").ValueType("input-number").Value(data),
+			c.InputKV().Name("rd").ValueType("input-number").Value(data),
 		).Submit(func(d am.Schema) error {
 			kvs := d.Get("rd").(map[string]any)
-			storeCfg(keyRadar, genRadarCfg(app, kvs))
+			c.storeCfg(keyRadar, c.genRadarCfg(kvs))
 			return nil
 		}),
 	)
 }
 
-func genRadarCfg(app *amisgo.App, kvs map[string]any) am.ChartCfg {
+func (c *Chart) genRadarCfg(kvs map[string]any) am.ChartCfg {
 	ind := make([]am.Schema, 0, len(kvs))
 	values := make([]float64, 0, len(kvs))
 	for k, v := range kvs {
 		ind = append(ind, am.Schema{"name": k, "max": 100})
 		values = append(values, v.(float64))
 	}
-	return app.ChartConfig().
+	return c.ChartConfig().
 		Tooltip(am.Schema{"trigger": "item"}).
 		Radar(am.Schema{"indicator": ind}).
 		Series(
-			app.ChartSeries().
+			c.ChartSeries().
 				Name("Athlete Performance").
 				Type(keyRadar).
 				Data([]am.Schema{
@@ -215,18 +224,18 @@ func genRadarCfg(app *amisgo.App, kvs map[string]any) am.ChartCfg {
 				LineStyle(am.Schema{"color": "#FF6384"}))
 }
 
-func GenCommon(app *amisgo.App, commCfg string) any {
-	storeCfg(keyCommon, genCommonCfg(commCfg))
-	return app.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
-		app.Wrapper().Style(am.Schema{"width": "50%"}).Body(
-			comp.Editor(app, comp.EditorCfg{Lang: "json", Name: "in", Value: commCfg}),
+func (c *Chart) GenCommon(commCfg string) any {
+	c.storeCfg(keyCommon, c.genCommonCfg(commCfg))
+	return c.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
+		c.Wrapper().Style(am.Schema{"width": "50%"}).Body(
+			comp.Editor(c.App, comp.EditorCfg{Lang: "json", Name: "in", Value: commCfg}),
 		),
-		app.ButtonGroup().Vertical(true).Buttons(
-			app.Button().Label("▶︎").Reload("diy-out").ActionType("submit"),
+		c.ButtonGroup().Vertical(true).Buttons(
+			c.Button().Label("▶︎").Reload("diy-out").ActionType("submit"),
 		),
-		app.Flex().Style(am.Schema{"width": "40%"}).AlignItems("center").Items(
-			app.Chart().Name("diy-out").GetData(func() (any, error) {
-				return loadCfg(keyCommon), nil
+		c.Flex().Style(am.Schema{"width": "40%"}).AlignItems("center").Items(
+			c.Chart().Name("diy-out").GetData(func() (any, error) {
+				return c.loadCfg(keyCommon), nil
 			}),
 		),
 	).Submit(func(d am.Schema) error {
@@ -236,24 +245,22 @@ func GenCommon(app *amisgo.App, commCfg string) any {
 		if err != nil {
 			return err
 		}
-		storeCfg(keyCommon, cfg)
+		c.storeCfg(keyCommon, cfg)
 		return nil
 	})
 }
 
-func genCommonCfg(input string) am.ChartCfg {
+func (c *Chart) genCommonCfg(input string) am.ChartCfg {
 	var cfg am.ChartCfg
 	json.Unmarshal([]byte(input), &cfg)
 	return cfg
 }
 
-var ConfigCache sync.Map
-
-func loadCfg(key string) am.ChartCfg {
-	res, _ := ConfigCache.Load(key)
+func (c *Chart) loadCfg(key string) am.ChartCfg {
+	res, _ := c.ConfigCache.Load(key)
 	return res.(am.ChartCfg)
 }
 
-func storeCfg(key string, val am.ChartCfg) {
-	ConfigCache.Store(key, val)
+func (c *Chart) storeCfg(key string, val am.ChartCfg) {
+	c.ConfigCache.Store(key, val)
 }

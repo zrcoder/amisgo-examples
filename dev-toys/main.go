@@ -6,26 +6,18 @@ import (
 	"os"
 
 	"github.com/zrcoder/amisgo-examples/dev-toys/assets"
+	"github.com/zrcoder/amisgo-examples/dev-toys/routes"
+	"github.com/zrcoder/amisgo-examples/dev-toys/ui"
 
 	"gitee.com/rdor/amis-sdk/sdk"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/conf"
 )
 
-const (
-	fmtPath    = "/fmt"
-	convPath   = "/conv"
-	genPath    = "/gen"
-	chartPath  = "/chart"
-	encDecPath = "/enc"
-
-	healthCheckPath = "/healthz"
-)
-
 func main() {
 	options := []conf.Option{
 		conf.WithTitle("Dev Toys"),
-		conf.WithThemes(conf.ThemeCxd, conf.ThemeDark, conf.ThemeAntd, conf.ThemeAng),
+		conf.WithThemes(conf.ThemeDark, conf.ThemeCxd, conf.ThemeAntd),
 		conf.WithIcon("/static/favicon.ico"),
 	}
 	if os.Getenv("DEV") != "" {
@@ -33,15 +25,20 @@ func main() {
 	}
 	app := amisgo.New(options...)
 	app.StaticFS("/static", http.FS(assets.FS))
-	app.Redirect("/", fmtPath, http.StatusPermanentRedirect)
-	app.HandleFunc(healthCheckPath, healthz)
-	app.Mount(fmtPath, formatPage(app))
-	app.Mount(convPath, convPage(app))
-	app.Mount(genPath, genPage(app))
-	app.Mount(chartPath, chartPage(app))
-	app.Mount(encDecPath, encDecPage(app))
+	app.Redirect("/", routes.Fmt, http.StatusPermanentRedirect)
+	app.HandleFunc(routes.HealthCheck, healthz)
 
-	port := ":8888"
+	ui := ui.New(app)
+	app.Mount(routes.Fmt, ui.FormatPage())
+	app.Mount(routes.Conv, ui.ConvPage())
+	app.Mount(routes.Gen, ui.GenPage())
+	app.Mount(routes.Chart, ui.ChartPage())
+	app.Mount(routes.EncDec, ui.EncDecPage())
+
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = ":8888"
+	}
 	log.Printf("Starting server on http://localhost%s\n", port)
 
 	if err := app.Run(port); err != nil {

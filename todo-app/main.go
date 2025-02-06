@@ -13,7 +13,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 	"github.com/zrcoder/amisgo-examples/todo-app/auth"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
-	"github.com/zrcoder/amisgo-examples/todo-app/page"
+	"github.com/zrcoder/amisgo-examples/todo-app/ui"
 	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/zrcoder/amisgo"
@@ -50,11 +50,12 @@ func setup() *amisgo.App {
 		conf.WithTitle(title),
 		conf.WithThemes(conf.ThemeAng, conf.ThemeDark),
 	)
+	ui := ui.New(app)
 	app.Handle(api.Prefix, api.New())
 	app.Redirect("/", "/todos", http.StatusPermanentRedirect)
-	app.Mount("/todos", page.Index(app), auth.UI)
-	app.Mount("/login", page.Login(app))
-	app.Mount("/register", page.Register(app))
+	app.Mount("/todos", ui.Index(), auth.UI)
+	app.Mount("/login", ui.Login())
+	app.Mount("/register", ui.Register())
 
 	return app
 }

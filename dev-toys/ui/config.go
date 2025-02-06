@@ -1,4 +1,4 @@
-package pages
+package ui
 
 import (
 	_ "embed"
