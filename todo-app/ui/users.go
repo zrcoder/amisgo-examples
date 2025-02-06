@@ -18,8 +18,8 @@ func (u *UI) Login() any {
 					u.InputText().Name("name").Label("Name").Value(demoInput).Required(true),
 					u.InputPassword().Name("password").Label("Password").Value(demoInput).Required(true),
 				).Actions(
-					u.Button().Label("sign up").ActionType("link").Link("/register"),
-					u.Button().Primary(true).Label("login").ActionType("submit"),
+					u.Action().Label("sign up").ActionType("link").Link("/register"),
+					u.SubmitAction().Primary(true).Label("login"),
 				),
 			),
 		),
@@ -35,7 +35,7 @@ func (u *UI) Register() any {
 					u.InputText().Name("name").Label("Name").Required(true),
 					u.InputPassword().Name("password").Label("Password").Required(true),
 				).Actions(
-					u.Button().ActionType("submit").Label("sign up"),
+					u.SubmitAction().Label("sign up"),
 				),
 			),
 		),

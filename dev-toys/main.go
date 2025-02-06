@@ -37,11 +37,11 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = ":8888"
+		port = "8888"
 	}
-	log.Printf("Starting server on http://localhost%s\n", port)
+	log.Printf("Starting server on http://localhost:%s\n", port)
 
-	if err := app.Run(port); err != nil {
+	if err := app.Run(":" + port); err != nil {
 		log.Fatalf("Server failed to start: %v\n", err)
 	}
 }

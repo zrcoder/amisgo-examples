@@ -18,7 +18,7 @@ func New(app *amisgo.App) *UI {
 func (u *UI) Index() any {
 	return u.page(
 		u.Form().WrapWithPanel(false).Api(api.Logout).Mode("inline").Body(
-			u.Button().Label("Logout").ActionType("submit").Redirect("/login"),
+			u.SubmitAction().Label("Logout").Redirect("/login").Api(api.Logout),
 		),
 		u.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
 			Columns(
@@ -31,8 +31,8 @@ func (u *UI) Index() any {
 				u.Form().Title("").Body(
 					u.Switch().Name("is_completed").Label("Done"),
 					u.InputText().Name("title").Label("Keywords"),
-					u.Button().Icon("fa fa-search").Label("Search").Primary(true).ActionType("submit"),
-					u.Button().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
+					u.SubmitAction().Icon("fa fa-search").Label("Search").Primary(true),
+					u.Action().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
 				).Actions()).
 			OnEvent(
 				am.Schema{
@@ -52,9 +52,9 @@ func (u *UI) Index() any {
 			).
 			FooterToolbar().
 			BulkActions(
-				u.Button().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
+				u.Action().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
 			),
-		u.Button().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").ActionType("drawer").Drawer(u.detail("", "")),
+		u.DrawerAction().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").Drawer(u.detail("", "")),
 	)
 }
 
