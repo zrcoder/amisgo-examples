@@ -18,6 +18,7 @@ import (
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/conf"
+	"github.com/zrcoder/amisgo/theme"
 )
 
 const (
@@ -48,7 +49,10 @@ func setup() *amisgo.App {
 	app := amisgo.New(
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
-		conf.WithThemes(conf.ThemeAng, conf.ThemeDark),
+		conf.WithThemes(
+			theme.Theme{Value: theme.Ang, Label: "Light"},
+			theme.Theme{Value: theme.Dark, Label: "Dark"},
+		),
 	)
 	ui := ui.New(app)
 	app.Handle(api.Prefix, api.New())

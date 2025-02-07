@@ -12,12 +12,17 @@ import (
 	"gitee.com/rdor/amis-sdk/sdk"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/conf"
+	"github.com/zrcoder/amisgo/theme"
 )
 
 func main() {
 	options := []conf.Option{
 		conf.WithTitle("Dev Toys"),
-		conf.WithThemes(conf.ThemeDark, conf.ThemeCxd, conf.ThemeAntd),
+		conf.WithThemes(
+			theme.Theme{Value: theme.Dark},
+			theme.Theme{Value: theme.Cxd},
+			theme.Theme{Value: theme.Antd},
+		),
 		conf.WithIcon("/static/favicon.ico"),
 	}
 	if os.Getenv("DEV") != "" {
