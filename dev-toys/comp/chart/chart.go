@@ -6,9 +6,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 
+	ac "github.com/zrcoder/amisgo/comp"
 	am "github.com/zrcoder/amisgo/model"
 )
 
@@ -23,25 +23,25 @@ const (
 )
 
 type Chart struct {
-	*amisgo.App
+	*comp.Comp
 	ConfigCache *sync.Map
 }
 
-func New(app *amisgo.App) *Chart {
-	return &Chart{App: app, ConfigCache: &sync.Map{}}
+func New(c *comp.Comp) *Chart {
+	return &Chart{Comp: c, ConfigCache: &sync.Map{}}
 }
 
-func (c *Chart) GenLine(xAxis, values string) any {
+func (c *Chart) GenLine(xAxis, values string) ac.Wrapper {
 	c.storeCfg(keyLine, c.genCfg(xAxis, values, keyLine))
 	return c.gen(xAxis, values, keyLine)
 }
 
-func (c *Chart) GenBar(xAxis, values string) any {
+func (c *Chart) GenBar(xAxis, values string) ac.Wrapper {
 	c.storeCfg(keyBar, c.genCfg(xAxis, values, keyBar))
 	return c.gen(xAxis, values, keyBar)
 }
 
-func (c *Chart) gen(xAxis, values, cType string) any {
+func (c *Chart) gen(xAxis, values, cType string) ac.Wrapper {
 	return c.Wrapper().Body(
 		c.Chart().Name(cType).GetData(func() (any, error) {
 			return c.loadCfg(cType), nil
@@ -71,7 +71,7 @@ func (c *Chart) genCfg(xAxisData, values string, cType string) am.ChartCfg {
 				Data(strings.Split(values, ",")))
 }
 
-func (c *Chart) GenPolar(input1, input2 string) any {
+func (c *Chart) GenPolar(input1, input2 string) ac.Wrapper {
 	c.storeCfg(keyPolar, c.genPolarCfg(input1, input2))
 	return c.Wrapper().Body(
 		c.Chart().Name("polar-out").GetData(func() (any, error) {
@@ -113,7 +113,7 @@ func (c *Chart) genPolarCfg(input1, input2 string) am.ChartCfg {
 		)
 }
 
-func (c *Chart) GenScatter(input1, input2 string) any {
+func (c *Chart) GenScatter(input1, input2 string) ac.Wrapper {
 	c.storeCfg(keyScatter, c.genScatterCfg(input1, input2))
 	return c.Wrapper().Body(
 		c.Chart().Name("scatter-out").GetData(func() (any, error) {
@@ -150,7 +150,7 @@ func (c *Chart) genScatterCfg(input1, input2 string) am.ChartCfg {
 				ItemStyle(am.Schema{"color": "#4CAF50"}))
 }
 
-func (c *Chart) GenPie(data map[string]any) any {
+func (c *Chart) GenPie(data map[string]any) ac.Wrapper {
 	c.storeCfg(keyPie, c.genPieCfg(data))
 	return c.Wrapper().Body(
 		c.Chart().Name("pie-out").GetData(func() (any, error) {
@@ -181,7 +181,7 @@ func (c *Chart) genPieCfg(kvs map[string]any) am.ChartCfg {
 			Label(am.Schema{"formatter": "{b}:  {d}%", "backgroundColor": "#5971C0", "borderRadius": 10, "padding": 5}))
 }
 
-func (c *Chart) GenRadar(data map[string]any) any {
+func (c *Chart) GenRadar(data map[string]any) ac.Wrapper {
 	c.storeCfg(keyRadar, c.genRadarCfg(data))
 	return c.Wrapper().Body(
 		c.Chart().Name("radar-out").GetData(func() (any, error) {
@@ -224,32 +224,24 @@ func (c *Chart) genRadarCfg(kvs map[string]any) am.ChartCfg {
 				LineStyle(am.Schema{"color": "#FF6384"}))
 }
 
-func (c *Chart) GenCommon(commCfg string) any {
+func (c *Chart) GenCommon(commCfg string) ac.Form {
 	c.storeCfg(keyCommon, c.genCommonCfg(commCfg))
-	return c.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
-		c.Wrapper().ClassName("w-1/2").Body(
-			comp.Editor(c.App, comp.EditorCfg{Lang: "json", Name: "in", Value: commCfg}),
-		),
-		c.ButtonGroup().Vertical(true).Buttons(
-			c.Button().Label("▶︎").Reload("diy-out").ActionType("submit"),
-		),
-		c.Wrapper().ClassName("w-2/5").Body(
-			c.Flex().ClassName("h-full").AlignItems("center").Items(
-				c.Chart().Name("diy-out").GetData(func() (any, error) {
-					return c.loadCfg(keyCommon), nil
-				}),
-			),
-		),
-	).Submit(func(d am.Schema) error {
-		data := []byte(d.Get("in").(string))
-		var cfg am.ChartCfg
-		err := json.Unmarshal(data, &cfg)
-		if err != nil {
-			return err
-		}
-		c.storeCfg(keyCommon, cfg)
-		return nil
-	})
+	return c.EditorChart(
+		commCfg,
+		func() (any, error) {
+			return c.loadCfg(keyCommon), nil
+		},
+		func(d am.Schema) error {
+			data := []byte(d.Get("in").(string))
+			var cfg am.ChartCfg
+			err := json.Unmarshal(data, &cfg)
+			if err != nil {
+				return err
+			}
+			c.storeCfg(keyCommon, cfg)
+			return nil
+		},
+	)
 }
 
 func (c *Chart) genCommonCfg(input string) am.ChartCfg {

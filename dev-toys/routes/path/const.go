@@ -1,4 +1,4 @@
-package routes
+package path
 
 const (
 	Fmt         = "/fmt"

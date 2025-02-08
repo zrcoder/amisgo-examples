@@ -1,9 +1,6 @@
 package ui
 
-import (
-	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo-examples/dev-toys/comp/chart"
-)
+import "github.com/zrcoder/amisgo/comp"
 
 const (
 	lineXAxis      = `Jan, Feb, Mar, Apr, May`
@@ -23,15 +20,10 @@ var pieRadarData = map[string]any{
 	"D": 72.0,
 }
 
-type Chart struct {
-	*chart.Chart
-}
-
-func NewChart(app *amisgo.App) *Chart { return &Chart{chart.New(app)} }
-func (c *Chart) Line() any            { return c.GenLine(lineXAxis, lineValues) }
-func (c *Chart) Bar() any             { return c.GenBar(barXAxis, barValues) }
-func (c *Chart) Polar() any           { return c.GenPolar(polarValues1, polarValues2) }
-func (c *Chart) Pie() any             { return c.GenPie(pieRadarData) }
-func (c *Chart) Scatter() any         { return c.GenScatter(scatterXValues, scatterYValues) }
-func (c *Chart) Radar() any           { return c.GenRadar(pieRadarData) }
-func (c *Chart) Diy() any             { return c.GenCommon(sampleChartCfg) }
+func (u *UI) Line() comp.Wrapper    { return u.chart.GenLine(lineXAxis, lineValues) }
+func (u *UI) Bar() comp.Wrapper     { return u.chart.GenBar(barXAxis, barValues) }
+func (u *UI) Polar() comp.Wrapper   { return u.chart.GenPolar(polarValues1, polarValues2) }
+func (u *UI) Pie() comp.Wrapper     { return u.chart.GenPie(pieRadarData) }
+func (u *UI) Scatter() comp.Wrapper { return u.chart.GenScatter(scatterXValues, scatterYValues) }
+func (u *UI) Radar() comp.Wrapper   { return u.chart.GenRadar(pieRadarData) }
+func (u *UI) Diy() comp.Form        { return u.chart.GenCommon(sampleChartCfg) }

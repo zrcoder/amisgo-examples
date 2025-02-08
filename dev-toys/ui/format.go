@@ -1,37 +1,30 @@
 package ui
 
 import (
-	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 	"github.com/zrcoder/amisgo-examples/dev-toys/util"
+	"github.com/zrcoder/amisgo/comp"
 )
 
-type Formatters struct {
-	*amisgo.App
-}
-
-func NewFormatters(app *amisgo.App) *Formatters { return &Formatters{App: app} }
-
-func (f *Formatters) JsonFormatter() any {
-	return comp.DualEditor(f.App, jsonCfg, jsonCfg, "Json", func(input any) (any, error) {
+func (u *UI) JsonFormatter() comp.Form {
+	return u.DualEditor(jsonCfg, jsonCfg, "Json", func(input any) (any, error) {
 		return util.Json((input.(string)))
 	}, nil)
 }
 
-func (f *Formatters) YamlFormatter() any {
-	return comp.DualEditor(f.App, yamlCfg, yamlCfg, "Yaml", func(input any) (any, error) {
+func (u *UI) YamlFormatter() comp.Form {
+	return u.DualEditor(yamlCfg, yamlCfg, "Yaml", func(input any) (any, error) {
 		return util.Yaml((input.(string)))
 	}, nil)
 }
 
-func (f *Formatters) TomlFormatter() any {
-	return comp.DualEditor(f.App, tomlCfg, tomlCfg, "Toml", func(input any) (any, error) {
+func (u *UI) TomlFormatter() comp.Form {
+	return u.DualEditor(tomlCfg, tomlCfg, "Toml", func(input any) (any, error) {
 		return util.Toml((input.(string)))
 	}, nil)
 }
 
-func (f *Formatters) HtmlFormatter() any {
-	return comp.DualEditor(f.App, htmlCfg, htmlCfg, "Html", func(input any) (any, error) {
+func (u *UI) HtmlFormatter() comp.Form {
+	return u.DualEditor(htmlCfg, htmlCfg, "Html", func(input any) (any, error) {
 		return util.Html((input.(string)))
 	}, nil)
 }
