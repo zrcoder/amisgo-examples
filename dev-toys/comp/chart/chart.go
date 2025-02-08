@@ -227,16 +227,18 @@ func (c *Chart) genRadarCfg(kvs map[string]any) am.ChartCfg {
 func (c *Chart) GenCommon(commCfg string) any {
 	c.storeCfg(keyCommon, c.genCommonCfg(commCfg))
 	return c.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
-		c.Wrapper().Style(am.Schema{"width": "50%"}).Body(
+		c.Wrapper().ClassName("w-1/2").Body(
 			comp.Editor(c.App, comp.EditorCfg{Lang: "json", Name: "in", Value: commCfg}),
 		),
 		c.ButtonGroup().Vertical(true).Buttons(
 			c.Button().Label("▶︎").Reload("diy-out").ActionType("submit"),
 		),
-		c.Flex().Style(am.Schema{"width": "40%"}).AlignItems("center").Items(
-			c.Chart().Name("diy-out").GetData(func() (any, error) {
-				return c.loadCfg(keyCommon), nil
-			}),
+		c.Wrapper().ClassName("w-2/5").Body(
+			c.Flex().ClassName("h-full").AlignItems("center").Items(
+				c.Chart().Name("diy-out").GetData(func() (any, error) {
+					return c.loadCfg(keyCommon), nil
+				}),
+			),
 		),
 	).Submit(func(d am.Schema) error {
 		data := []byte(d.Get("in").(string))

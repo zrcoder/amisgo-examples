@@ -60,16 +60,18 @@ func (e *Encoders) HtmlED() any {
 func (e *Encoders) Decqr() any {
 	var qrData []byte
 	return e.Form().ColumnCount(3).WrapWithPanel(false).Body(
-		e.Flex().Style(am.Schema{"width": "45%"}).AlignItems("center").Items(
-			e.InputImage().Name("img").Upload(int64(10*(1<<20)), func(data []byte) (path string, err error) {
-				qrData = data
-				return "", err
-			}),
+		e.Wrapper().ClassName("w-2/5").Body(
+			e.Flex().ClassName("h-full").AlignItems("center").Items(
+				e.InputImage().Name("img").Upload(int64(10*(1<<20)), func(data []byte) (path string, err error) {
+					qrData = data
+					return "", err
+				}),
+			),
 		),
-		e.Flex().Style(am.Schema{"width": "10%"}).AlignItems("center").Items(
+		e.ButtonGroup().ClassName("pr-5").Vertical(true).Buttons(
 			e.Action().ActionType("submit").Label("▶︎").Reload("out"),
 		),
-		e.Service().Style(am.Schema{"width": "45%"}).
+		e.Service().ClassName("w-1/2").
 			Name("out").
 			GetData(func() (any, error) {
 				if qrData == nil {

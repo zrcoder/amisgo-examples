@@ -30,11 +30,13 @@ func (g *Generators) JsonViewer() any {
 
 func (g *Generators) Qrcode() any {
 	return g.Form().AutoFocus(true).ColumnCount(2).WrapWithPanel(false).Body(
-		g.Wrapper().ClassName("w-2/4").Body(
+		g.Wrapper().ClassName("w-1/2").Body(
 			comp.Editor(g.App, comp.EditorCfg{Lang: "text", Name: "editor"}),
 		),
-		g.Flex().ClassName("w-2/4").AlignItems("center").Items(
-			g.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
+		g.Wrapper().ClassName("w-1/2").Body(
+			g.Flex().ClassName("h-full").AlignItems("center").Items(
+				g.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
+			),
 		),
 	)
 }
