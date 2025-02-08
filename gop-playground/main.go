@@ -9,6 +9,7 @@ import (
 
 	"gitee.com/rdor/amis-sdk/sdk"
 	"github.com/zrcoder/amisgo"
+	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/amisgo/conf"
 	"github.com/zrcoder/amisgo/model"
 )
@@ -31,7 +32,7 @@ func main() {
 	check(err)
 }
 
-func index() any {
+func index() comp.Page {
 	examples, defaultExample, err := example.Get()
 	check(err)
 	return app.Page().Body(
