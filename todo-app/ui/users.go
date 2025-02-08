@@ -3,9 +3,10 @@ package ui
 import (
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 	"github.com/zrcoder/amisgo-examples/todo-app/util"
+	"github.com/zrcoder/amisgo/comp"
 )
 
-func (u *UI) Login() any {
+func (u *UI) Login() comp.Page {
 	demoInput := ""
 	if util.ReadOnly() {
 		demoInput = "amisgo"
@@ -26,7 +27,7 @@ func (u *UI) Login() any {
 	)
 }
 
-func (u *UI) Register() any {
+func (u *UI) Register() comp.Page {
 	return u.page(
 		"",
 		u.Flex().ClassName("pt-20").Items(

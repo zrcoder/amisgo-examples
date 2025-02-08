@@ -4,6 +4,7 @@ import (
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 
+	"github.com/zrcoder/amisgo/comp"
 	am "github.com/zrcoder/amisgo/model"
 )
 
@@ -15,7 +16,7 @@ func New(app *amisgo.App) *UI {
 	return &UI{App: app}
 }
 
-func (u *UI) Index() any {
+func (u *UI) Index() comp.Page {
 	return u.page(
 		u.Form().WrapWithPanel(false).Api(api.Logout).Mode("inline").Body(
 			u.SubmitAction().Label("Logout").Redirect("/login").Api(api.Logout),
@@ -58,7 +59,7 @@ func (u *UI) Index() any {
 	)
 }
 
-func (u *UI) detail(getApi, editApi string) any {
+func (u *UI) detail(getApi, editApi string) comp.Drawer {
 	isCreate := getApi == ""
 
 	form := u.Form().Mode("normal").AutoFocus(true).WrapWithPanel(false).Body(
