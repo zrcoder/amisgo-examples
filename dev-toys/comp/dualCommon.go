@@ -25,7 +25,18 @@ func (c *Comp) EditorJson(value string) comp.Form {
 func (c *Comp) EditorQrCoder() comp.Form {
 	return c.DualForm(
 		c.Editor(EditorCfg{Lang: "text", Name: "editor"}),
-		c.QRCode().Name("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
+		c.Wrapper().Body(
+			c.QRCode().ID("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
+			c.Action().ClassName("w-full").Icon("fa fa-download").Label("Download").VisibleOn("${editor !== ''}").OnEvent(
+				model.Schema{
+					"click": model.Schema{
+						"actions": []model.EventAction{
+							c.EventAction().ActionType("saveAs").ComponentID("qrcode").Args(model.Schema{"name": "download.png"}),
+						},
+					},
+				},
+			),
+		),
 		true,
 	)
 }

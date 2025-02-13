@@ -41,9 +41,13 @@ func index() comp.Page {
 				app.Group().Mode("inline").Body(
 					app.Image().Alt("Go+").Src("/static/gop.svg").Height("20px").InnerClassName("border-none"),
 					app.InputGroup().Body(
-						app.Button().Primary(true).Label("Run").Transform(func(input any) (any, error) {
-							return compile(input.(string))
-						}, "body", "result"),
+						app.Button().Primary(true).Label("Run").TransformMultiple(func(s model.Schema) (model.Schema, error) {
+							res, err := compile(s.Get("body").(string))
+							if err != nil {
+								return model.Schema{"result": "❌ " + err.Error()}, nil
+							}
+							return model.Schema{"result": res}, nil
+						}, "body"),
 						app.Button().Primary(true).Label("Format").Transform(func(input any) (any, error) {
 							return format(input.(string))
 						}, "body", "body"),
