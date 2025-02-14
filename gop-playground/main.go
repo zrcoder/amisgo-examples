@@ -7,7 +7,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/gop-playground/example"
 	"github.com/zrcoder/amisgo-examples/gop-playground/static"
 
-	"gitee.com/rdor/amis-sdk/sdk"
+	sdk "gitee.com/rdor/amis-sdk"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/amisgo/conf"

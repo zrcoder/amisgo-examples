@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"os"
 
-	"gitee.com/rdor/amis-sdk/sdk"
+	sdk "gitee.com/rdor/amis-sdk"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo-examples/dev-toys/assets"
 	"github.com/zrcoder/amisgo-examples/dev-toys/routes/path"
