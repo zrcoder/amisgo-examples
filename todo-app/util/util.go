@@ -2,6 +2,10 @@ package util
 
 import "os"
 
-func ReadOnly() bool {
-	return os.Getenv("PROD") == ""
+func IsDemo() bool {
+	return os.Getenv("DEMO") != ""
+}
+
+func IsDev() bool {
+	return os.Getenv("DEV") != ""
 }

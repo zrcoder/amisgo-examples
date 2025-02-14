@@ -38,7 +38,7 @@ func main() {
 }
 
 func setup() *amisgo.App {
-	if !util.ReadOnly() {
+	if util.IsDev() {
 		logHandler := slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{
 			AddSource: true,
 			Level:     slog.LevelDebug,
@@ -70,7 +70,7 @@ func run(app *amisgo.App) {
 		port = "8080"
 	}
 	slog.Info("Listening on http://localhost:" + port)
-	err := app.Run(":" + port)
+	err := app.Run("0.0.0.0:" + port)
 	if err != nil && err != http.ErrServerClosed {
 		log.Fatalf("http server error: %s", err)
 	}

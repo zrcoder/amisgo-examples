@@ -17,7 +17,7 @@ var db *sqlx.DB
 
 func init() {
 	dbName := "todo.db"
-	if util.ReadOnly() {
+	if util.IsDemo() {
 		dbName = "todo-sample.db"
 	}
 	var err error

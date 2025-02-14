@@ -8,7 +8,7 @@ import (
 
 func (u *UI) Login() comp.Page {
 	demoInput := ""
-	if util.ReadOnly() {
+	if util.IsDemo() {
 		demoInput = "amisgo"
 	}
 	return u.page(

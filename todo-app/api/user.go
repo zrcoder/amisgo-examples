@@ -16,7 +16,7 @@ import (
 )
 
 func register(c *gin.Context) {
-	if util.ReadOnly() {
+	if util.IsDemo() {
 		c.String(http.StatusForbidden, ReadonlyMsg)
 		return
 	}
@@ -90,7 +90,11 @@ func login(c *gin.Context) {
 		return
 	}
 	slog.Debug("login", slog.String("id", id), slog.Int64("user id", user.ID))
-	c.SetCookie(auth.SessionKey, id, 0, "/", "", true, true)
+	secure := true
+	if util.IsDev() {
+		secure = false
+	}
+	c.SetCookie(auth.SessionKey, id, 0, "/", "", secure, true)
 	c.JSON(http.StatusOK, am.SuccessResponse("succeed", nil))
 }
 
@@ -106,7 +110,7 @@ func logout(c *gin.Context) {
 }
 
 func unregister(c *gin.Context) {
-	if util.ReadOnly() {
+	if util.IsDemo() {
 		c.String(http.StatusForbidden, ReadonlyMsg)
 		return
 	}

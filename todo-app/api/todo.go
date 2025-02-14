@@ -54,7 +54,7 @@ func getTodo(c *gin.Context) {
 }
 
 func deleteTodo(c *gin.Context) {
-	if util.ReadOnly() {
+	if util.IsDemo() {
 		c.String(http.StatusForbidden, ReadonlyMsg)
 		return
 	}
@@ -74,7 +74,7 @@ func deleteTodo(c *gin.Context) {
 }
 
 func addTodo(c *gin.Context) {
-	if util.ReadOnly() {
+	if util.IsDemo() {
 		c.String(http.StatusForbidden, ReadonlyMsg)
 		return
 	}
@@ -96,7 +96,7 @@ func addTodo(c *gin.Context) {
 }
 
 func updateTodo(c *gin.Context) {
-	if util.ReadOnly() {
+	if util.IsDemo() {
 		c.String(http.StatusForbidden, ReadonlyMsg)
 		return
 	}

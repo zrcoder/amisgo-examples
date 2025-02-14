@@ -1,5 +1,6 @@
 # Simple Makefile for a Go project
 
+export DEV=1
 # Build the application
 all: build test
 
