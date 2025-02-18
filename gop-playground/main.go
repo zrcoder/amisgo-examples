@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -28,7 +29,8 @@ func main() {
 	app = amisgo.New(options...)
 	app.Mount("/", index())
 	app.StaticFS("/static", http.FS(static.FS))
-	err := app.Run()
+	fmt.Println("serving on http://localhost:8080")
+	err := app.Run(":8080")
 	check(err)
 }
 
