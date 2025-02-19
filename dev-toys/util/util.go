@@ -158,16 +158,18 @@ var StructOption = struct {
 	ConvertFloats bool
 	SubStruct     bool
 }{
-	Name:          "Amisgo",
-	Pkg:           "pkg",
+	Name:          "Root",
+	Pkg:           "model",
 	Tags:          []string{"json"},
 	ConvertFloats: true,
-	SubStruct:     false,
+	SubStruct:     true,
 }
 
 func Json2Struct(input []byte) (string, error) {
 	buf := bytes.NewBuffer(input)
-	out, err := gojson.Generate(buf, gojson.ParseJson,
+	out, err := gojson.Generate(
+		buf,
+		gojson.ParseJson,
 		StructOption.Name,
 		StructOption.Pkg,
 		StructOption.Tags,
