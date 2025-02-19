@@ -37,8 +37,8 @@ func (u *UI) Index() comp.Page {
 				).Actions()).
 			OnEvent(
 				u.Event().RowClick(
-					u.EventActions().Actions(
-						u.EventActionDrawer().Drawer(
+					u.EventActions(
+						u.EventActionDrawer(
 							u.detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
 						),
 					),
