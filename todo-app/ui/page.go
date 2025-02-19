@@ -36,15 +36,13 @@ func (u *UI) Index() comp.Page {
 					u.Action().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
 				).Actions()).
 			OnEvent(
-				am.Schema{
-					"rowClick": am.Schema{
-						"actions": []am.EventAction{
-							u.EventAction().ActionType("drawer").Drawer(
-								u.detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
-							),
-						},
-					},
-				},
+				u.Event().RowClick(
+					u.EventActions().Actions(
+						u.EventActionDrawer().Drawer(
+							u.detail(api.Todo+"?id=${event.data.item.id}", "patch:"+api.Todo+"?id=${event.data.item.id}"),
+						),
+					),
+				),
 			).
 			HeaderToolbar(
 				"filter-toggler",
