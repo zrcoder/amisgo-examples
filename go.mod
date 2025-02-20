@@ -3,7 +3,7 @@ module github.com/zrcoder/amisgo-examples
 go 1.23.0
 
 require (
-	gitee.com/rdor/amis-sdk v1.0.3
+	gitee.com/rdor/amis-sdk/v6 v6.11.0
 	github.com/BurntSushi/toml v1.4.0
 	github.com/ChimeraCoder/gojson v1.1.0
 	github.com/gin-gonic/gin v1.10.0
@@ -67,7 +67,7 @@ require (
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/exp v0.0.0-20231127185646-65229373498e // indirect
 	golang.org/x/image v0.14.0 // indirect
-	golang.org/x/net v0.25.0 // indirect
+	golang.org/x/net v0.35.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/term v0.29.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
