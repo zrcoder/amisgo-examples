@@ -8,7 +8,7 @@ func (c *Comp) DualEditor(left, right EditorCfg, title string, action, reverseAc
 	left.ReadOnly = true
 	right.ReadOnly = true
 	right.Value = ""
-	actions := make([]any, 0, 2)
+	actions := make([]comp.Action, 0, 2)
 	if action != nil {
 		left.ReadOnly = false
 		actions = append(actions,

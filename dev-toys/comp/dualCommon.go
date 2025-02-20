@@ -28,13 +28,11 @@ func (c *Comp) EditorQrCoder() comp.Form {
 		c.Wrapper().Body(
 			c.QRCode().ID("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
 			c.Action().ClassName("w-full").Icon("fa fa-download").Label("Download").VisibleOn("${editor !== ''}").OnEvent(
-				schema.Schema{
-					"click": schema.Schema{
-						"actions": []comp.EventAction{
-							c.EventAction().ActionType("saveAs").ComponentID("qrcode").Args(schema.Schema{"name": "download.png"}),
-						},
-					},
-				},
+				c.Event().Click(
+					c.EventActions(
+						c.EventAction().ActionType("saveAs").ComponentID("qrcode").Args(schema.Schema{"name": "download.png"}),
+					),
+				),
 			),
 		),
 		true,
@@ -66,13 +64,13 @@ func (c *Comp) QrcodeEditor(action func([]byte) (path string, err error), getDat
 	)
 }
 
-func (c *Comp) DualForm(left, right any, leftMain bool, buttons ...any) comp.Form {
+func (c *Comp) DualForm(left, right any, leftMain bool, buttons ...comp.Action) comp.Form {
 	return c.Form().AutoFocus(true).ColumnCount(3).WrapWithPanel(false).Body(
 		c.DualFormBody(left, right, leftMain, buttons...)...,
 	).Actions()
 }
 
-func (c *Comp) DualFormBody(left, right any, leftMain bool, buttons ...any) []any {
+func (c *Comp) DualFormBody(left, right any, leftMain bool, buttons ...comp.Action) []any {
 	if leftMain {
 		right = c.Flex().ClassName("h-full").AlignItems("center").Items(right)
 	} else {

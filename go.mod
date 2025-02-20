@@ -14,7 +14,7 @@ require (
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yassinebenaid/bunster v0.7.1
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.11.5
+	github.com/zrcoder/amisgo v0.11.6-0.20250220090628-3264e7d062c6
 	github.com/zrcoder/cdor v0.2.1
 	golang.org/x/crypto v0.23.0
 	gopkg.in/yaml.v3 v3.0.1
