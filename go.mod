@@ -16,7 +16,7 @@ require (
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
 	github.com/zrcoder/amisgo v0.11.6-0.20250220090628-3264e7d062c6
 	github.com/zrcoder/cdor v0.2.1
-	golang.org/x/crypto v0.23.0
+	golang.org/x/crypto v0.33.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -68,9 +68,9 @@ require (
 	golang.org/x/exp v0.0.0-20231127185646-65229373498e // indirect
 	golang.org/x/image v0.14.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
-	golang.org/x/sys v0.20.0 // indirect
-	golang.org/x/term v0.20.0 // indirect
-	golang.org/x/text v0.15.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
+	golang.org/x/term v0.29.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	gonum.org/v1/plot v0.14.0 // indirect
 	google.golang.org/protobuf v1.34.1 // indirect
