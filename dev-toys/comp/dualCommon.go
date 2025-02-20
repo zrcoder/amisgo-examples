@@ -2,7 +2,7 @@ package comp
 
 import (
 	"github.com/zrcoder/amisgo/comp"
-	"github.com/zrcoder/amisgo/model"
+	"github.com/zrcoder/amisgo/schema"
 )
 
 func (c *Comp) EditorImg(lang, value string, transfor func(any) (any, error)) comp.Form {
@@ -28,10 +28,10 @@ func (c *Comp) EditorQrCoder() comp.Form {
 		c.Wrapper().Body(
 			c.QRCode().ID("qrcode").Value("${editor}").CodeSize(256).Level("M").BackgroundColor("white").ForegroundColor("#333"),
 			c.Action().ClassName("w-full").Icon("fa fa-download").Label("Download").VisibleOn("${editor !== ''}").OnEvent(
-				model.Schema{
-					"click": model.Schema{
-						"actions": []model.EventAction{
-							c.EventAction().ActionType("saveAs").ComponentID("qrcode").Args(model.Schema{"name": "download.png"}),
+				schema.Schema{
+					"click": schema.Schema{
+						"actions": []comp.EventAction{
+							c.EventAction().ActionType("saveAs").ComponentID("qrcode").Args(schema.Schema{"name": "download.png"}),
 						},
 					},
 				},
@@ -41,7 +41,7 @@ func (c *Comp) EditorQrCoder() comp.Form {
 	)
 }
 
-func (c *Comp) EditorChart(commCfg string, getData func() (any, error), submit func(model.Schema) error) comp.Form {
+func (c *Comp) EditorChart(commCfg string, getData func() (any, error), submit func(schema.Schema) error) comp.Form {
 	return c.Form().WrapWithPanel(false).ColumnCount(3).AutoFocus(true).Body(
 		c.DualFormBody(
 			c.Editor(EditorCfg{Lang: "json", Name: "in", Value: commCfg}),
@@ -57,7 +57,7 @@ func (c *Comp) QrcodeEditor(action func([]byte) (path string, err error), getDat
 		c.InputImage().Name("img").Upload(int64(10*(1<<20)), action),
 		c.Service().Name("out").GetData(func() (any, error) {
 			res, err := getData()
-			return model.Schema{"decqr": res}, err
+			return schema.Schema{"decqr": res}, err
 		}).Body(
 			c.Editor(EditorCfg{Name: "text", ReadOnly: true, Value: "${decqr}"}),
 		),

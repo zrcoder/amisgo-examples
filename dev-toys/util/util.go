@@ -17,7 +17,7 @@ import (
 	"github.com/yassinebenaid/bunster/lexer"
 	"github.com/yassinebenaid/bunster/parser"
 	"github.com/yosssi/gohtml"
-	"github.com/zrcoder/amisgo/model"
+	"github.com/zrcoder/amisgo/schema"
 	"github.com/zrcoder/cdor"
 	"gopkg.in/yaml.v3"
 )
@@ -178,7 +178,7 @@ func Json2Struct(input []byte) (string, error) {
 	return string(out), err
 }
 
-func Hash(input []byte) (model.Schema, error) {
+func Hash(input []byte) (schema.Schema, error) {
 	h := md5.New()
 	if _, err := h.Write(input); err != nil {
 		return nil, err
@@ -203,7 +203,7 @@ func Hash(input []byte) (model.Schema, error) {
 	}
 	resSha512 := hex.EncodeToString(h.Sum(nil))
 
-	return model.Schema{
+	return schema.Schema{
 		"md5":    resMd5,
 		"sha1":   resSha1,
 		"sha256": resSha256,

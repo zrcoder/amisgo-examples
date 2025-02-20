@@ -5,7 +5,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 
 	"github.com/zrcoder/amisgo/comp"
-	am "github.com/zrcoder/amisgo/model"
+	"github.com/zrcoder/amisgo/schema"
 )
 
 type UI struct {
@@ -66,8 +66,8 @@ func (u *UI) detail(getApi, editApi string) comp.Drawer {
 			u.InputDatetime().Name("due_date").Label("Due Date").Value("+1days").DisplayFormat("YYYY-MM-DD").ValueFormat("YYYY-MM-DDTHH:mm:ssZ"),
 		),
 		u.Switch().Name("is_completed").Option("Done").Disabled(isCreate),
-		u.Markdown().Options(am.Schema{"html": true}).Name("detail"),
-		u.Editor().Name("detail").Language("markdown").Size("xl").Value("${detail}").AllowFullscreen(false).Options(am.Schema{
+		u.Markdown().Options(schema.Schema{"html": true}).Name("detail"),
+		u.Editor().Name("detail").Language("markdown").Size("xl").Value("${detail}").AllowFullscreen(false).Options(schema.Schema{
 			"overviewRulerBorder": false,
 		}),
 	).Rules(

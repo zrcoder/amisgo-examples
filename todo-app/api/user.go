@@ -11,7 +11,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/gin-gonic/gin"
-	am "github.com/zrcoder/amisgo/model"
+	"github.com/zrcoder/amisgo/schema"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -35,7 +35,7 @@ func register(c *gin.Context) {
 			return
 		}
 		slog.Info("user already exist", "user", usr.Name)
-		c.JSON(http.StatusBadRequest, am.ErrorResponse("user already exist"))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse("user already exist"))
 		return
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
@@ -54,7 +54,7 @@ func register(c *gin.Context) {
 		internalErrorResp(c)
 		return
 	}
-	c.JSON(http.StatusCreated, am.SuccessResponse("succeed", nil))
+	c.JSON(http.StatusCreated, schema.SuccessResponse("succeed", nil))
 }
 
 func login(c *gin.Context) {
@@ -71,7 +71,7 @@ func login(c *gin.Context) {
 			internalErrorResp(c)
 		} else {
 			slog.Info("login", slog.String("error", "no user found"))
-			c.JSON(http.StatusBadRequest, am.ErrorResponse("invalid user or password"))
+			c.JSON(http.StatusBadRequest, schema.ErrorResponse("invalid user or password"))
 		}
 		return
 	}
@@ -79,7 +79,7 @@ func login(c *gin.Context) {
 	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(input.Password))
 	if err != nil {
 		slog.Info("compare hashed password", "error", err)
-		c.JSON(http.StatusBadRequest, am.ErrorResponse("invalid user or password"))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse("invalid user or password"))
 		return
 	}
 	id := auth.GenSessionID()
@@ -95,18 +95,18 @@ func login(c *gin.Context) {
 		secure = false
 	}
 	c.SetCookie(auth.SessionKey, id, 0, "/", "", secure, true)
-	c.JSON(http.StatusOK, am.SuccessResponse("succeed", nil))
+	c.JSON(http.StatusOK, schema.SuccessResponse("succeed", nil))
 }
 
 func logout(c *gin.Context) {
 	sessionID, err := c.Cookie(auth.SessionKey)
 	if err != nil {
 		slog.Error("logout", slog.String("error", "no cookie"))
-		c.JSON(http.StatusBadRequest, am.ErrorResponse("invalid session"))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse("invalid session"))
 		return
 	}
 	auth.Delete(sessionID)
-	c.JSON(http.StatusOK, am.SuccessResponse("succeed", nil))
+	c.JSON(http.StatusOK, schema.SuccessResponse("succeed", nil))
 }
 
 func unregister(c *gin.Context) {
@@ -138,16 +138,16 @@ func getUser(c *gin.Context) {
 	user, err := db.GetUser(userID)
 	if err != nil {
 		slog.Error("get user", slog.String("error", err.Error()), slog.Int64("user id", userID))
-		c.JSON(http.StatusOK, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusOK, schema.ErrorResponse(err.Error()))
 		return
 	}
-	c.JSON(http.StatusOK, am.SuccessResponse("success", am.Schema{"name": user.Name}))
+	c.JSON(http.StatusOK, schema.SuccessResponse("success", schema.Schema{"name": user.Name}))
 }
 
 func invalidInputResp(c *gin.Context) {
-	c.JSON(http.StatusBadRequest, am.ErrorResponse("invalid input"))
+	c.JSON(http.StatusBadRequest, schema.ErrorResponse("invalid input"))
 }
 
 func internalErrorResp(c *gin.Context) {
-	c.JSON(http.StatusInternalServerError, am.ErrorResponse("internal error"))
+	c.JSON(http.StatusInternalServerError, schema.ErrorResponse("internal error"))
 }

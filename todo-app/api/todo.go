@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	am "github.com/zrcoder/amisgo/model"
+	"github.com/zrcoder/amisgo/schema"
 
 	"github.com/zrcoder/amisgo-examples/todo-app/auth"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
@@ -19,7 +19,7 @@ import (
 func listTodos(c *gin.Context) {
 	req := &model.ListRequest{}
 	if err := c.ShouldBindQuery(req); err != nil {
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(err.Error()))
 		return
 	}
 	req.Regular()
@@ -28,25 +28,25 @@ func listTodos(c *gin.Context) {
 	todos, total, err := db.ListTodos(req)
 	if err != nil {
 		slog.Error(err.Error())
-		c.JSON(http.StatusInternalServerError, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusInternalServerError, schema.ErrorResponse(err.Error()))
 		return
 	}
 
-	c.JSON(http.StatusOK, am.SuccessResponse("", am.Schema{"items": todos, "total": total}))
+	c.JSON(http.StatusOK, schema.SuccessResponse("", schema.Schema{"items": todos, "total": total}))
 }
 
 func getTodo(c *gin.Context) {
 	id, errMsg := parseID(c)
 	if errMsg != "" {
 		slog.Error(errMsg)
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(errMsg))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(errMsg))
 		return
 	}
 
 	todo, err := db.GetTodo(id)
 	if err != nil {
 		slog.Error(err.Error())
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(err.Error()))
 		return
 	}
 
@@ -61,13 +61,13 @@ func deleteTodo(c *gin.Context) {
 
 	ids, err := parseIDs(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(err.Error()))
 		return
 	}
 	err = db.DeleteTodos(ids)
 	if err != nil {
 		slog.Error(err.Error())
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(err.Error()))
 		return
 	}
 	c.Status(http.StatusNoContent)
@@ -82,7 +82,7 @@ func addTodo(c *gin.Context) {
 	todo := &model.Todo{}
 	if err := c.ShouldBindJSON(todo); err != nil {
 		slog.Error(err.Error())
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(err.Error()))
 		return
 	}
 	todo.UserID = c.GetInt64(auth.UserKey)
@@ -92,7 +92,7 @@ func addTodo(c *gin.Context) {
 		internalErrorResp(c)
 		return
 	}
-	c.JSON(http.StatusCreated, am.SuccessResponse("succeed", nil))
+	c.JSON(http.StatusCreated, schema.SuccessResponse("succeed", nil))
 }
 
 func updateTodo(c *gin.Context) {
@@ -104,14 +104,14 @@ func updateTodo(c *gin.Context) {
 	id, errMsg := parseID(c)
 	if errMsg != "" {
 		slog.Error(errMsg)
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(errMsg))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(errMsg))
 		return
 	}
 
 	todo := &model.Todo{}
 	if err := c.ShouldBindJSON(todo); err != nil {
 		slog.Error(err.Error())
-		c.JSON(http.StatusBadRequest, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse(err.Error()))
 		return
 	}
 	todo.ID = id
@@ -120,7 +120,7 @@ func updateTodo(c *gin.Context) {
 	slog.Info("update todo", "id", id, "title", todo.Title, "detail", todo.Detail)
 	if err := db.UpdateTodo(todo); err != nil {
 		slog.Error(err.Error())
-		c.JSON(http.StatusInternalServerError, am.ErrorResponse(err.Error()))
+		c.JSON(http.StatusInternalServerError, schema.ErrorResponse(err.Error()))
 		return
 	}
 

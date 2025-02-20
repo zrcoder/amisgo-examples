@@ -3,7 +3,6 @@ package ui
 import (
 	"github.com/zrcoder/amisgo"
 	ac "github.com/zrcoder/amisgo/comp"
-	am "github.com/zrcoder/amisgo/model"
 
 	"github.com/zrcoder/amisgo-examples/dev-toys/comp"
 	"github.com/zrcoder/amisgo-examples/dev-toys/comp/chart"
@@ -65,11 +64,11 @@ func (u *UI) getNav() ac.Nav {
 	)
 }
 
-func (u *UI) navLink(label, icon, path string) am.NavLink {
+func (u *UI) navLink(label, icon, path string) ac.NavLink {
 	return u.NavLink().Label(label).Icon(icon).To(path)
 }
 
-func (u *UI) navExtraLink(label, icon, path string) am.NavLink {
+func (u *UI) navExtraLink(label, icon, path string) ac.NavLink {
 	return u.NavLink().Label(label).Icon(icon).To(path).Target("_blank")
 }
 
@@ -125,6 +124,6 @@ func (u *UI) genTabs(tabs ...any) ac.Tabs {
 	return u.Tabs().TabsMode("simple").Swipeable(true).Tabs(tabs...)
 }
 
-func (u *UI) genTab(title string, page any) am.Tab {
+func (u *UI) genTab(title string, page any) ac.Tab {
 	return u.Tab().Title(title).Tab(page)
 }

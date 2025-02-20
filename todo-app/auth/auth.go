@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/patrickmn/go-cache"
-	"github.com/zrcoder/amisgo/model"
+	"github.com/zrcoder/amisgo/schema"
 	"github.com/zrcoder/amisgo/util"
 )
 
@@ -42,14 +42,14 @@ func UI(next http.Handler) http.Handler {
 func Api(c *gin.Context) {
 	id, err := c.Cookie(SessionKey)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, model.ErrorResponse("auth failed"))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse("auth failed"))
 		c.Abort()
 		return
 	}
 	slog.Debug("api auth", slog.String("session id", id))
 	userID, ok := sessions.Get(id)
 	if !ok {
-		c.JSON(http.StatusBadRequest, model.ErrorResponse("auth failed"))
+		c.JSON(http.StatusBadRequest, schema.ErrorResponse("auth failed"))
 		c.Abort()
 		return
 	}
@@ -60,6 +60,7 @@ func Api(c *gin.Context) {
 func Add(seesionID string, userID int64) error {
 	return sessions.Add(seesionID, userID, sessionLife)
 }
+
 func Delete(sessionID string) {
 	sessions.Delete(sessionID)
 }

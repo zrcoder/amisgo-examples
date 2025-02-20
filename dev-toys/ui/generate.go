@@ -7,7 +7,7 @@ import (
 	"github.com/zrcoder/amisgo-examples/dev-toys/util"
 
 	ac "github.com/zrcoder/amisgo/comp"
-	am "github.com/zrcoder/amisgo/model"
+	"github.com/zrcoder/amisgo/schema"
 )
 
 func (u *UI) JsonGraph() ac.Form {
@@ -28,10 +28,10 @@ func (u *UI) Qrcode() ac.Form {
 
 func (u *UI) Hash() ac.Form {
 	return u.Form().AutoFocus(true).WrapWithPanel(false).Body(
-		u.App.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(am.Schema{"fontSize": 14}),
+		u.App.Editor().Language("text").Name("editor").AllowFullscreen(false).Options(schema.Schema{"fontSize": 14}),
 		u.Flex().ClassName("w-full").Items(
 			u.Button().Label("▼").TransformMultiple(
-				func(d am.Schema) (am.Schema, error) {
+				func(d schema.Schema) (schema.Schema, error) {
 					return util.Hash([]byte(d.Get("editor").(string)))
 				},
 				"editor",
