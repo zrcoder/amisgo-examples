@@ -3,7 +3,7 @@ module github.com/zrcoder/amisgo-examples
 go 1.23.0
 
 require (
-	gitee.com/rdor/amis-sdk v1.0.2-amis6.11.0
+	gitee.com/rdor/amis-sdk v1.0.3
 	github.com/BurntSushi/toml v1.4.0
 	github.com/ChimeraCoder/gojson v1.1.0
 	github.com/gin-gonic/gin v1.10.0
