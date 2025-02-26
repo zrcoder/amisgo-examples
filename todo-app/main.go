@@ -13,12 +13,12 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 	"github.com/zrcoder/amisgo-examples/todo-app/auth"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
+	"github.com/zrcoder/amisgo-examples/todo-app/i18n"
 	"github.com/zrcoder/amisgo-examples/todo-app/ui"
 	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/conf"
-	"github.com/zrcoder/amisgo/theme"
 )
 
 const (
@@ -50,8 +50,12 @@ func setup() *amisgo.App {
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
 		conf.WithThemes(
-			theme.Theme{Value: theme.Ang, Label: "○"},
-			theme.Theme{Value: theme.Dark, Label: "☾"},
+			conf.Theme{Value: conf.ThemeAng, Label: "○"},
+			conf.Theme{Value: conf.ThemeDark, Label: "☾"},
+		),
+		conf.WithLocales(
+			conf.Locale{Value: conf.LocaleZhCN, Label: "汉", Dict: i18n.ZhCN},
+			conf.Locale{Value: conf.LocaleEnUS, Label: "En", Dict: i18n.EnUS},
 		),
 	)
 	ui := ui.New(app)

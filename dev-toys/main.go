@@ -14,6 +14,7 @@ func main() {
 	if port == "" {
 		port = "8888"
 	}
+	log.SetFlags(log.LstdFlags)
 	log.Printf("Starting server on http://localhost:%s\n", port)
 	if err := app.Run(":" + port); err != nil {
 		log.Fatalf("Server failed to start: %v\n", err)

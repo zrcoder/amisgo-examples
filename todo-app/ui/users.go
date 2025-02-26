@@ -12,15 +12,14 @@ func (u *UI) Login() comp.Page {
 		demoInput = "amisgo"
 	}
 	return u.page(
-		"",
 		u.Flex().ClassName("pt-20 bg-red").Items(
 			u.Wrapper().ClassName("w-96").Body(
 				u.Form().Title("").Api(api.Login).AutoFocus(true).Redirect("/todos").Body(
-					u.InputText().Name("name").Label("Name").Value(demoInput).Required(true),
-					u.InputPassword().Name("password").Label("Password").Value(demoInput).Required(true),
+					u.InputText().Name("name").Label("${i18n.user.name}").Value(demoInput).Required(true),
+					u.InputPassword().Name("password").Label("${i18n.user.password}").Value(demoInput).Required(true),
 				).Actions(
-					u.Action().Label("sign up").ActionType("link").Link("/register"),
-					u.SubmitAction().Primary(true).Label("login"),
+					u.Action().Label("${i18n.user.signUp}").ActionType("link").Link("/register"),
+					u.SubmitAction().Primary(true).Label("${i18n.user.login}"),
 				),
 			),
 		),
@@ -29,14 +28,13 @@ func (u *UI) Login() comp.Page {
 
 func (u *UI) Register() comp.Page {
 	return u.page(
-		"",
 		u.Flex().ClassName("pt-20").Items(
 			u.Wrapper().ClassName("w-96").Body(
 				u.Form().Title("").Api(api.Register).AutoFocus(true).Redirect("/login").Body(
-					u.InputText().Name("name").Label("Name").Required(true),
-					u.InputPassword().Name("password").Label("Password").Required(true),
+					u.InputText().Name("name").Label("${i18n.user.name}").Required(true),
+					u.InputPassword().Name("password").Label("${i18n.user.password}").Required(true),
 				).Actions(
-					u.SubmitAction().Label("sign up"),
+					u.SubmitAction().Label("${i18n.user.signUp}"),
 				),
 			),
 		),

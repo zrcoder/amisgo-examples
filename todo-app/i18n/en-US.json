@@ -1,0 +1,26 @@
+{
+    "name": "TODOs",
+    "lang": "Language",
+    "theme": "Theme",
+    "logout": "Logout",
+    "settings": "Settings",
+    "todos": {
+        "add": "Add",
+        "edit": "Edit",
+        "delete": "Delete",
+        "done": "Done",
+        "title": "Title",
+        "dueDate": "Due Date",
+        "priority": "Priority",
+        "keywords": "Keywords",
+        "search": "Search",
+        "reset": "Reset",
+        "all": "All"
+    },
+    "user": {
+        "login": "Login",
+        "name": "Name",
+        "password": "Password",
+        "signUp": "Sign Up"
+    }
+}

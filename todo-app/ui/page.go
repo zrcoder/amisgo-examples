@@ -18,22 +18,19 @@ func New(app *amisgo.App) *UI {
 
 func (u *UI) Index() comp.Page {
 	return u.page(
-		u.Form().WrapWithPanel(false).Api(api.Logout).Mode("inline").Body(
-			u.SubmitAction().Label("Logout").Redirect("/login").Api(api.Logout),
-		),
 		u.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
 			Columns(
-				u.Column().Name("is_completed").Label("Done").Type("status"),
-				u.Column().Name("title").Label("Title"),
-				u.Column().Name("due_date").Label("Due Date").Type("date").Sortable(true),
+				u.Column().Name("is_completed").Label("${i18n.todos.done}").Type("status"),
+				u.Column().Name("title").Label("${i18n.todos.title}").Sortable(true),
+				u.Column().Name("due_date").Label("${i18n.todos.dueDate}").Type("date").Sortable(true),
 			).
 			FilterDefaultVisible(false).FilterTogglable(true).
 			Filter(
 				u.Form().Title("").Body(
-					u.Switch().Name("is_completed").Label("Done"),
-					u.InputText().Name("title").Label("Keywords"),
-					u.SubmitAction().Icon("fa fa-search").Label("Search").Primary(true),
-					u.Action().Icon("fa fa-refresh").Label("Reset").ActionType("reset"),
+					u.Switch().Name("is_completed").Label("${i18n.todos.done}"),
+					u.InputText().Name("title").Label("${i18n.todos.keywords}"),
+					u.SubmitAction().Icon("fa fa-search").Label("${i18n.todos.search}").Primary(true),
+					u.Action().Icon("fa fa-refresh").Label("${i18n.todos.reset}").ActionType("reset"),
 				).Actions()).
 			OnEvent(
 				u.Event().RowClick(
@@ -51,9 +48,9 @@ func (u *UI) Index() comp.Page {
 			).
 			FooterToolbar().
 			BulkActions(
-				u.Action().Icon("fa fa-trash").Level("danger").Label("Delete").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
+				u.Action().Icon("fa fa-trash").Level("danger").Label("${i18n.todos.delete}").ActionType("ajax").ConfirmText("Delete the tasks?").Api("delete:"+api.Todo+"?ids=${ids}").ReloadWindow(),
 			),
-		u.DrawerAction().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("Add").Drawer(u.detail("", "")),
+		u.DrawerAction().Icon("fa fa-plus").Primary(true).ClassName("w-full").Label("${i18n.todos.add}").Drawer(u.detail("", "")),
 	)
 }
 
@@ -62,10 +59,10 @@ func (u *UI) detail(getApi, editApi string) comp.Drawer {
 
 	form := u.Form().Mode("normal").AutoFocus(true).WrapWithPanel(false).Body(
 		u.Group().Body(
-			u.InputText().Name("title").Label("Title"),
-			u.InputDatetime().Name("due_date").Label("Due Date").Value("+1days").DisplayFormat("YYYY-MM-DD").ValueFormat("YYYY-MM-DDTHH:mm:ssZ"),
+			u.InputText().Name("title").Label("${i18n.todos.title}").Required(true),
+			u.InputDatetime().Name("due_date").Label("${i18n.todos.dueDate}").Value("+1days").DisplayFormat("YYYY-MM-DD").ValueFormat("YYYY-MM-DDTHH:mm:ssZ"),
 		),
-		u.Switch().Name("is_completed").Option("Done").Disabled(isCreate),
+		u.Switch().Name("is_completed").Label("${i18n.todos.done}").Disabled(isCreate),
 		u.Markdown().Options(schema.Schema{"html": true}).Name("detail"),
 		u.Editor().Name("detail").Language("markdown").Size("xl").Value("${detail}").AllowFullscreen(false).Options(schema.Schema{
 			"overviewRulerBorder": false,

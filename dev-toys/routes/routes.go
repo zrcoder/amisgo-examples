@@ -10,16 +10,15 @@ import (
 	"github.com/zrcoder/amisgo-examples/dev-toys/routes/path"
 	"github.com/zrcoder/amisgo-examples/dev-toys/ui"
 	"github.com/zrcoder/amisgo/conf"
-	"github.com/zrcoder/amisgo/theme"
 )
 
 func Setup() *amisgo.App {
 	options := []conf.Option{
 		conf.WithTitle("Dev Toys"),
 		conf.WithThemes(
-			theme.Theme{Value: theme.Dark},
-			theme.Theme{Value: theme.Cxd},
-			theme.Theme{Value: theme.Antd},
+			conf.Theme{Value: conf.ThemeDark},
+			conf.Theme{Value: conf.ThemeCxd},
+			conf.Theme{Value: conf.ThemeAntd},
 		),
 		conf.WithIcon("/static/favicon.ico"),
 	}
