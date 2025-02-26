@@ -50,8 +50,8 @@ func setup() *amisgo.App {
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
 		conf.WithThemes(
-			theme.Theme{Value: theme.Ang, Label: "Light"},
-			theme.Theme{Value: theme.Dark, Label: "Dark"},
+			theme.Theme{Value: theme.Ang, Label: "○"},
+			theme.Theme{Value: theme.Dark, Label: "☾"},
 		),
 	)
 	ui := ui.New(app)
