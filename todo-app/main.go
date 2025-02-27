@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	_ "embed"
+	"encoding/json"
 	"log"
 	"log/slog"
 	"net/http"
@@ -13,7 +15,6 @@ import (
 	"github.com/zrcoder/amisgo-examples/todo-app/api"
 	"github.com/zrcoder/amisgo-examples/todo-app/auth"
 	"github.com/zrcoder/amisgo-examples/todo-app/db"
-	"github.com/zrcoder/amisgo-examples/todo-app/i18n"
 	"github.com/zrcoder/amisgo-examples/todo-app/ui"
 	"github.com/zrcoder/amisgo-examples/todo-app/util"
 
@@ -24,6 +25,13 @@ import (
 const (
 	icon  = "https://raw.githubusercontent.com/zrcoder/amisgo-assets/refs/heads/main/logo.svg"
 	title = "Todos"
+)
+
+var (
+	//go:embed i18n/en-US.json
+	enUS json.RawMessage
+	//go:embed i18n/zh-CN.json
+	zhCN json.RawMessage
 )
 
 func main() {
@@ -54,8 +62,8 @@ func setup() *amisgo.App {
 			conf.Theme{Value: conf.ThemeDark, Label: "☾"},
 		),
 		conf.WithLocales(
-			conf.Locale{Value: conf.LocaleZhCN, Label: "汉", Dict: i18n.ZhCN},
-			conf.Locale{Value: conf.LocaleEnUS, Label: "En", Dict: i18n.EnUS},
+			conf.Locale{Value: conf.LocaleZhCN, Label: "汉", Dict: zhCN},
+			conf.Locale{Value: conf.LocaleEnUS, Label: "En", Dict: enUS},
 		),
 	)
 	ui := ui.New(app)
