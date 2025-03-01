@@ -2,19 +2,20 @@ package tableview
 
 import (
 	"github.com/zrcoder/amisgo"
+	"github.com/zrcoder/amisgo-examples/demo/comps/app"
 	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/amisgo/schema"
 )
 
-func Demos(a *amisgo.App) map[string]any {
-	return map[string]any{
-		"Base":       base(a),
-		"Cell Style": cell(a),
-		"Col Style":  col(a),
-		"Caption":    caption(a),
-		"Condition":  condition(a),
-		"Visible on": visibleOn(a),
-		"Layout":     layout(a),
+func Demos(a *amisgo.App) []app.Item {
+	return []app.Item{
+		{Name: "Base", View: base(a)},
+		{Name: "Cell Style", View: cell(a)},
+		{Name: "Col Style", View: col(a)},
+		{Name: "Caption", View: caption(a)},
+		{Name: "Condition", View: condition(a)},
+		{Name: "Visible on", View: visibleOn(a)},
+		{Name: "Layout", View: layout(a)},
 	}
 }
 

@@ -2,6 +2,7 @@ package amis
 
 import (
 	"github.com/zrcoder/amisgo"
+	"github.com/zrcoder/amisgo-examples/demo/comps/app"
 	"github.com/zrcoder/amisgo/schema"
 )
 
@@ -18,13 +19,15 @@ const (
  }`
 )
 
-func Demos(app *amisgo.App) map[string]any {
-	return map[string]any{
-		"Base": app.Amis().Schema(app.Tpl().Tpl("amis render")),
-		"Dynamic": app.Group().Body(
-			app.Editor().Language("json").Name("amis").Value(dynamicContent),
-			app.Amis().Name("amis"),
-		),
-		"Props": app.Amis().Props(schema.Schema{"tpl": "amis render"}).Value(app.Tpl()),
+func Demos(a *amisgo.App) []app.Item {
+	return []app.Item{
+		{Name: "Base", View: a.Amis().Schema(a.Tpl().Tpl("amis render"))},
+		{Name: "Dynamic", View: a.Page().Body(
+			a.Group().Body(
+				a.Editor().Language("json").Name("amis").Value(dynamicContent),
+				a.Amis().Name("amis"),
+			),
+		)},
+		{Name: "Props", View: a.Amis().Props(schema.Schema{"tpl": "amis render"}).Value(a.Tpl())},
 	}
 }

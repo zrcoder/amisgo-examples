@@ -2,9 +2,12 @@ package app
 
 import (
 	"fmt"
+	"net/http"
 
+	sdk "gitee.com/rdor/amis-sdk/v6"
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
+	"github.com/zrcoder/amisgo/conf"
 )
 
 var (
@@ -13,23 +16,24 @@ var (
 )
 
 func init() {
+	app = amisgo.New(conf.WithLocalSdk(http.FS(sdk.FS)))
 	app = amisgo.New()
 }
 
-func Register(title string, demo func(*amisgo.App) map[string]any) {
+func Register(title string, demo func(*amisgo.App) []Item) {
 	tabs = append(tabs, tab(title, demo(app)))
 }
 
-func tab(title string, dict map[string]any) comp.Tab {
-	return app.Tab().Title(title).Tab(view(dict))
+func tab(title string, items []Item) comp.Tab {
+	return app.Tab().Title(title).Tab(view(items))
 }
 
-func view(tabDic map[string]any) comp.Tabs {
-	tabs := make([]any, 0, len(tabDic))
-	for title, schema := range tabDic {
-		tabs = append(tabs, app.Tab().Title(title).Tab(schema))
+func view(items []Item) comp.Tabs {
+	tabs := make([]any, 0, len(items))
+	for _, item := range items {
+		tabs = append(tabs, app.Tab().Title(item.Name).Tab(item.View))
 	}
-	return app.Tabs().Tabs(tabs...)
+	return app.Tabs().TabsMode("line").Tabs(tabs...)
 }
 
 func Run() {
