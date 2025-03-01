@@ -1,35 +1,24 @@
-package main
+package tableview
 
 import (
-	"fmt"
-
 	"github.com/zrcoder/amisgo"
 	"github.com/zrcoder/amisgo/comp"
 	"github.com/zrcoder/amisgo/schema"
 )
 
-var app *amisgo.App
-
-func main() {
-	app = amisgo.New()
-	index := app.App().Pages(
-		app.PageItem().Url("/").Redirect("/base"),
-		app.PageItem().Children(
-			app.PageItem().Label("Base").Url("base").Schema(base()),
-			app.PageItem().Label("Cell Style").Url("cell").Schema(cell()),
-			app.PageItem().Label("Col Style").Url("col").Schema(col()),
-			app.PageItem().Label("Caption").Url("caption").Schema(caption()),
-			app.PageItem().Label("Condition").Url("condition").Schema(condition()),
-			app.PageItem().Label("Visible on").Url("visibleon").Schema(visibleOn()),
-			app.PageItem().Label("Layout").Url("layout").Schema(layout()),
-		),
-	)
-	app.Mount("/", index)
-	fmt.Println("Serving on http://localhost:8080")
-	panic(app.Run(":8080"))
+func Demos(a *amisgo.App) map[string]any {
+	return map[string]any{
+		"Base":       base(a),
+		"Cell Style": cell(a),
+		"Col Style":  col(a),
+		"Caption":    caption(a),
+		"Condition":  condition(a),
+		"Visible on": visibleOn(a),
+		"Layout":     layout(a),
+	}
 }
 
-func base() comp.TableView {
+func base(app *amisgo.App) comp.TableView {
 	return app.TableView().Trs(
 		app.Tr().Background("#F7F7F7").Tds(
 			app.Td().Body(app.Tpl().Tpl("地区")),
@@ -48,7 +37,7 @@ func base() comp.TableView {
 	)
 }
 
-func cell() comp.TableView {
+func cell(app *amisgo.App) comp.TableView {
 	return app.TableView().Trs(
 		app.Tr().Background("#F7F7F7").Tds(
 			app.Td().Body(app.Tpl().Tpl("地区")),
@@ -63,7 +52,7 @@ func cell() comp.TableView {
 	)
 }
 
-func col() comp.TableView {
+func col(app *amisgo.App) comp.TableView {
 	return app.TableView().
 		Cols(
 			app.Tcol().Span(2),
@@ -87,7 +76,7 @@ func col() comp.TableView {
 		)
 }
 
-func caption() comp.TableView {
+func caption(app *amisgo.App) comp.TableView {
 	return app.TableView().
 		Caption("标题").
 		// CaptionSide("bottom").
@@ -113,7 +102,7 @@ func caption() comp.TableView {
 		)
 }
 
-func condition() comp.Service {
+func condition(app *amisgo.App) comp.Service {
 	return app.Service().
 		Data(
 			schema.Schema{"score": 40},
@@ -128,7 +117,7 @@ func condition() comp.Service {
 		)
 }
 
-func visibleOn() comp.Page {
+func visibleOn(app *amisgo.App) comp.Page {
 	return app.Page().Body(
 		app.Switch().Label("显示第一行").Name("row1").Value(true),
 		app.Switch().Label("显示北京单元格").Name("beijing").Value(true),
@@ -140,7 +129,7 @@ func visibleOn() comp.Page {
 	)
 }
 
-func layout() comp.TableView {
+func layout(app *amisgo.App) comp.TableView {
 	return app.TableView().Border(true).Trs(
 		app.Tr().Background("orange").Tds(app.Td().Colspan(4).Align("center").Body("Header")),
 		app.Tr().Tds(
