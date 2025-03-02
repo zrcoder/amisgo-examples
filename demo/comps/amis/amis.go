@@ -22,11 +22,9 @@ const (
 func Demos(a *amisgo.App) []app.Item {
 	return []app.Item{
 		{Name: "Base", View: a.Amis().Schema(a.Tpl().Tpl("amis render"))},
-		{Name: "Dynamic", View: a.Page().Body(
-			a.Group().Body(
-				a.Editor().Language("json").Name("amis").Value(dynamicContent),
-				a.Amis().Name("amis"),
-			),
+		{Name: "Dynamic", View: a.Group().Body(
+			a.Editor().Language("json").Name("amis").Value(dynamicContent),
+			a.Amis().Name("amis"),
 		)},
 		{Name: "Props", View: a.Amis().Props(schema.Schema{"tpl": "amis render"}).Value(a.Tpl())},
 	}

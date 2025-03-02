@@ -37,9 +37,7 @@ func view(items []Item) comp.Tabs {
 }
 
 func Run() {
-	app.Mount("/", app.Tabs().TabsMode("vertical").Tabs(
-		tabs...,
-	))
+	app.Mount("/", app.Page().Body(app.Tabs().TabsMode("vertical").Tabs(tabs...)))
 	fmt.Println("Serving on http://localhost:8080")
 	panic(app.Run(":8080"))
 }
