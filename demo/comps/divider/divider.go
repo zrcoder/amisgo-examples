@@ -5,8 +5,8 @@ import (
 	"github.com/zrcoder/amisgo-examples/demo/comps/app"
 )
 
-func Demos(a *amisgo.App) []app.Item {
-	return []app.Item{
+func Demos(a *amisgo.App) []app.Demo {
+	return []app.Demo{
 		{Name: "Base", View: a.Divider()},
 		{Name: "Rotate", View: a.Wrapper().Body(
 			a.Tpl().Tpl("A"),

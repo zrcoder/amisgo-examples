@@ -20,9 +20,9 @@ func (u *UI) Index() comp.Page {
 	return u.page(
 		u.Crud().Name("todos").Api(api.Todos).SyncLocation(false).
 			Columns(
-				u.Column().Name("is_completed").Label("${i18n.todos.done}").Type("status"),
+				u.Column(u.Status()).Name("is_completed").Label("${i18n.todos.done}"),
 				u.Column().Name("title").Label("${i18n.todos.title}").Sortable(true),
-				u.Column().Name("due_date").Label("${i18n.todos.dueDate}").Type("date").Sortable(true),
+				u.Column(u.Date()).Name("due_date").Label("${i18n.todos.dueDate}").Sortable(true),
 			).
 			FilterDefaultVisible(false).FilterTogglable(true).
 			Filter(

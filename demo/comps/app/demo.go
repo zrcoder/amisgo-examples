@@ -1,6 +1,6 @@
 package app
 
-type Item struct {
+type Demo struct {
 	Name string
 	View any
 }

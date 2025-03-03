@@ -6,8 +6,8 @@ import (
 	"github.com/zrcoder/amisgo/comp"
 )
 
-func Demos(a *amisgo.App) []app.Item {
-	return []app.Item{
+func Demos(a *amisgo.App) []app.Demo {
+	return []app.Demo{
 		{Name: "Base", View: base(a)},
 		{Name: "Accordion", View: base(a).Accordion(true)},
 		{Name: "Expand Icon", View: base(a).ExpandIcon(a.Icon().Icon("caret-right"))},

@@ -19,8 +19,8 @@ const (
  }`
 )
 
-func Demos(a *amisgo.App) []app.Item {
-	return []app.Item{
+func Demos(a *amisgo.App) []app.Demo {
+	return []app.Demo{
 		{Name: "Base", View: a.Amis().Schema(a.Tpl().Tpl("amis render"))},
 		{Name: "Dynamic", View: a.Group().Body(
 			a.Editor().Language("json").Name("amis").Value(dynamicContent),

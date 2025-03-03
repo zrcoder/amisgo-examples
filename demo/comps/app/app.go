@@ -20,15 +20,15 @@ func init() {
 	app = amisgo.New()
 }
 
-func Register(title string, demo func(*amisgo.App) []Item) {
+func Register(title string, demo func(*amisgo.App) []Demo) {
 	tabs = append(tabs, tab(title, demo(app)))
 }
 
-func tab(title string, items []Item) comp.Tab {
+func tab(title string, items []Demo) comp.Tab {
 	return app.Tab().Title(title).Tab(view(items))
 }
 
-func view(items []Item) comp.Tabs {
+func view(items []Demo) comp.Tabs {
 	tabs := make([]any, 0, len(items))
 	for _, item := range items {
 		tabs = append(tabs, app.Tab().Title(item.Name).Tab(item.View))

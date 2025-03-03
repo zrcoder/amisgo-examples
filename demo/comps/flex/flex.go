@@ -7,8 +7,8 @@ import (
 	"github.com/zrcoder/amisgo/schema"
 )
 
-func Demos(a *amisgo.App) []app.Item {
-	return []app.Item{
+func Demos(a *amisgo.App) []app.Demo {
+	return []app.Demo{
 		{Name: "Base", View: base(a)},
 		{Name: "Justify", View: a.Wrapper().Body(
 			"center",
