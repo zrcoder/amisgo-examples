@@ -28,7 +28,7 @@ type Event struct {
 	  --data-raw $'body=%2F%2F+You+can+edit+this+code\u0021%0A%2F%2F+Click+here+and+start+typing.%0Apackage+main%0A%0Aimport+%22fmt%22%0A%0Afunc+main()+%7B%0A%09fmt.Println(%22Hello%2C+%E4%B8%96%E7%95%8C%22)%0A%7D%0A&imports=true'
 */
 func compile(input string) (string, error) {
-	const url = "https://go.dev/_/compile"
+	const url = "https://go.dev/_/compile?backend="
 	res, err := post(input, url, &CompileResult{})
 	if err != nil {
 		return "", err
@@ -50,7 +50,7 @@ type FormatResult struct {
 }
 
 func format(input string) (string, error) {
-	const url = "https://go.dev/_/fmt"
+	const url = "https://go.dev/_/fmt?backend="
 	res, err := post(input, url, &FormatResult{})
 	if err != nil {
 		return "", err
