@@ -1,5 +1,3 @@
-# Simple Makefile for a Go project
-
 export DEV=1
 # Build the application
 all: build test
@@ -8,11 +6,11 @@ build:
 	@echo "Building..."
 	
 	
-	@go build -tags "amisgo_local_sdk" -o main .
+	@go build -o main .
 
 # Run the application
 run:
-	@go run -tags "amisgo_local_sdk" .
+	@go run .
 # Create DB container
 docker-run:
 	@if docker compose up --build 2>/dev/null; then \
