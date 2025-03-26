@@ -1,6 +1,6 @@
 module github.com/zrcoder/amisgo-examples
 
-go 1.24
+go 1.23
 
 require (
 	gitee.com/rdor/amis-sdk/v6 v6.11.0
@@ -15,7 +15,7 @@ require (
 	github.com/yassinebenaid/bunster v0.7.1
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
 	github.com/zrcoder/amisgo v0.11.14
-	github.com/zrcoder/cdor v0.2.2-0.20250326065209-925e2319f5f5
+	github.com/zrcoder/cdor v0.2.2-0.20250326071354-16a08e1a4a33
 	golang.org/x/crypto v0.33.0
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -24,8 +24,8 @@ require (
 	github.com/PuerkitoBio/goquery v1.10.0 // indirect
 	github.com/alecthomas/chroma/v2 v2.14.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
-	github.com/bytedance/sonic v1.12.3 // indirect
-	github.com/bytedance/sonic/loader v0.2.0 // indirect
+	github.com/bytedance/sonic v1.11.6 // indirect
+	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
 	github.com/dlclark/regexp2 v1.11.4 // indirect
@@ -57,14 +57,14 @@ require (
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	github.com/yuin/goldmark v1.7.8 // indirect
+	github.com/yuin/goldmark v1.7.4 // indirect
 	golang.org/x/arch v0.8.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
-	golang.org/x/image v0.25.0 // indirect
-	golang.org/x/net v0.35.0 // indirect
+	golang.org/x/image v0.20.0 // indirect
+	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/term v0.29.0 // indirect
-	golang.org/x/text v0.23.0 // indirect
+	golang.org/x/text v0.22.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	gonum.org/v1/plot v0.14.0 // indirect
 	google.golang.org/protobuf v1.34.1 // indirect
