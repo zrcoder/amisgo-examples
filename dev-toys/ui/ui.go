@@ -94,6 +94,7 @@ func (u *UI) getGenerators() ac.Tabs {
 		u.genTab("Json Viewer", u.JsonViewer()),
 		u.genTab("Json Graph", u.JsonGraph()),
 		u.genTab("Json to Struct", u.Json2struct()),
+		u.genTab("D2", u.D2()),
 		u.genTab("Hash", u.Hash()),
 		u.genTab("Qrcoder", u.Qrcode()),
 	)

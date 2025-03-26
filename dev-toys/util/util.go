@@ -143,6 +143,12 @@ func Json2Svg(data []byte) (*bytes.Buffer, error) {
 	})
 }
 
+func D2Svg(data []byte) (*bytes.Buffer, error) {
+	return toSvg(func(c *cdor.Cdor) {
+		c.D2(string(data))
+	})
+}
+
 func toSvg(fn func(*cdor.Cdor)) (*bytes.Buffer, error) {
 	c := cdor.Ctx()
 	fn(c)

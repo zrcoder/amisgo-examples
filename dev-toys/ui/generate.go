@@ -50,6 +50,17 @@ func (u *UI) Json2struct() ac.Form {
 	}, nil)
 }
 
+func (u *UI) D2() ac.Form {
+	return u.EditorImg(
+		"shell",
+		"# see https://d2lang.com\n\nA -> B",
+		func(s any) (any, error) {
+			src := s.(string)
+			buf, err := util.D2Svg([]byte(src))
+			return regularSvgData(buf.Bytes(), err)
+		})
+}
+
 func regularSvgData(input []byte, err error) (string, error) {
 	if err != nil {
 		return "", err
