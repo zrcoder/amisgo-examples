@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
 
@@ -14,18 +15,21 @@ const (
 	LevelMedium = "medium"
 	LevelHard   = "hard"
 
-	BucketBallCount   = 4
-	EmptyBuckets      = 2
+	BottleBallCount   = 4
+	EmptyBottles      = 2
 	BallSize          = 40
-	bucketClass       = "relative w-18 h-auto mx-2"
-	bucketButtonClass = "absolute inset-0 h-full rounded-xl bucket-button"
+	bottleClass       = "relative w-18 h-auto mx-2"
+	bottleButtonClass = "absolute inset-0 h-full rounded-xl bottle-button"
 )
 
 var (
 	colors = []string{
-		"red", "green", "blue", "yellow", "orange", "pink", "purple",
+		"red", "green", "blue", "yellow", "brown", "pink", "purple",
 	}
-	LevelBucketsDict = map[string]int{
+	succeedMsgs = []string{
+		"Wanderful!", "Brilliant!", "Excellent!", "Fantastic!", "Awesome!",
+	}
+	LevelBottlesDict = map[string]int{
 		LevelEasy:   5,
 		LevelMedium: 6,
 		LevelHard:   7,
@@ -35,20 +39,20 @@ var (
 type Game struct {
 	rd *rand.Rand
 	*amisgo.App
-	Level           string
-	Buckets         []*Bucket
-	ShiftBall       *Ball
-	DoneBucketCount int
+	Level            string
+	Bottles          []*Bottle
+	ShiftBall        *Ball
+	DoneBottlesCount int
 }
 
-type Bucket struct {
+type Bottle struct {
 	*Game
 	Index int
 	Balls []*Ball
 }
 
 type Ball struct {
-	*Bucket
+	*Bottle
 	ID          int
 	Color       string
 	Placeholder bool
@@ -65,10 +69,10 @@ func NewGame(app *amisgo.App) *Game {
 }
 
 func (g *Game) Reset() {
-	n := LevelBucketsDict[g.Level]
-	balls := make([]*Ball, 0, n*BucketBallCount)
+	n := LevelBottlesDict[g.Level]
+	balls := make([]*Ball, 0, n*BottleBallCount)
 	for i := range n {
-		for range BucketBallCount {
+		for range BottleBallCount {
 			ball := &Ball{ID: i}
 			ball.Nomalize()
 			balls = append(balls, ball)
@@ -77,32 +81,32 @@ func (g *Game) Reset() {
 	g.rd.Shuffle(len(balls), func(i, j int) {
 		balls[i], balls[j] = balls[j], balls[i]
 	})
-	g.Buckets = make([]*Bucket, 0, n+EmptyBuckets)
+	g.Bottles = make([]*Bottle, 0, n+EmptyBottles)
 	i := 0
 	for range n {
-		bucket := &Bucket{Game: g}
-		bucket.Balls = balls[i : i+BucketBallCount]
-		for _, ball := range bucket.Balls {
-			ball.Bucket = bucket
+		bottle := &Bottle{Game: g}
+		bottle.Balls = balls[i : i+BottleBallCount]
+		for _, ball := range bottle.Balls {
+			ball.Bottle = bottle
 		}
-		i += BucketBallCount
-		g.Buckets = append(g.Buckets, bucket)
+		i += BottleBallCount
+		g.Bottles = append(g.Bottles, bottle)
 	}
-	for range EmptyBuckets {
-		bucket := &Bucket{
+	for range EmptyBottles {
+		bottle := &Bottle{
 			Game:  g,
-			Balls: make([]*Ball, 0, BucketBallCount),
+			Balls: make([]*Ball, 0, BottleBallCount),
 		}
-		g.Buckets = append(g.Buckets, bucket)
+		g.Bottles = append(g.Bottles, bottle)
 	}
-	g.rd.Shuffle(len(g.Buckets), func(i, j int) {
-		g.Buckets[i], g.Buckets[j] = g.Buckets[j], g.Buckets[i]
+	g.rd.Shuffle(len(g.Bottles), func(i, j int) {
+		g.Bottles[i], g.Bottles[j] = g.Bottles[j], g.Bottles[i]
 	})
-	for i, bucket := range g.Buckets {
-		bucket.Index = i
+	for i, bottle := range g.Bottles {
+		bottle.Index = i
 	}
 	g.ShiftBall = nil
-	g.DoneBucketCount = 0
+	g.DoneBottlesCount = 0
 }
 
 func (g *Game) SetLevel(level string) {
@@ -110,49 +114,60 @@ func (g *Game) SetLevel(level string) {
 	g.Reset()
 }
 
-func (g *Game) SelectBucket(i int) {
-	if i < 0 || i >= len(g.Buckets) {
+func (g *Game) SelectBottle(i int) {
+	if i < 0 || i >= len(g.Bottles) {
 		return
 	}
-	bucket := g.Buckets[i]
-	if bucket.IsDone() {
+	bottle := g.Bottles[i]
+	if bottle.IsDone() {
 		return
 	}
-	if bucket.IsEmpty() {
+	if bottle.IsEmpty() {
 		if g.ShiftBall == nil {
 			return
 		}
-		bucket.Push(g.ShiftBall)
+		bottle.Push(g.ShiftBall)
 		g.ShiftBall = nil
 		return
 	}
 	if g.ShiftBall == nil {
-		g.ShiftBall = bucket.Pop()
+		g.ShiftBall = bottle.Pop()
 		return
 	}
-	if g.ShiftBall.Bucket.Index == i {
-		bucket.Push(g.ShiftBall)
+	if g.ShiftBall.Bottle.Index == i {
+		bottle.Push(g.ShiftBall)
 		g.ShiftBall = nil
 		return
 	}
-	if g.ShiftBall.ID != bucket.Top().ID {
-		g.ShiftBall.Bucket.Push(g.ShiftBall)
-		g.ShiftBall = bucket.Pop()
+	if g.ShiftBall.ID != bottle.Top().ID {
+		g.ShiftBall.Bottle.Push(g.ShiftBall)
+		g.ShiftBall = bottle.Pop()
 		return
 	}
-	if bucket.IsFull() {
+	if bottle.IsFull() {
 		return
 	}
-	bucket.Push(g.ShiftBall)
+	bottle.Push(g.ShiftBall)
 	g.ShiftBall = nil
-	g.DoneBucketCount += bucket.checkDone()
+	g.DoneBottlesCount += bottle.checkDone()
 }
 
 func (g *Game) IsDone() bool {
-	return g.DoneBucketCount == LevelBucketsDict[g.Level]
+	return g.DoneBottlesCount == LevelBottlesDict[g.Level]
 }
 
-func (b *Bucket) Pop() *Ball {
+func (g *Game) StateInfo() (info, infoClass string) {
+	if game.IsDone() {
+		info = succeedMsgs[game.rd.Intn(len(succeedMsgs))]
+		infoClass = "text-2xl font-bold text-success"
+	} else {
+		info = fmt.Sprintf("Done: %d/%d", game.DoneBottlesCount, LevelBottlesDict[g.Level])
+		infoClass = "text-xl font-bold text-info"
+	}
+	return
+}
+
+func (b *Bottle) Pop() *Ball {
 	n := len(b.Balls)
 	if n == 0 {
 		return nil
@@ -162,27 +177,27 @@ func (b *Bucket) Pop() *Ball {
 	return res
 }
 
-func (b *Bucket) Push(ball *Ball) {
+func (b *Bottle) Push(ball *Ball) {
 	b.Balls = append(b.Balls, ball)
-	ball.Bucket = b
+	ball.Bottle = b
 }
 
-func (b *Bucket) Top() *Ball {
+func (b *Bottle) Top() *Ball {
 	if len(b.Balls) == 0 {
 		return nil
 	}
 	return b.Balls[len(b.Balls)-1]
 }
 
-func (b *Bucket) IsEmpty() bool {
+func (b *Bottle) IsEmpty() bool {
 	return len(b.Balls) == 0
 }
 
-func (b *Bucket) IsFull() bool {
-	return len(b.Balls) == BucketBallCount
+func (b *Bottle) IsFull() bool {
+	return len(b.Balls) == BottleBallCount
 }
 
-func (b *Bucket) checkDone() int {
+func (b *Bottle) checkDone() int {
 	if !b.IsFull() {
 		return 0
 	}
@@ -194,33 +209,33 @@ func (b *Bucket) checkDone() int {
 	return 1
 }
 
-func (b *Bucket) IsDone() bool {
+func (b *Bottle) IsDone() bool {
 	return b.checkDone() == 1
 }
 
-func (b *Bucket) IsShiftBall() bool {
-	return b.Game.ShiftBall != nil && b.Game.ShiftBall.Bucket == b
+func (b *Bottle) IsShiftBall() bool {
+	return b.Game.ShiftBall != nil && b.Game.ShiftBall.Bottle == b
 }
 
 func (g *Game) UI() (any, error) {
-	total := len(g.Buckets)
-	buckets := make([]any, 0, total)
-	for _, bucket := range g.Buckets {
-		buckets = append(buckets, bucket.UI())
+	total := len(g.Bottles)
+	bottles := make([]any, 0, total)
+	for _, bottle := range g.Bottles {
+		bottles = append(bottles, bottle.UI())
 	}
 	half := total / 2
 	ui := g.App.Wrapper().Body(
 		g.App.Flex().Justify("center").Items(
-			buckets[:half]...,
+			bottles[:half]...,
 		),
 		g.App.Flex().Justify("center").Items(
-			buckets[half:]...,
+			bottles[half:]...,
 		),
 	)
 	return ui, nil
 }
 
-func (b *Bucket) UI() any {
+func (b *Bottle) UI() any {
 	done := b.IsDone()
 	var top any
 	switch {
@@ -232,25 +247,30 @@ func (b *Bucket) UI() any {
 		top = placeholderBallUI(b.App)
 	}
 
-	items := make([]any, BucketBallCount)
+	items := make([]any, BottleBallCount)
 	for i, ball := range b.Balls {
-		items[BucketBallCount-i-1] = ball.UI()
+		items[BottleBallCount-i-1] = ball.UI()
 	}
-	for i := BucketBallCount - len(b.Balls) - 1; i >= 0; i-- {
+	for i := BottleBallCount - len(b.Balls) - 1; i >= 0; i-- {
 		items[i] = placeholderBallUI(b.App)
 	}
 	return b.App.Form().WrapWithPanel(false).Submit(func(s schema.Schema) error {
-		b.Game.SelectBucket(b.Index)
+		b.Game.SelectBottle(b.Index)
 		return nil
 	}).Body(
-		b.App.Wrapper().ClassName(bucketClass).Body(
+		b.App.Wrapper().ClassName(bottleClass).Body(
 			top,
 		),
-		b.App.Wrapper().ClassName(bucketClass).
+		b.App.Wrapper().ClassName(bottleClass).
 			Body(
 				items,
-				b.Button().ActionType("submit").Reload("game").ClassName(bucketButtonClass).Disabled(done),
+				b.Button().HotKey(string(rune('a'+b.Index))).
+					ActionType("submit").Reload("game").
+					ClassName(bottleButtonClass).Disabled(done),
 			),
+		b.Flex().Items(
+			b.Tpl().Tpl(string(rune('A'+b.Index))),
+		),
 	)
 }
 

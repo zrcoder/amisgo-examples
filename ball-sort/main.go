@@ -17,8 +17,6 @@ var (
 //go:embed main.css
 var customCSS string
 
-var succeedMsgs = []string{"Wanderful!", "Brilliant!", "Excellent!", "Fantastic!", "Awesome!"}
-
 func main() {
 	app = amisgo.New(
 		conf.WithThemes(
@@ -38,14 +36,7 @@ func main() {
 				if err != nil {
 					return nil, err
 				}
-				var info string
-				infoClass := "text-2xl font-bold text-info"
-				if game.IsDone() {
-					info = succeedMsgs[game.rd.Intn(len(succeedMsgs))]
-					infoClass = "text-2xl font-bold text-success"
-				} else {
-					info = fmt.Sprintf("Done: %d", game.DoneBucketCount)
-				}
+				info, infoClass := game.StateInfo()
 				return map[string]any{
 					"game-ui":   ui,
 					"level":     game.Level,
@@ -53,13 +44,15 @@ func main() {
 					"infoClass": infoClass,
 				}, nil
 			}).Body(
-				app.Flex().Items(
-					app.Tpl().Tpl("${info}").ClassName("${infoClass}"),
-				),
+				app.Tpl().Tpl("${info}").ClassName("${infoClass}"),
 				app.Flex().Items(
 					app.Amis().Name("game-ui"),
 				),
 				app.Wrapper(),
+				app.Flex().Items(),
+				app.Flex().Items(
+					app.Tpl().Tpl("Click any bottle or press the bottle key to select a bottle.").ClassName("text-xl text-gray-500"),
+				),
 				app.Divider(),
 				app.Flex().Items(
 					app.Form().Mode("inline").WrapWithPanel(false).Submit(
@@ -73,7 +66,7 @@ func main() {
 							app.Option().Label("Medium").Value("medium"),
 							app.Option().Label("Hard").Value("hard"),
 						),
-						app.Button().Label("RESET").Icon("fa fa-refresh").ActionType("submit").Reload("game"),
+						app.Button().Label("RESET <ctrl+R>").Icon("fa fa-refresh").ActionType("submit").Reload("game").HotKey("ctrl+r"),
 					),
 				),
 			),
