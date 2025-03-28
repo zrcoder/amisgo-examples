@@ -20,8 +20,8 @@ var customCSS string
 func main() {
 	app = amisgo.New(
 		conf.WithThemes(
-			conf.Theme{Value: conf.ThemeDark, Label: "Dark"},
-			conf.Theme{Value: conf.ThemeCxd, Label: "Light"},
+			conf.Theme{Value: conf.ThemeDark, Label: "☾"},
+			conf.Theme{Value: conf.ThemeCxd, Label: "○"},
 		),
 		conf.WithCustomCSS(customCSS),
 	)
@@ -44,7 +44,8 @@ func main() {
 					"infoClass": infoClass,
 				}, nil
 			}).Body(
-				app.Tpl().Tpl("${info}").ClassName("${infoClass}"),
+				app.Flex().Items(app.Tpl().Tpl("${info}").ClassName("${infoClass}")),
+				app.Wrapper(),
 				app.Flex().Items(
 					app.Amis().Name("game-ui"),
 				),
@@ -66,7 +67,7 @@ func main() {
 							app.Option().Label("Medium").Value("medium"),
 							app.Option().Label("Hard").Value("hard"),
 						),
-						app.Button().Label("RESET <ctrl+R>").Icon("fa fa-refresh").ActionType("submit").Reload("game").HotKey("ctrl+r"),
+						app.Button().Label("SET <Ctrl+R>").Primary(true).Icon("fa fa-refresh").ActionType("submit").Reload("game").HotKey("ctrl+r"),
 					),
 				),
 			),

@@ -53,8 +53,7 @@ type Bottle struct {
 
 type Ball struct {
 	*Bottle
-	ID          int
-	Color       string
+	Type        int
 	Placeholder bool
 }
 
@@ -69,13 +68,14 @@ func NewGame(app *amisgo.App) *Game {
 }
 
 func (g *Game) Reset() {
+	g.rd.Shuffle(len(colors), func(i, j int) {
+		colors[i], colors[j] = colors[j], colors[i]
+	})
 	n := LevelBottlesDict[g.Level]
 	balls := make([]*Ball, 0, n*BottleBallCount)
 	for i := range n {
 		for range BottleBallCount {
-			ball := &Ball{ID: i}
-			ball.Nomalize()
-			balls = append(balls, ball)
+			balls = append(balls, &Ball{Type: i})
 		}
 	}
 	g.rd.Shuffle(len(balls), func(i, j int) {
@@ -139,12 +139,9 @@ func (g *Game) SelectBottle(i int) {
 		g.ShiftBall = nil
 		return
 	}
-	if g.ShiftBall.ID != bottle.Top().ID {
+	if g.ShiftBall.Type != bottle.Top().Type || bottle.IsFull() {
 		g.ShiftBall.Bottle.Push(g.ShiftBall)
 		g.ShiftBall = bottle.Pop()
-		return
-	}
-	if bottle.IsFull() {
 		return
 	}
 	bottle.Push(g.ShiftBall)
@@ -202,7 +199,7 @@ func (b *Bottle) checkDone() int {
 		return 0
 	}
 	for i := 1; i < len(b.Balls); i++ {
-		if b.Balls[i].ID != b.Balls[0].ID {
+		if b.Balls[i].Type != b.Balls[0].Type {
 			return 0
 		}
 	}
@@ -223,14 +220,8 @@ func (g *Game) UI() (any, error) {
 	for _, bottle := range g.Bottles {
 		bottles = append(bottles, bottle.UI())
 	}
-	half := total / 2
-	ui := g.App.Wrapper().Body(
-		g.App.Flex().Justify("center").Items(
-			bottles[:half]...,
-		),
-		g.App.Flex().Justify("center").Items(
-			bottles[half:]...,
-		),
+	ui := g.App.Flex().Items(
+		bottles...,
 	)
 	return ui, nil
 }
@@ -254,6 +245,7 @@ func (b *Bottle) UI() any {
 	for i := BottleBallCount - len(b.Balls) - 1; i >= 0; i-- {
 		items[i] = placeholderBallUI(b.App)
 	}
+	key := string(rune('A' + b.Index))
 	return b.App.Form().WrapWithPanel(false).Submit(func(s schema.Schema) error {
 		b.Game.SelectBottle(b.Index)
 		return nil
@@ -264,22 +256,22 @@ func (b *Bottle) UI() any {
 		b.App.Wrapper().ClassName(bottleClass).
 			Body(
 				items,
-				b.Button().HotKey(string(rune('a'+b.Index))).
+				b.Button().HotKey(key).
 					ActionType("submit").Reload("game").
 					ClassName(bottleButtonClass).Disabled(done),
 			),
 		b.Flex().Items(
-			b.Tpl().Tpl(string(rune('A'+b.Index))),
+			b.Tpl().Tpl(key),
 		),
 	)
 }
 
-func (b *Ball) Nomalize() {
-	b.Color = colors[b.ID]
+func (b *Ball) Color() string {
+	return colors[b.Type]
 }
 
 func (b *Ball) UI() comp.Shape {
-	return ballUI(b.App, b.Color)
+	return ballUI(b.App, b.Color())
 }
 
 func placeholderBallUI(app *amisgo.App) comp.Shape {
