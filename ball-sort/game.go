@@ -22,27 +22,29 @@ const (
 	bottleButtonClass = "absolute inset-0 h-full rounded-xl bottle-button"
 )
 
-var (
-	colors = []string{
-		"red", "green", "blue", "yellow", "brown", "pink", "purple",
-	}
-	succeedMsgs = []string{
-		"Wanderful!", "Brilliant!", "Excellent!", "Fantastic!", "Awesome!",
-	}
-	LevelBottlesDict = map[string]int{
-		LevelEasy:   5,
-		LevelMedium: 6,
-		LevelHard:   7,
-	}
-)
+var succeedMsgs = []string{
+	"Wanderful!", "Brilliant!", "Excellent!", "Fantastic!", "Awesome!",
+}
+
+var levels = []Level{
+	{Name: LevelEasy, Bottles: 5},
+	{Name: LevelMedium, Bottles: 6},
+	{Name: LevelHard, Bottles: 7},
+}
 
 type Game struct {
 	rd *rand.Rand
 	*amisgo.App
-	Level            string
+	levelIndex       int
 	Bottles          []*Bottle
 	ShiftBall        *Ball
 	DoneBottlesCount int
+	colors           []string
+}
+
+type Level struct {
+	Name    string
+	Bottles int
 }
 
 type Bottle struct {
@@ -59,19 +61,21 @@ type Ball struct {
 
 func NewGame(app *amisgo.App) *Game {
 	res := &Game{
-		Level: LevelEasy,
-		App:   app,
-		rd:    rand.New(rand.NewSource(time.Now().UnixNano())),
+		App: app,
+		rd:  rand.New(rand.NewSource(time.Now().UnixNano())),
+		colors: []string{
+			"red", "green", "blue", "yellow", "brown", "pink", "purple",
+		},
 	}
 	res.Reset()
 	return res
 }
 
 func (g *Game) Reset() {
-	g.rd.Shuffle(len(colors), func(i, j int) {
-		colors[i], colors[j] = colors[j], colors[i]
+	g.rd.Shuffle(len(g.colors), func(i, j int) {
+		g.colors[i], g.colors[j] = g.colors[j], g.colors[i]
 	})
-	n := LevelBottlesDict[g.Level]
+	n := levels[g.levelIndex].Bottles
 	balls := make([]*Ball, 0, n*BottleBallCount)
 	for i := range n {
 		for range BottleBallCount {
@@ -109,9 +113,22 @@ func (g *Game) Reset() {
 	g.DoneBottlesCount = 0
 }
 
-func (g *Game) SetLevel(level string) {
-	g.Level = level
-	g.Reset()
+func (g *Game) PrevLevel() {
+	if g.levelIndex > 0 {
+		g.levelIndex--
+		g.Reset()
+	}
+}
+
+func (g *Game) NextLevel() {
+	if g.levelIndex < len(levels)-1 {
+		g.levelIndex++
+		g.Reset()
+	}
+}
+
+func (g *Game) CurrentLevel() Level {
+	return levels[g.levelIndex]
 }
 
 func (g *Game) SelectBottle(i int) {
@@ -150,7 +167,7 @@ func (g *Game) SelectBottle(i int) {
 }
 
 func (g *Game) IsDone() bool {
-	return g.DoneBottlesCount == LevelBottlesDict[g.Level]
+	return g.DoneBottlesCount == levels[g.levelIndex].Bottles
 }
 
 func (g *Game) StateInfo() (info, infoClass string) {
@@ -158,7 +175,7 @@ func (g *Game) StateInfo() (info, infoClass string) {
 		info = succeedMsgs[game.rd.Intn(len(succeedMsgs))]
 		infoClass = "text-2xl font-bold text-success"
 	} else {
-		info = fmt.Sprintf("Done: %d/%d", game.DoneBottlesCount, LevelBottlesDict[g.Level])
+		info = fmt.Sprintf("Done: %d/%d", game.DoneBottlesCount, levels[g.levelIndex].Bottles)
 		infoClass = "text-xl font-bold text-info"
 	}
 	return
@@ -267,7 +284,7 @@ func (b *Bottle) UI() any {
 }
 
 func (b *Ball) Color() string {
-	return colors[b.Type]
+	return b.Game.colors[b.Type]
 }
 
 func (b *Ball) UI() comp.Shape {
