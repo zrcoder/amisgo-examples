@@ -1,25 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"math/rand"
 	"time"
 
 	"github.com/zrcoder/amisgo"
-	"github.com/zrcoder/amisgo/comp"
-	"github.com/zrcoder/amisgo/schema"
 )
 
 const (
-	LevelEasy   = "easy"
-	LevelMedium = "medium"
-	LevelHard   = "hard"
+	LevelEasy   = "EASY"
+	LevelMedium = "MEDIUM"
+	LevelHard   = "HARD"
+	LevelExpert = "EXPERT"
 
-	BottleBallCount   = 4
-	EmptyBottles      = 2
-	BallSize          = 40
-	bottleClass       = "relative w-18 h-auto mx-2"
-	bottleButtonClass = "absolute inset-0 h-full rounded-xl bottle-button"
+	BottleBallCount = 4
+	EmptyBottles    = 2
 )
 
 var succeedMsgs = []string{
@@ -30,6 +25,7 @@ var levels = []Level{
 	{Name: LevelEasy, Bottles: 5},
 	{Name: LevelMedium, Bottles: 6},
 	{Name: LevelHard, Bottles: 7},
+	{Name: LevelExpert, Bottles: 8},
 }
 
 type Game struct {
@@ -55,8 +51,7 @@ type Bottle struct {
 
 type Ball struct {
 	*Bottle
-	Type        int
-	Placeholder bool
+	Type int
 }
 
 func NewGame(app *amisgo.App) *Game {
@@ -64,7 +59,7 @@ func NewGame(app *amisgo.App) *Game {
 		App: app,
 		rd:  rand.New(rand.NewSource(time.Now().UnixNano())),
 		colors: []string{
-			"red", "green", "blue", "yellow", "brown", "pink", "purple",
+			"red", "green", "blue", "yellow", "brown", "pink", "purple", "orange",
 		},
 	}
 	res.Reset()
@@ -156,12 +151,8 @@ func (g *Game) SelectBottle(i int) {
 		g.ShiftBall = bottle.Pop()
 		return
 	}
-	if g.ShiftBall.Bottle.Index == i {
-		bottle.Push(g.ShiftBall)
-		g.ShiftBall = nil
-		return
-	}
-	if g.ShiftBall.Type != bottle.Top().Type || bottle.IsFull() {
+	if g.ShiftBall.Bottle.Index != i &&
+		(g.ShiftBall.Type != bottle.Top().Type || bottle.IsFull()) {
 		g.ShiftBall.Bottle.Push(g.ShiftBall)
 		g.ShiftBall = bottle.Pop()
 		return
@@ -173,17 +164,6 @@ func (g *Game) SelectBottle(i int) {
 
 func (g *Game) IsDone() bool {
 	return g.DoneBottlesCount == levels[g.levelIndex].Bottles
-}
-
-func (g *Game) StateInfo() (info, infoClass string) {
-	if game.IsDone() {
-		info = succeedMsgs[game.rd.Intn(len(succeedMsgs))]
-		infoClass = "text-2xl font-bold text-success"
-	} else {
-		info = fmt.Sprintf("Done: %d/%d", game.DoneBottlesCount, levels[g.levelIndex].Bottles)
-		infoClass = "text-xl font-bold text-info"
-	}
-	return
 }
 
 func (b *Bottle) Pop() *Ball {
@@ -234,76 +214,4 @@ func (b *Bottle) IsDone() bool {
 
 func (b *Bottle) IsShiftBall() bool {
 	return b.Game.ShiftBall != nil && b.Game.ShiftBall.Bottle == b
-}
-
-func (g *Game) UI() (any, error) {
-	total := len(g.Bottles)
-	bottles := make([]any, 0, total)
-	for _, bottle := range g.Bottles {
-		bottles = append(bottles, bottle.UI())
-	}
-	ui := g.App.Flex().Items(
-		bottles...,
-	)
-	return ui, nil
-}
-
-func (b *Bottle) UI() any {
-	done := b.IsDone()
-	var top any
-	switch {
-	case done:
-		top = starUI(b.App)
-	case b.IsShiftBall():
-		top = b.Game.ShiftBall.UI()
-	default:
-		top = placeholderBallUI(b.App)
-	}
-
-	items := make([]any, BottleBallCount)
-	for i, ball := range b.Balls {
-		items[BottleBallCount-i-1] = ball.UI()
-	}
-	for i := BottleBallCount - len(b.Balls) - 1; i >= 0; i-- {
-		items[i] = placeholderBallUI(b.App)
-	}
-	key := string(rune('A' + b.Index))
-	return b.App.Form().WrapWithPanel(false).Submit(func(s schema.Schema) error {
-		b.Game.SelectBottle(b.Index)
-		return nil
-	}).Body(
-		b.App.Wrapper().ClassName(bottleClass).Body(
-			top,
-		),
-		b.App.Wrapper().ClassName(bottleClass).
-			Body(
-				items,
-				b.Button().HotKey(key).
-					ActionType("submit").Reload("game").
-					ClassName(bottleButtonClass).Disabled(done),
-			),
-		b.Flex().Items(
-			b.Tpl().Tpl(key),
-		),
-	)
-}
-
-func (b *Ball) Color() string {
-	return b.Game.colors[b.Type]
-}
-
-func (b *Ball) UI() comp.Shape {
-	return ballUI(b.App, b.Color())
-}
-
-func placeholderBallUI(app *amisgo.App) comp.Shape {
-	return ballUI(app, "transparent")
-}
-
-func ballUI(app *amisgo.App, color string) comp.Shape {
-	return app.Shape().ShapeType("circle").Width(BallSize).Height(BallSize).Color(color)
-}
-
-func starUI(app *amisgo.App) comp.Shape {
-	return app.Shape().ShapeType("star").Width(BallSize).Height(BallSize).Color("orange")
 }
