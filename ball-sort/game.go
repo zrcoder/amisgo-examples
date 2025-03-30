@@ -111,6 +111,11 @@ func (g *Game) Reset() {
 	}
 	g.ShiftBall = nil
 	g.DoneBottlesCount = 0
+	for _, bottle := range g.Bottles {
+		if bottle.IsDone() {
+			g.DoneBottlesCount++
+		}
+	}
 }
 
 func (g *Game) PrevLevel() {
