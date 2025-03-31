@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/zrcoder/amisgo"
+	"github.com/zrcoder/amisgo/comp"
 )
 
 const (
@@ -36,6 +37,8 @@ type Game struct {
 	ShiftBall        *Ball
 	DoneBottlesCount int
 	colors           []string
+	levelUI          comp.Flex
+	bottleForms      []comp.Form
 }
 
 type Level struct {
@@ -55,15 +58,17 @@ type Ball struct {
 }
 
 func New(app *amisgo.App) *Game {
-	res := &Game{
+	g := &Game{
 		App: app,
 		rd:  rand.New(rand.NewSource(time.Now().UnixNano())),
 		colors: []string{
 			"red", "green", "blue", "yellow", "brown", "pink", "purple", "orange",
 		},
 	}
-	res.Reset()
-	return res
+	g.makeLevelUI()
+	g.makeBottleForms()
+	g.Reset()
+	return g
 }
 
 func (g *Game) Reset() {

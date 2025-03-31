@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/zrcoder/amisgo/comp"
-	"github.com/zrcoder/amisgo/schema"
 )
 
 const (
@@ -45,9 +44,9 @@ func (g *Game) Main() (any, error) {
 			g.App.Tpl().Tpl(info).ClassName(infoClass),
 		}
 	}
-	bottles := make([]any, 0, len(g.Bottles))
-	for _, bottle := range g.Bottles {
-		bottles = append(bottles, bottle.UI())
+	bottles := make([]any, len(g.Bottles))
+	for i, bottle := range g.Bottles {
+		bottles[i] = bottle.UI()
 	}
 	return g.Wrapper().Body(
 		g.App.Flex().Items(state...),
@@ -60,41 +59,8 @@ func (g *Game) Main() (any, error) {
 				ClassName("text-xl text-gray-500"),
 		),
 		g.App.Divider(),
-		g.App.Flex().Items(g.levelForm(-1), g.levelForm(1), g.App.Wrapper(), g.levelForm(0)),
+		g.levelUI,
 	), nil
-}
-
-func (g *Game) levelForm(delta int) comp.Form {
-	var label, icon, hotkey string
-	var action func()
-	var primary bool
-	switch delta {
-	case 1:
-		label = "<Ctrl-N>"
-		icon = "fa fa-arrow-right"
-		hotkey = "ctrl+n"
-		action = g.NextLevel
-	case -1:
-		label = "<Ctrl-P>"
-		icon = "fa fa-arrow-left"
-		hotkey = "ctrl+p"
-		action = g.PrevLevel
-	default:
-		label = "<Ctrl-R>"
-		icon = "fa fa-refresh"
-		hotkey = "ctrl+r"
-		action = g.Reset
-		primary = true
-	}
-	return g.App.Form().Mode("inline").WrapWithPanel(false).Submit(
-		func(s schema.Schema) error {
-			action()
-			return nil
-		}).
-		Body(
-			g.App.Button().Label(label).Icon(icon).Primary(primary).
-				ActionType("submit").Reload(gameNameUI).HotKey(hotkey),
-		)
 }
 
 func (b *Bottle) UI() any {
@@ -116,11 +82,9 @@ func (b *Bottle) UI() any {
 	for i := BottleBallCount - len(b.Balls) - 1; i >= 0; i-- {
 		items[i] = b.Game.placeholderBallUI()
 	}
+
 	key := string(rune('A' + b.Index))
-	return b.App.Form().WrapWithPanel(false).Submit(func(s schema.Schema) error {
-		b.Game.SelectBottle(b.Index)
-		return nil
-	}).Body(
+	return b.Game.bottleForms[b.Index].Body(
 		b.App.Wrapper().ClassName("mx-2").Body(top),
 		b.App.Wrapper().ClassName("relative w-18 h-auto mx-2").Body(
 			items,
