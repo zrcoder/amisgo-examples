@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"fmt"
@@ -7,28 +7,49 @@ import (
 	"github.com/zrcoder/amisgo/schema"
 )
 
-func (g *Game) UI() (any, error) {
-	var info, infoClass string
+const (
+	gameNameUI = "game"
+	ballSize   = 40
+)
+
+func (g *Game) Index() comp.Page {
+	return g.App.Page().
+		Title(g.App.Tpl().Tpl("Ball Sort Puzzle").ClassName("text-2xl font-bold")).
+		Toolbar(g.App.ThemeButtonGroupSelect()).
+		Body(
+			g.App.Service().Name(gameNameUI).GetData(func() (any, error) {
+				ui, err := g.Main()
+				if err != nil {
+					return nil, err
+				}
+				return map[string]any{"index": ui}, nil
+			}).Body(
+				g.App.Amis().Name("index"),
+			),
+		)
+}
+
+func (g *Game) Main() (any, error) {
 	var state []any
 	if g.IsDone() {
-		info = succeedMsgs[g.rd.Intn(len(succeedMsgs))]
-		infoClass = "text-2xl font-bold text-success"
+		info := succeedMsgs[g.rd.Intn(len(succeedMsgs))]
+		infoClass := "text-2xl font-bold text-success"
 		state = []any{g.App.Tpl().Tpl(info).ClassName(infoClass)}
 	} else {
-		info = fmt.Sprintf("Done: %d/%d", g.DoneBottlesCount, g.CurrentLevel().Bottles)
-		infoClass = "text-xl font-bold text-info"
+		levelInfo := fmt.Sprintf("LEVEL: [ %s ]", g.CurrentLevel().Name)
+		info := fmt.Sprintf("Done: %d/%d", g.DoneBottlesCount, g.CurrentLevel().Bottles)
+		infoClass := "text-xl font-bold text-info"
 		state = []any{
-			g.App.Tpl().Tpl(fmt.Sprintf("LEVEL: [ %s ]", g.CurrentLevel().Name)).ClassName("text-xl"),
+			g.App.Tpl().Tpl(levelInfo).ClassName("text-xl"),
 			g.App.Wrapper(),
 			g.App.Tpl().Tpl(info).ClassName(infoClass),
 		}
 	}
-	total := len(g.Bottles)
-	bottles := make([]any, 0, total)
+	bottles := make([]any, 0, len(g.Bottles))
 	for _, bottle := range g.Bottles {
 		bottles = append(bottles, bottle.UI())
 	}
-	return g.Service().Name("game-ui").Body(
+	return g.Wrapper().Body(
 		g.App.Flex().Items(state...),
 		g.App.Wrapper(),
 		g.App.Flex().Items(bottles...),
@@ -39,7 +60,7 @@ func (g *Game) UI() (any, error) {
 				ClassName("text-xl text-gray-500"),
 		),
 		g.App.Divider(),
-		g.App.Flex().Items(g.levelForm(-1), g.levelForm(1), g.levelForm(0)),
+		g.App.Flex().Items(g.levelForm(-1), g.levelForm(1), g.App.Wrapper(), g.levelForm(0)),
 	), nil
 }
 
@@ -72,7 +93,7 @@ func (g *Game) levelForm(delta int) comp.Form {
 		}).
 		Body(
 			g.App.Button().Label(label).Icon(icon).Primary(primary).
-				ActionType("submit").Reload("game").HotKey(hotkey),
+				ActionType("submit").Reload(gameNameUI).HotKey(hotkey),
 		)
 }
 
@@ -103,7 +124,7 @@ func (b *Bottle) UI() any {
 		b.App.Wrapper().ClassName("mx-2").Body(top),
 		b.App.Wrapper().ClassName("relative w-18 h-auto mx-2").Body(
 			items,
-			b.Button().HotKey(key).ActionType("submit").Reload("game").
+			b.Button().HotKey(key).ActionType("submit").Reload(gameNameUI).
 				ClassName("absolute inset-0 h-full rounded-xl bottle-button").Disabled(done),
 		),
 		b.Flex().Items(b.Tpl().Tpl(key)),
@@ -123,6 +144,5 @@ func (g *Game) starUI() comp.Shape {
 }
 
 func (g *Game) shape(shape, color string) comp.Shape {
-	const ballSize = 40
 	return g.App.Shape().ShapeType(shape).Width(ballSize).Height(ballSize).Color(color)
 }

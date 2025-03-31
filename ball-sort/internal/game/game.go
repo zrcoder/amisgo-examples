@@ -1,4 +1,4 @@
-package main
+package game
 
 import (
 	"math/rand"
@@ -54,7 +54,7 @@ type Ball struct {
 	Type int
 }
 
-func NewGame(app *amisgo.App) *Game {
+func New(app *amisgo.App) *Game {
 	res := &Game{
 		App: app,
 		rd:  rand.New(rand.NewSource(time.Now().UnixNano())),
@@ -114,17 +114,13 @@ func (g *Game) Reset() {
 }
 
 func (g *Game) PrevLevel() {
-	if g.levelIndex > 0 {
-		g.levelIndex--
-		g.Reset()
-	}
+	g.levelIndex = (g.levelIndex - 1 + len(levels)) % len(levels)
+	g.Reset()
 }
 
 func (g *Game) NextLevel() {
-	if g.levelIndex < len(levels)-1 {
-		g.levelIndex++
-		g.Reset()
-	}
+	g.levelIndex = (g.levelIndex + 1) % len(levels)
+	g.Reset()
 }
 
 func (g *Game) CurrentLevel() Level {
