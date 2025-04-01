@@ -12,8 +12,7 @@ Examples for [amisgo](https://github.com/zrcoder/amisgo)
 
   ![todo-app](images/todo-app.png)
 
-- ball-sort
+## More resources
 
-  ![ball-sort](images/ball-sort.png)
-
-Also explore our [documentation](https://amisgo.pages.dev) for in-depth tutorials and guides.
+- [Amisgo Example Games](https://github.com/zrcoder/agg)
+- [Amisgo Official Documentation](https://amisgo.pages.dev)
