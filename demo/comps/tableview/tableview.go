@@ -16,6 +16,7 @@ func Demos(a *amisgo.App) []app.Demo {
 		{Name: "Condition", View: condition(a)},
 		{Name: "Visible on", View: visibleOn(a)},
 		{Name: "Layout", View: layout(a)},
+		{Name: "FormBody", View: hanoi(a)},
 	}
 }
 
@@ -144,4 +145,42 @@ func layout(app *amisgo.App) comp.TableView {
 		),
 		app.Tr().Background("lightblue").Tds(app.Td().Colspan(4).Align("center").Body("Footer")),
 	)
+}
+
+func hanoi(app *amisgo.App) comp.TableView {
+	trs := make([]comp.Tr, maxDiskCount)
+	trs[0] = placeholder(app)
+	for i := range trs[1:] {
+		trs[i+1] = row(app, i)
+	}
+	return app.TableView().Border(false).Trs(trs...)
+}
+
+const maxDiskCount = 6
+
+var colors = []string{
+	"red", "green", "blue", "yellow", "brown", "pink",
+}
+
+func row(app *amisgo.App, disk int) comp.Tr {
+	tds := make([]comp.Td, 0, 2*maxDiskCount)
+	blanks := maxDiskCount - disk - 1
+	for i := 0; i < blanks; i++ {
+		tds = append(tds, app.Td())
+	}
+	for i := 0; i < 2*(disk+1); i++ {
+		tds = append(tds, app.Td().Background(colors[disk]))
+	}
+	for i := 0; i < blanks; i++ {
+		tds = append(tds, app.Td())
+	}
+	return app.Tr().Tds(tds...)
+}
+
+func placeholder(app *amisgo.App) comp.Tr {
+	tds := make([]comp.Td, maxDiskCount*2)
+	for i := range tds {
+		tds[i] = app.Td()
+	}
+	return app.Tr().Tds(tds...)
 }
