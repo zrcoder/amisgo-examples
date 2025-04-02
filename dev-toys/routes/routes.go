@@ -16,9 +16,9 @@ func Setup() *amisgo.App {
 	options := []conf.Option{
 		conf.WithTitle("Dev Toys"),
 		conf.WithThemes(
-			conf.Theme{Value: conf.ThemeDark},
-			conf.Theme{Value: conf.ThemeCxd},
-			conf.Theme{Value: conf.ThemeAntd},
+			conf.Theme{Value: conf.ThemeDark, Label: "Dark"},
+			conf.Theme{Value: conf.ThemeCxd, Label: "Cxd"},
+			conf.Theme{Value: conf.ThemeAntd, Label: "Antd"},
 		),
 		conf.WithIcon("/static/favicon.ico"),
 	}

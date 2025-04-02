@@ -58,8 +58,8 @@ func setup() *amisgo.App {
 		conf.WithIcon(icon),
 		conf.WithTitle(title),
 		conf.WithThemes(
-			conf.Theme{Value: conf.ThemeAng, Label: "○"},
-			conf.Theme{Value: conf.ThemeDark, Label: "☾"},
+			conf.Theme{Value: conf.ThemeAng, Icon: "fa fa-sun"},
+			conf.Theme{Value: conf.ThemeDark, Icon: "fa fa-moon"},
 		),
 		conf.WithLocales(
 			conf.Locale{Value: conf.LocaleZhCN, Label: "汉", Dict: zhCN},
