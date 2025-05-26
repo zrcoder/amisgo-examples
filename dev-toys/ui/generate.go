@@ -61,6 +61,37 @@ func (u *UI) D2() ac.Form {
 		})
 }
 
+func (u *UI) AsciiArt() ac.Form {
+	fonts := []string{"big", "block", "chunky", "coinstak", "colossal", "cricket", "cyberlarge", "cybermedium", "doh", "doom", "isometric1", "isometric3", "larry3d", "marquee", "ogre", "pawp", "puffy", "rectangles", "rounded", "slant", "small", "standard", "starwars", "stop"}
+	options := make([]any, len(fonts))
+	for i, font := range fonts {
+		options[i] = u.Option().Label(font).Value(font)
+	}
+	return u.Form().AutoFocus(true).WrapWithPanel(false).Body(
+		u.InputText().Name("input").Label("Input"),
+		u.Select().Name("font").Label("Font").Options(
+			options...,
+		).Value("big"),
+		u.Flex().Items(
+			u.Button().Label("▼").TransformMultiple(
+				func(d schema.Schema) (schema.Schema, error) {
+					input := d.Get("input").(string)
+					font := d.Get("font").(string)
+					res, err := util.AsciiArt(input, font)
+					if err != nil {
+						return nil, err
+					}
+					return schema.Schema{
+						"output": res,
+					}, nil
+				}, "font", "input",
+			),
+		),
+		u.Wrapper(),
+		u.Textarea().MinRows(10).Name("output"),
+	)
+}
+
 func regularSvgData(input []byte, err error) (string, error) {
 	if err != nil {
 		return "", err

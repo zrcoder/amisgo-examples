@@ -97,6 +97,7 @@ func (u *UI) getGenerators() ac.Tabs {
 		u.genTab("D2", u.D2()),
 		u.genTab("Hash", u.Hash()),
 		u.genTab("Qrcoder", u.Qrcode()),
+		u.genTab("Ascii Art", u.AsciiArt()),
 	)
 }
 

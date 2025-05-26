@@ -8,9 +8,11 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 
 	"github.com/BurntSushi/toml"
 	"github.com/ChimeraCoder/gojson"
+	"github.com/common-nighthawk/go-figure"
 	decqr "github.com/tuotoo/qrcode"
 	"github.com/yassinebenaid/bunster/analyser"
 	"github.com/yassinebenaid/bunster/generator"
@@ -240,4 +242,12 @@ func Shell2Go(data []byte) (*bytes.Buffer, error) {
 	res := bytes.NewBuffer(nil)
 	res.WriteString(program.String())
 	return res, nil
+}
+
+func AsciiArt(input, font string) (string, error) {
+	if input == "" {
+		return "", errors.New("input cannot be empty")
+	}
+	f := figure.NewFigure(input, font, true)
+	return f.String(), nil
 }
