@@ -88,7 +88,7 @@ func (u *UI) AsciiArt() ac.Form {
 			),
 		),
 		u.Wrapper(),
-		u.Textarea().MinRows(10).Name("output"),
+		u.Code().Name("output"),
 	)
 }
 
