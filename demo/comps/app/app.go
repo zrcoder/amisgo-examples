@@ -17,7 +17,6 @@ var (
 
 func init() {
 	app = amisgo.New(conf.WithLocalSdk(http.FS(sdk.FS)))
-	app = amisgo.New()
 }
 
 func Register(title string, demo func(*amisgo.App) []Demo) {
