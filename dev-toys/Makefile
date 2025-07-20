@@ -11,7 +11,7 @@ build:
 
 # Run the application
 run:
-	@go run -tags "amisgo_local_sdk" .
+	@DEV=1 go run -tags "amisgo_local_sdk" .
 # Create DB container
 docker-run:
 	@if docker compose up --build 2>/dev/null; then \
