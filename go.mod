@@ -3,7 +3,7 @@ module github.com/zrcoder/amisgo-examples
 go 1.23
 
 require (
-	gitee.com/rdor/amis-sdk/v6 v6.12.0
+	gitee.com/rdor/amis-sdk/v6 v6.13.0
 	github.com/BurntSushi/toml v1.5.0
 	github.com/ChimeraCoder/gojson v1.1.0
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
@@ -16,7 +16,7 @@ require (
 	github.com/tuotoo/qrcode v0.0.0-20220425170535-52ccc2bebf5d
 	github.com/yassinebenaid/bunster v0.7.1
 	github.com/yosssi/gohtml v0.0.0-20201013000340-ee4748c638f4
-	github.com/zrcoder/amisgo v0.12.5
+	github.com/zrcoder/amisgo v0.13.1
 	github.com/zrcoder/cdor v0.2.2-0.20250326071354-16a08e1a4a33
 	golang.org/x/crypto v0.33.0
 	gopkg.in/yaml.v3 v3.0.1
