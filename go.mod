@@ -1,6 +1,6 @@
 module github.com/zrcoder/amisgo-examples
 
-go 1.23
+go 1.26
 
 require (
 	gitee.com/rdor/amis-sdk/v6 v6.13.0

@@ -20,11 +20,11 @@ func main() {
 // approximation of pi.
 func pi(n int) float64 {
 	ch := make(chan float64)
-	for k := 0; k < n; k++ {
+	for k := range n {
 		go term(ch, float64(k))
 	}
 	f := 3.0
-	for k := 0; k < n; k++ {
+	for range n {
 		f += <-ch
 	}
 	return f

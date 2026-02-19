@@ -165,13 +165,13 @@ var colors = []string{
 func row(app *amisgo.App, disk int) comp.Tr {
 	tds := make([]comp.Td, 0, 2*maxDiskCount)
 	blanks := maxDiskCount - disk - 1
-	for i := 0; i < blanks; i++ {
+	for range blanks {
 		tds = append(tds, app.Td())
 	}
 	for i := 0; i < 2*(disk+1); i++ {
 		tds = append(tds, app.Td().Background(colors[disk]))
 	}
-	for i := 0; i < blanks; i++ {
+	for range blanks {
 		tds = append(tds, app.Td())
 	}
 	return app.Tr().Tds(tds...)

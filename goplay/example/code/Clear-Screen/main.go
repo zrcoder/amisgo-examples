@@ -10,7 +10,7 @@ func main() {
 	const col = 30
 	// Clear the screen by printing \x0c.
 	bar := fmt.Sprintf("\x0c[%%-%vs]", col)
-	for i := 0; i < col; i++ {
+	for i := range col {
 		fmt.Printf(bar, strings.Repeat("=", i)+">")
 		time.Sleep(100 * time.Millisecond)
 	}
